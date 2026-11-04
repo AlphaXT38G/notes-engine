@@ -10,3 +10,16 @@ const skSubtitle = () => {
 };
 SCREENS.sakura = { className: "sakura", subtitle: skSubtitle, transition: "sakura" };
 SCREENS["sakura-night"] = { className: "sakura", subtitle: () => "Yozakura: the blossoms by lantern light. " + skSubtitle(), transition: "sakura" };
+
+// Sakura replaces the day, the calm night and the jazz bar, as Christmas and Halloween do (the three
+// periods never meet). This file is loaded after halloween.js and before armstrong.js and calm.js,
+// so the yeti and boo codes typed after kojiro win (they clear skEgg), and the armstrong and peace
+// codes too, and the shows of the clock.
+let skEgg = false, skEggYeti = 0;
+OVERRIDES.push(phase => {
+  if (skEgg && yetiTyped !== skEggYeti) skEgg = false;
+  const cls = screenClass(phase);
+  const replaced = isNormal(phase) || cls === "night" || skEgg && (cls === "christmas" || cls === "halloween");
+  if (!replaced || !(skEgg || (!forced || forcedDismissed) && isSkDate())) return phase;
+  return isSkDaytime() ? "sakura" : "sakura-night";
+});

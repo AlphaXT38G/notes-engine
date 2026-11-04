@@ -342,6 +342,8 @@ Current screens:
 | `christmas-night` | `christmas` | Dec 1 – Jan 3, 18:00 – 06:00 (replaces the day, the jazz bar and the calm night) | `christmas.js`, `christmas.css` |
 | `halloween` | `halloween` | Oct 25 – Nov 1, 07:00 – 18:00 (replaces the day, the jazz bar and the calm night), or the `boo` code | `halloween.js`, `hw*.js`, `halloween.css`, `hwlife.css`, `hwcreatures.css`, `hwmusic.css` |
 | `halloween-night` | `halloween` | Oct 25 – Nov 1, 18:00 – 07:00 | the same |
+| `sakura` | `sakura` | Mar 15 – Apr 10, 07:00 – 18:30, the golden hour from 17:30 (replaces the day, the jazz bar and the calm night), or the `kojiro` code | `sakura.js`, `skscene.js`, `sakura.css`, `img/sakura/` |
+| `sakura-night` | `sakura` | Mar 15 – Apr 10, 18:30 – 07:00 (the yozakura: night from 18:45, the pink moon until 05:35) | the same |
 
 The Christmas screens depend on the date, so they are an override rather than a `SCHEDULE` slot:
 it only rewrites the normal screens (no screen, the calm night: `isNormal()` in `screens.js`) and
