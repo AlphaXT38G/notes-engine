@@ -79,6 +79,14 @@ const skSpawn = (front, at) => {
     sway: Math.random() * 6.3, life: 0,
   };
 };
+const skPetalBurst = (x, y, n = 30) => {
+  for (let i = 0; i < n; i++) {
+    const p = skSpawn(Math.random() < .15, [x + (Math.random() - .5) * 160, y + (Math.random() - .5) * 90]);
+    p.vx += (Math.random() - .6) * 160;
+    p.vy = (Math.random() - .7) * 120;
+    skPetals.push(p);
+  }
+};
 // ── The loop ──
 const skPetalStep = (p, dt, t) => {
   const wind = skWind;

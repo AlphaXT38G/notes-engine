@@ -39,6 +39,7 @@ skHit({
       clearTimeout(tree.shakeEnd);
       tree.shakeEnd = setTimeout(() => tree.classList.remove("shake"), 1500);
     });
+    skPetalBurst(x, y, 36);
     skGust(.8);
     skNoise(1.1, 3200, "bandpass", .22, 0, .6, 1.5);
   },
