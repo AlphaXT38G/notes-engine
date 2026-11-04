@@ -36,3 +36,13 @@ onCode("kojiro", () => {
   if (onSk && forced && forced.startsWith("sakura")) forcedDismissed = true;
   applyScreen();
 });
+
+// ── Shared helpers ──
+const skStill = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const skNight = () => document.body.dataset.phase === "sakura-night";
+const skClamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const skMix = (a, b, t) => a + (b - a) * t;
+const skSmooth = (a, b, v) => { const t = skClamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+const skP = n => Math.round(n * 10) / 10;  // one decimal is plenty for coordinates
+const skHex = c => [parseInt(c.slice(1, 3), 16) / 255, parseInt(c.slice(3, 5), 16) / 255, parseInt(c.slice(5, 7), 16) / 255];
+const skRgb = (c, k = 1, a = 1) => `rgba(${Math.round(skClamp(c[0] * k, 0, 1) * 255)},${Math.round(skClamp(c[1] * k, 0, 1) * 255)},${Math.round(skClamp(c[2] * k, 0, 1) * 255)},${a})`;
