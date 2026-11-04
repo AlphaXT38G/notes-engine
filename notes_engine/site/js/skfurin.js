@@ -10,7 +10,7 @@ skFurin.className = "skfurin";
 skFurin.setAttribute("aria-hidden", "true");
 skFurin.innerHTML = `<svg viewBox="0 0 60 220" aria-hidden="true"><defs>
 <radialGradient id="sk-glass" cx=".35" cy=".3"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".45" stop-color="#e8f4ff" stop-opacity=".55"/><stop offset="1" stop-color="#9cc4e8" stop-opacity=".6"/></radialGradient>
-</defs>
+<radialGradient id="sk-furinlight"><stop offset="0" stop-color="#fff6d8"/><stop offset=".25" stop-color="#ffd27a" stop-opacity=".9"/><stop offset=".6" stop-color="#ff9a3a" stop-opacity=".3"/><stop offset="1" stop-color="#ff7a20" stop-opacity="0"/></radialGradient></defs>
 <g class="skfurin-art">
 <path d="M30,0V96" stroke="#3a2a20" stroke-width="1.2"/>
 <g class="bell"><path d="M12,124Q10,98 30,94Q50,98 48,124Z" fill="url(#sk-glass)" stroke="#7fa6c8" stroke-width=".8"/>
@@ -20,7 +20,7 @@ skFurin.innerHTML = `<svg viewBox="0 0 60 220" aria-hidden="true"><defs>
 <g class="clapper"><path d="M30,100V140" stroke="#3a2a20"/><circle cx="30" cy="126" r="2.2" fill="#c8a24a"/>
 <g class="strip"><rect x="22" y="140" width="16" height="72" rx="1" fill="#fbf4e4" stroke="#d8c8a8" stroke-width=".6"/>
 <text x="30" y="160" font-size="11" text-anchor="middle" fill="#b02838" font-family="serif">風</text><text x="30" y="178" font-size="11" text-anchor="middle" fill="#2a1d24" font-family="serif">鈴</text></g></g></g>
-</svg>`;
+<g class="skfurin-glow"><circle cx="30" cy="113" r="34" fill="url(#sk-furinlight)" opacity=".55"/><circle class="flame" cx="30" cy="113" r="7" fill="url(#sk-furinlight)"/><circle cx="30" cy="113" r="1.6" fill="#fffbe8"/></g></svg>`;
 const SK_FURIN_AT = [1390, 40, 78];  // in the right group's box: x, y, width (the string hangs from a branch)
 skFurin.style.cssText = `left:${(SK_FURIN_AT[0] / SK_BW * 100).toFixed(3)}%;top:${(SK_FURIN_AT[1] / SK_BH * 100).toFixed(3)}%;width:${(SK_FURIN_AT[2] / SK_BW * 100).toFixed(3)}%`;
 skPlanes.push({ el: skFurin, depth: 15 });  // it slides with the tree it hangs from

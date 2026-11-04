@@ -75,6 +75,10 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 /* The wind chime (skfurin.js), hanging from the tree; its paper strip flutters more */
 .skfurin{position:absolute;transform-origin:50% 0}
 .skfurin-art{filter:url(#sk-tint)}
+/* its little light, at night */
+.skfurin-glow{opacity:var(--lamp,0);mix-blend-mode:screen}
+.skfurin-glow .flame{transform-box:fill-box;transform-origin:50% 50%;animation:sk-flicker 2.3s ease-in-out infinite}
+@keyframes sk-flicker{20%{scale:.88;opacity:.85}45%{scale:1.06}70%{scale:.94;opacity:.95}}
 .skfurin svg{display:block;width:100%;height:auto;overflow:visible}
 .skfurin .strip{transform-box:fill-box;transform-origin:50% 0;rotate:var(--strip,0deg)}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
@@ -95,4 +99,4 @@ html.skhand,html.skhand body{cursor:pointer}
 @media(max-width:640px){body.sakura h1{font-size:2rem}}
 
 /* Reduced motion */
-@media(prefers-reduced-motion:reduce){.skpaper.fly,.skpaper.back,.sksay,.skfog,.sktree,.sksamurai,#skscene .tw{animation:none}}
+@media(prefers-reduced-motion:reduce){.skpaper.fly,.skpaper.back,.sksay,.skfog,.sktree,.sksamurai,.skfurin-glow .flame,#skscene .tw{animation:none}}
