@@ -73,6 +73,9 @@ skDaySky.alt = "";
 skDaySky.decoding = "async";
 skLand.className = "skland";
 const skGroups = {}, skPlanes = [];
+// the low sun's glow over the sky and the land, in the golden hour
+const skSunGlow = document.createElement("div");
+skSunGlow.className = "sksunglow";
 ["back", "left", "right"].forEach(g => {
   const el = document.createElement("div");
   el.className = `skgroup skg-${g}`;
@@ -128,6 +131,7 @@ const skVars = L => {
   set("s0", L.top); set("s1", L.mid); set("s2", L.hor); set("fog", L.fog);
   const night = skSmooth(.2, .9, L.night);
   out.push(`--night:${night.toFixed(3)}`, `--lamp:${skSmooth(.3, .8, L.night).toFixed(3)}`, `--moon:${L.moonVis.toFixed(3)}`, `--haze:${L.haze.toFixed(3)}`);
+  out.push(`--sunglow:${(skClamp(L.rays * .6, 0, 1) * L.sunVis).toFixed(3)}`, `--sunx:${(L.sun[0] * 100).toFixed(1)}%`, `--suny:${((1 - L.sun[1]) * 100).toFixed(1)}%`);
   out.push(`--daysky:${(1 - night).toFixed(3)}`);
   return out.join(";");
 };
@@ -141,9 +145,9 @@ skPart({
     // the images load only when the screen first shows
     skPlanes.forEach(({ el }) => { if (el.dataset.src && !el.src) el.src = el.dataset.src; });
     if (!skDaySky.src) skDaySky.src = SK_IMG + "sky.webp";
-    skBack.append(skTint, skNightSky, skDaySky, skLand);
+    skBack.append(skTint, skNightSky, skDaySky, skLand, skSunGlow);
   },
-  off() { skTint.remove(); skNightSky.remove(); skDaySky.remove(); skLand.remove(); },
+  off() { skTint.remove(); skNightSky.remove(); skDaySky.remove(); skLand.remove(); skSunGlow.remove(); },
   resize() { skPlaceGroups(); },
   light() {
     skBack.style.cssText = skVars(skL);
