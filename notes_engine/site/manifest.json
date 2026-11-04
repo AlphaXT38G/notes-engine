@@ -68,6 +68,7 @@
     "js/sklantern.js",
     "js/skplayer.js",
     "js/skdragon.js",
+    "js/skvisitors.js",
     "js/armstrong.js",
     "js/metal.js",
     "js/epic.js",
