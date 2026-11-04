@@ -54,6 +54,7 @@ const SK_NIGHT_SKY = (() => {
 const SK_LAYERS = [
   ["mountains", "mountains.webp", "back", 3, -557, -164, 1920, "skfar"],
   ["valley", "valley.webp", "back", 7, 0, 0, SK_BW],
+  ["slope", "slope.webp", "left", 14, 0, 410, 920],
 ];
 const skNightSky = document.createElement("div"), skDaySky = document.createElement("img"), skLand = document.createElement("div");
 skNightSky.className = "sknightsky";

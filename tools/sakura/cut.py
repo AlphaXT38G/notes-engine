@@ -35,6 +35,7 @@ LAYERS = {
     # without holes (their snow is as white as the background), their rim keeping its colour
     "mountains": ("hard", 9, 1, False),
     "valley": ("soft", 90, 1.35),
+    "slope": ("hard", 40, 1),
 }
 def to_alpha(c, gain=1, keep=False):
     """Colour to alpha against BG: the opacity a pixel needs over BG, and its own colour (more
