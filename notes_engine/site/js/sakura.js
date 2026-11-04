@@ -233,6 +233,22 @@ const skOnClick = e => {
   if (hit) hit.click(e.clientX, e.clientY);
 };
 
+// ── Teasing the samurai ──
+// Each tease (a click on him) is counted for 30 s; at the third he stands, draws and challenges us
+// (sksamurai.js: skProvoked). A duel will start there: skDuel, null until a duel file (later, like
+// the snowman's fight, sansfight.js) sets it to a function that starts the fight and calls back
+// when it ends (skDuel(onEnd)).
+let skTeases = [], skDuel = null;
+const skTease = () => {
+  const now = performance.now();
+  skTeases = skTeases.filter(t => now - t < 30000);
+  skTeases.push(now);
+  if (skTeases.length < 3) return skTeases.length;
+  skTeases = [];
+  if (typeof skProvoked === "function") skProvoked();
+  return 3;
+};
+
 // ── The two layers, the parts, the loop ──
 const skBack = document.createElement("div"), skFront = document.createElement("div");
 skBack.id = "skscene";
