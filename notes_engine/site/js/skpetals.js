@@ -15,7 +15,7 @@ skPetalBack.className = "skpetals";
 skPetalFront.className = "skpetals skpetals-front";
 const skPB = skPetalBack.getContext("2d"), skPF = skPetalFront.getContext("2d");
 const SK_PETAL_COLORS = ["#ff8fb8", "#ff6fa5", "#f4589a", "#ffb3cd", "#ff7eb0"];
-let skSprites = [], skPetals = [], skSpawnB = 0, skSpawnF = 0;
+let skSprites = [], skPetals = [], skSlashes = [], skSpawnB = 0, skSpawnF = 0;
 
 // The sprites: a petal (a rounded drop with a notch at its tip, light at its base), its two
 // halves (for the cut), each in every colour
@@ -87,6 +87,24 @@ const skPetalBurst = (x, y, n = 30) => {
     skPetals.push(p);
   }
 };
+// Distance from a point to a segment
+const skSegDist = (px, py, x0, y0, x1, y1) => {
+  const dx = x1 - x0, dy = y1 - y0, t = skClamp(((px - x0) * dx + (py - y0) * dy) / (dx * dx + dy * dy || 1), 0, 1);
+  return Math.hypot(px - x0 - t * dx, py - y0 - t * dy);
+};
+const skSlash = (x0, y0, x1, y1) => {
+  skSlashes.push({ x0, y0, x1, y1, t: 0 });
+  const add = [];
+  skPetals = skPetals.filter(p => {
+    if (p.half || skSegDist(p.x, p.y, x0, y0, x1, y1) > 26 * p.z) return true;
+    // cut: the two halves part across the cut, spinning
+    const nx = -(y1 - y0), ny = x1 - x0, n = Math.hypot(nx, ny) || 1;
+    [1, 2].forEach(h => add.push(Object.assign({}, p, { half: h, vx: p.vx + nx / n * (h === 1 ? 70 : -70), vy: p.vy + ny / n * (h === 1 ? 70 : -70) - 30, va: (h === 1 ? 6 : -6) })));
+    return false;
+  });
+  skPetals.push(...add);
+};
+
 // ── The loop ──
 const skPetalStep = (p, dt, t) => {
   const wind = skWind;
@@ -120,6 +138,7 @@ skPart({
     skBack.append(skPetalBack);
     skFront.prepend(skPetalFront);
     skPetals = [];
+    skSlashes = [];
   },
   off() { skPetalBack.remove(); skPetalFront.remove(); skPetals = []; },
   resize() {
@@ -144,5 +163,28 @@ skPart({
     skPF.clearRect(0, 0, W, H);
     for (const p of skPetals) skPetalDraw(p.front ? skPF : skPB, p);
     skPB.globalAlpha = skPF.globalAlpha = 1;
+    // the cuts (white crescents) and the catches (a ring of light)
+    skPF.setTransform(1, 0, 0, 1, 0, 0);
+    skSlashes = skSlashes.filter(sl => {
+      sl.t += dt;
+      if (sl.ring) {
+        const k = sl.t / .6;
+        skPF.globalAlpha = Math.max(0, 1 - k);
+        skPF.strokeStyle = "#fff4f8";
+        skPF.lineWidth = 2;
+        skPF.beginPath(); skPF.arc(sl.x, sl.y, 6 + k * 26, 0, 6.3); skPF.stroke();
+        return k < 1;
+      }
+      const k = sl.t / .45, mx = (sl.x0 + sl.x1) / 2, my = (sl.y0 + sl.y1) / 2 - 40;
+      skPF.globalAlpha = Math.max(0, 1 - k);
+      skPF.lineCap = "round";
+      [[18, "rgba(255,190,220,.35)"], [7, "rgba(255,255,255,.8)"], [2.5, "#fff"]].forEach(([w, col]) => {
+        skPF.strokeStyle = col;
+        skPF.lineWidth = w * (1 - k * .6);
+        skPF.beginPath(); skPF.moveTo(sl.x0, sl.y0); skPF.quadraticCurveTo(mx, my, sl.x1, sl.y1); skPF.stroke();
+      });
+      return k < 1;
+    });
+    skPF.globalAlpha = 1;
   },
 });

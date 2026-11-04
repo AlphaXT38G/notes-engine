@@ -26,6 +26,7 @@ const skIai = () => {
   sam.classList.remove("iai");
   void sam.offsetWidth;  // restart the animation
   sam.classList.add("iai");
+  setTimeout(() => skSlash(x + 30, y + 40, x - Math.min(620, skLay.W * .45), y - 70), 140);
   skSteel(.12);
   // the guard clicks against the scabbard: the blade is back
   skTone(1760, .12, { type: "square", gain: .04, delay: 1.05 });
