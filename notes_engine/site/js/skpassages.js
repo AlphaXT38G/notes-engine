@@ -50,6 +50,15 @@ skHit({
   },
 });
 
+// ── The shamisen, plucked like mad ──
+let skPlucks = [];
+const skShred = () => {
+  const now = performance.now();
+  skPlucks = skPlucks.filter(t => now - t < 5000);
+  skPlucks.push(now);
+  if (skPlucks.length >= 10) { skPlucks = []; startMetalEgg("You shredded the shamisen."); }
+};
+
 skPart({
   on() { skBack.querySelector(".skg-right").append(skSake); },
   off() { skSake.remove(); skSake.classList.remove("pour"); skSakeBusy = false; },

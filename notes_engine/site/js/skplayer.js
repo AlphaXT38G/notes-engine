@@ -217,6 +217,7 @@ skShamisen.querySelectorAll("[data-string]").forEach(el => {
     skTwang(k);
     skReplay(skShamisen.querySelectorAll(".skstrings .wire")[k], "pluck");
     skStrike(true);
+    if (typeof skShred === "function") skShred();  // plucked like mad: the metal show (skpassages.js)
   };
   el.addEventListener("click", pluck);
   el.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); pluck(); } });
