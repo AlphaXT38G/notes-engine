@@ -59,6 +59,23 @@ const skShred = () => {
   if (skPlucks.length >= 10) { skPlucks = []; startMetalEgg("You shredded the shamisen."); }
 };
 
+// ── The dragon ──
+const skDragonAt = (x, y) => skVisitors.find(v => v.kind === "dragon" && v.parts.some(([px, py], i) => {
+  const r = (i ? 15 : 26) * skPixel();
+  return Math.hypot(px - x, py - y) < r;
+}));
+skHit({
+  title: "The dragon",
+  test: (x, y) => !!skDragonAt(x, y),
+  click(x, y) {
+    const d = skDragonAt(x, y);
+    if (!d || d.roaring) return;
+    d.roaring = true;  // its jaws stay wide (skdragon.js)
+    skNoise(2.4, 140, "lowpass", .6, 0, .8, 1.1);
+    skTone(62, 2.2, { type: "sawtooth", gain: .07, attack: .15, glide: .6 });
+  },
+});
+
 skPart({
   on() { skBack.querySelector(".skg-right").append(skSake); },
   off() { skSake.remove(); skSake.classList.remove("pour"); skSakeBusy = false; },
