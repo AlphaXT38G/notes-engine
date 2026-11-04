@@ -46,3 +46,17 @@ const skSmooth = (a, b, v) => { const t = skClamp((v - a) / (b - a), 0, 1); retu
 const skP = n => Math.round(n * 10) / 10;  // one decimal is plenty for coordinates
 const skHex = c => [parseInt(c.slice(1, 3), 16) / 255, parseInt(c.slice(3, 5), 16) / 255, parseInt(c.slice(5, 7), 16) / 255];
 const skRgb = (c, k = 1, a = 1) => `rgba(${Math.round(skClamp(c[0] * k, 0, 1) * 255)},${Math.round(skClamp(c[1] * k, 0, 1) * 255)},${Math.round(skClamp(c[2] * k, 0, 1) * 255)},${a})`;
+
+// ── The light of the hour ──
+// skHour(): the hour shown, fractional. The clock's, except that a forced day screen at night shows
+// a morning (and a forced night by day, the late night), and ?skhour=17.5 sets it (to try the light
+// of any hour: documented in AGENTS.md).
+const skHourParam = (q => q !== null && q !== "" && isFinite(+q) ? +q % 24 : null)(new URLSearchParams(location.search).get("skhour"));
+const skHour = () => {
+  if (skHourParam !== null) return skHourParam;
+  const h = clockSeconds() / 3600;
+  const day = h >= 7 && h < 18.5;  // as isSkDaytime: the day screen keeps its golden hour
+  if (document.body.dataset.phase === "sakura" && !day) return 10.5;
+  if (skNight() && day) return 23;
+  return h;
+};
