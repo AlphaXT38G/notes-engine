@@ -12,6 +12,11 @@
 // starts the fight and calls back when it ends (skDuel(onEnd)). Until then he gives up, turns back.
 const skSam = () => skBack.querySelector(".sksamurai");
 let skSamBusy = false;
+// Above his hat, where he speaks from
+const skSamTop = () => {
+  const r = skSam().getBoundingClientRect();
+  return [r.left + r.width * .5, r.top + r.height * .02];
+};
 const skSteel = delay => {
   // the swish of the blade (a fast filtered noise), the ring of the steel (two inharmonic tones)
   skNoise(.28, 2400, "bandpass", .45, delay, .8, 3);
@@ -33,11 +38,32 @@ const skIai = () => {
   skNoise(.05, 5000, "highpass", .2, 1.05);
   setTimeout(() => { sam.classList.remove("iai"); skSamBusy = false; }, 1300);
 };
+// Teased three times: he turns to us, draws, and challenges us
+const skProvoked = () => {
+  const sam = skSam();
+  if (!sam) return;
+  skSamBusy = true;
+  sam.classList.add("face");
+  const [x, y] = skSamTop();
+  setTimeout(() => skSay(x, y, "You will not let me be."), 300);
+  setTimeout(() => skSay(x, y, "Then draw your blade."), 3300);
+  setTimeout(() => skSteel(0), 3300);
+  const back = () => {
+    sam.classList.remove("face");
+    skSamBusy = false;
+  };
+  setTimeout(() => {
+    if (typeof skDuel === "function") skDuel(back);  // the duel (later): he turns back once it ends
+    else { skSay(x, y, "…Another day.", 2600); setTimeout(back, 2600); }
+  }, 6300);
+};
 skHit({
   title: "The samurai",
   test: (x, y) => skSeenAt(skSam(), x, y),
   click() {
     if (skSamBusy) return;
+    const n = skTease();
+    if (n >= 3) return;  // skProvoked runs
     skIai();
   },
 });
