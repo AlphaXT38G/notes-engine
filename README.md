@@ -3,7 +3,7 @@
 The engine behind a notes site: it compiles the LaTeX subjects of a **notes repository** to PDF
 and writes `dist/index.html`, a single-page index of all the PDFs, with first-page previews, a
 search into the documents' text, "New" badges, a dark mode, and a lot of personality (screens that
-follow the clock, Christmas, Halloween, easter eggs...).
+follow the clock, Christmas, Halloween, the cherry blossoms in spring, easter eggs...).
 
 It knows nothing about any particular notes: everything specific lives in the notes repository.
 

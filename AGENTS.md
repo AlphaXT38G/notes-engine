@@ -8,7 +8,7 @@ Guide for anyone working on the engine, human or AI agent (Claude Code reads it 
 The engine behind a notes site: it compiles the LaTeX subjects of a **notes repository** (such as
 `notes_ba5`) to PDF and writes `dist/index.html`, an index page of all the PDFs, with its
 search, its previews and its screens (a flame mode, a jazz bar at night, a metal show, an epic
-finale, a calm night, Christmas, Halloween, a cassette deck by day, easter eggs...).
+finale, a calm night, Christmas, Halloween, the cherry blossoms, a cassette deck by day, easter eggs...).
 
 The engine knows nothing about any particular set of notes. Everything specific comes from the
 notes repository, in its root: `subjects.json` (the subjects) and `site.json` (title, subtitle,
@@ -298,7 +298,7 @@ The search field finds subjects and documents by name (`ui.js`) and by what the 
 ### CSS files, in cascade order
 
 `base.css` (layout, cards, search, previews) → `flames.css` → `surprise.css` → `jazz.css` → `closing.css` →
-`metal.css` → `epic.css` → `bard.css` → `christmas.css` → `snowman.css` → `sansfight.css` → `halloween.css` → `hwlife.css` → `hwcreatures.css` → `hwmusic.css` → `calm.css` → `tapes.css` → `screens.css` (effects canvas, view transitions) → `konami.css`.
+`metal.css` → `epic.css` → `bard.css` → `christmas.css` → `snowman.css` → `sansfight.css` → `halloween.css` → `hwlife.css` → `hwcreatures.css` → `hwmusic.css` → `sakura.css` → `calm.css` → `tapes.css` → `screens.css` (effects canvas, view transitions) → `konami.css`.
 The Konami file is last on purpose: during its animation `body.rift .wrap` must win over every
 theme's `.wrap` rule.
 

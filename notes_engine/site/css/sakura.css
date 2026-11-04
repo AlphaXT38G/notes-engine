@@ -1,0 +1,8 @@
+/* Sakura (body.sakura, March 15 - April 10 or the kojiro code, see js/sakura.js).
+   Day (07:00 - 18:30): a spring landscape whose light follows the hour, washi-paper cards.
+   Night (sakura-night): the yozakura, a deep violet night under a pink moon, the pagoda lit.
+   Every colour token is set: the visitor may be in light or dark mode. In order: colours, title,
+   cards, the scene's layers, the speech bubbles, the transition, reduced motion. */
+body.sakura{--bg:#fbf2f1;--fg:#2a1d24;--card:rgba(255,251,248,.88);--line:rgba(160,80,104,.18);--mut:#7a5e68;--acc:#b8365f;--acc-bg:rgba(230,110,145,.13);--new:#fff;--new-bg:#cf4a75;background:var(--bg)}
+body.sakura .wrap{position:relative;z-index:1}
+@media(max-width:1040px){body.sakura .wrap{overflow-x:clip}}
