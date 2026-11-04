@@ -172,6 +172,19 @@ const skPlayerShow = () => {
   });
 };
 
+// Restart a CSS animation on an element (a class taken off and put back)
+const skReplay = (el, cls) => { el.classList.remove(cls); void el.getBoundingClientRect(); el.classList.add(cls); };
+// A strike of the bachi, down through the strings or back up (the upstroke, sukui), on alternate
+// beats: the skin throbs, the strings tremble, a petal escapes
+let skStrokeUp = false;
+const skStrike = (strong = false) => {
+  skReplay(skShamisen, "strike");
+  const bachi = skShamisen.querySelector(".skbachi");
+  bachi.classList.remove("down", "up");
+  void bachi.getBoundingClientRect();
+  bachi.classList.add(skStrokeUp ? "up" : "down");
+  skStrokeUp = !skStrokeUp;
+};
 [skShamisen.querySelector(".skbachi"), skShamisen.querySelector(".skbody")].forEach(el => {
   el.addEventListener("click", () => skPlayBtn.click());
   el.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); skPlayBtn.click(); } });
@@ -185,4 +198,10 @@ skPart({
   },
   off() { skTrackDrop(); skShamisen.remove(); skFlowers.remove(); },
   resize() { skFlowersPlace(); },
+  frame() {
+    // the bachi strikes on the beat of the track
+    if (!skPlaying()) return;
+    const beat = Math.floor(skTrackTime() * SK_TRACKS[skTrackAt].bpm / 60);
+    if (beat !== skBeat) { skBeat = beat; skStrike(beat % 4 === 0); }
+  },
 });
