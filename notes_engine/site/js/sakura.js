@@ -1,3 +1,36 @@
+// ── Sakura (screens "sakura" and "sakura-night", body.sakura) ──────────────────────────────────
+// From March 15 to April 10, the cherry blossom season in Japan, the usual looks are replaced by a
+// painted landscape (css/sakura.css): on the right a knoll covered with petals under a great cherry
+// tree whose branches arch over the page, a samurai standing on it looking over the valley, a
+// sheet of paper with an ink drawing, a sake set; below, a valley of cherry trees and mist where a
+// five-storeyed pagoda stands on its rock; far away a snowy volcano over a sea of clouds. The light
+// follows the clock: misty morning, blue noon, the golden hour (17:30 - 18:30), then the night of
+// the yozakura (the cherry blossoms seen at night): a huge pink moon, the pagoda lit, fireflies, a
+// silk lantern, and the pink dawn. Typing "kojiro" (for Sasaki Kojirō, the legendary swordsman)
+// brings it at any time of the year. The metal show at 01:00, the epic finale and the other easter
+// eggs still take over, as over Christmas.
+//
+// The screen is made of parts, each in its own file, registered here with skPart():
+//   skscene.js     the landscape: painted layers (img/sakura/) in depth, mist, the night sky and
+//                  its moon, the parallax, the tint of the hour
+//   skplay.js      the clicks on the tree (shaken; six times: the storm of petals), the paper (blown
+//                  away), the moon (the calm night)
+//   sksamurai.js   the samurai: the iai, his grumbles, provoked at the third tease (skDuel to come)
+//   skpetals.js    the petals in the air, behind and in front of the page, the storm of petals, the
+//                  cut of the iai, the fireflies at night
+//   skfurin.js     the wind chime hanging from the tree
+//   sklantern.js   the silk lantern of the night, in the left margin
+//   skplayer.js    the music: the shamisen and its flowers, one per track
+//   skdragon.js    the pixel-art dragon (sprites: img/sakura/dragon.png)
+//   skvisitors.js  what crosses the sky: cranes, sky lanterns, shooting stars, the dragon; shenron
+//   skpassages.js  the hidden ways to the other screens (the sake set, the shamisen shredded, the
+//                  dragon's blue fire) and the fireflies flying off
+//
+// The parts share: two layers, #skscene behind the page (click-through) and #skfront above it;
+// one animation loop (each part's frame(dt, t)); the light of the hour (skL, skLight); the window's
+// size (skLay); the wind (skWind, skGust); the parallax (skPar); clicks on the scene (skHit),
+// tested where no card covers it, on the painted pixels of the layer seen there (skSeenAt).
+
 const isSkDate = (d = new Date()) => d.getMonth() === 2 && d.getDate() >= 15 || d.getMonth() === 3 && d.getDate() <= 10;
 // the day screen until 18:30, the end of the golden hour; then the night (lanterns, fireflies, the pink moon)
 const isSkDaytime = () => { const t = clockSeconds(); return t >= 7 * 3600 && t < 18.5 * 3600; };
