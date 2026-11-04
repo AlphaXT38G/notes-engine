@@ -24,6 +24,8 @@ const SK_TRACKS = [
 ];
 let skTrackAt = (() => { try { return (+localStorage.getItem("sk-track") || 0) % SK_TRACKS.length; } catch (e) { return 0; } })();
 let skTrack = null, skBeat = -1;
+const skEsc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
 // ── The shamisen ──
 const skShamisen = document.createElement("div");
 skShamisen.className = "skshamisen";
@@ -75,6 +77,34 @@ skPlayBtn.className = "skplay";
 musicButtons.push(skPlayBtn);
 skShamisen.append(skPlayBtn);
 
+// ── The flowers, in an arc around the shamisen ──
+// One flower per track, on arcs around the shamisen's body (to the right of its neck): from the
+// bottom up, one after the other at an even spacing; an arc full, the next flowers start a wider one
+const skFlowers = document.createElement("div");
+skFlowers.className = "skflowers";
+skFlowers.setAttribute("role", "group");
+skFlowers.setAttribute("aria-label", "Music");
+const skFlower = color => `<svg viewBox="-12 -12 24 24" aria-hidden="true"><g fill="${color}" stroke="rgba(120,20,50,.55)" stroke-width=".5">` +
+  [0, 72, 144, 216, 288].map(a => `<path transform="rotate(${a})" d="M0,0C-4,-2 -4.5,-8 -1.3,-10.2L0,-8.8L1.3,-10.2C4.5,-8 4,-2 0,0Z"/>`).join("") +
+  `</g><circle r="2.2" fill="#f6c64a"/>${[0, 72, 144, 216, 288].map(a => `<circle r=".7" cx="${(Math.sin(a * Math.PI / 180) * 3.6).toFixed(2)}" cy="${(-Math.cos(a * Math.PI / 180) * 3.6).toFixed(2)}" fill="#c8402a"/>`).join("")}</svg>`;
+const skFlowersPlace = () => {
+  const small = innerWidth < 640, R0 = small ? 7 : 10, cx = small ? 2.9 : 3.7, cy = small ? 1.6 : 2.1;  // rem, from the bottom left
+  const start = 4 * Math.PI / 180, end = 62 * Math.PI / 180;
+  let ring = 0, a = start;
+  skFlowers.querySelectorAll(".skflower").forEach(b => {
+    let r = R0 + ring * 2.8;
+    if (a > end) { ring++; r = R0 + ring * 2.8; a = start; }  // this arc is full: a wider one
+    b.style.left = `${(cx + r * Math.cos(a) - 1.05).toFixed(2)}rem`;
+    b.style.bottom = `${(cy + r * Math.sin(a) - 1.05).toFixed(2)}rem`;
+    a += 2.7 / r;  // radians to the next flower: an even gap along the arc
+  });
+};
+const skFlowersBuild = () => {
+  skFlowers.innerHTML = SK_TRACKS.map((t, i) => `<button type="button" class="skflower" data-track="${i}" title="${skEsc(t.name)}" aria-label="${skEsc(t.name)}">${skFlower(t.color)}</button>`).join("");
+  skFlowers.querySelectorAll(".skflower").forEach(b => b.addEventListener("click", () => skSelect(+b.dataset.track, true)));
+  skFlowersPlace();
+};
+
 // ── Playing ──
 // skTrack: the track playing or paused: { yt: its video, paused, time } for a YouTube one, or the
 // <audio> of an mp3 (screenTrack)
@@ -124,6 +154,12 @@ const skPlayerShow = () => {
   const playing = skPlaying();
   skShamisen.classList.toggle("playing", playing);
   skPlayBtn.textContent = playing ? "Pause" : "Play";
+  skFlowers.querySelectorAll(".skflower").forEach(b => {
+    const on = +b.dataset.track === skTrackAt;
+    b.classList.toggle("on", on);
+    b.classList.toggle("live", on && playing);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+  });
 };
 
 [skShamisen.querySelector(".skbachi"), skShamisen.querySelector(".skbody")].forEach(el => {
@@ -133,8 +169,10 @@ const skPlayerShow = () => {
 
 skPart({
   on() {
-    skFront.append(skShamisen);
+    skFlowersBuild();
+    skFront.append(skShamisen, skFlowers);
     skPlayerShow();
   },
-  off() { skTrackDrop(); skShamisen.remove(); },
+  off() { skTrackDrop(); skShamisen.remove(); skFlowers.remove(); },
+  resize() { skFlowersPlace(); },
 });
