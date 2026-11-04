@@ -28,3 +28,5 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 [data-vt=sakura]::view-transition-new(root){animation:sk-vt-in 1.4s ease-out both}
 @keyframes sk-vt-out{to{opacity:0;filter:blur(6px) saturate(.6)}}
 @keyframes sk-vt-in{from{opacity:0;filter:blur(8px) brightness(1.15)}}
+
+@media(max-width:640px){body.sakura h1{font-size:2rem}}
