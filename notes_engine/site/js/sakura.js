@@ -189,6 +189,26 @@ const skHitAt = (x, y) => {
   for (let i = SK_HITS.length - 1; i >= 0; i--) if (SK_HITS[i].test(x, y)) return SK_HITS[i];
   return null;
 };
+// Whether a point of the screen is on the painted part of a layer (not on its transparent
+// margins): the image's alpha, read once into a small copy (a quarter of its size)
+const skAlphaMap = img => {
+  if (img.skMap !== undefined) return img.skMap;
+  if (!img.complete || !img.naturalWidth) return null;
+  const c = document.createElement("canvas"), w = c.width = Math.max(1, img.naturalWidth >> 2), h = c.height = Math.max(1, img.naturalHeight >> 2);
+  const g = c.getContext("2d");
+  g.drawImage(img, 0, 0, w, h);
+  try { img.skMap = { w, h, data: g.getImageData(0, 0, w, h).data }; } catch (e) { img.skMap = null; }  // a tainted image: its box only
+  return img.skMap;
+};
+const skOpaqueAt = (img, x, y, min = 80) => {
+  if (!img || !img.isConnected) return false;
+  const r = img.getBoundingClientRect();
+  if (x < r.left || x >= r.right || y < r.top || y >= r.bottom) return false;
+  const m = skAlphaMap(img);
+  if (!m) return true;
+  const px = Math.min(m.w - 1, ((x - r.left) / r.width * m.w) | 0), py = Math.min(m.h - 1, ((y - r.top) / r.height * m.h) | 0);
+  return m.data[(py * m.w + px) * 4 + 3] > min;
+};
 let skHovered = null;
 const skHover = e => {
   const hit = skFree(e.target) ? skHitAt(e.clientX, e.clientY) : null;
