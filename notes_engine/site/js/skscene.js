@@ -28,7 +28,8 @@ const SK_NIGHT_SKY = (() => {
   let stars = "", tw = "";
   for (let i = 0; i < 190; i++) {
     const x = rnd() * SK_BW, y = Math.pow(rnd(), 1.3) * 560, r = .6 + rnd() * rnd() * 1.5;
-    stars += `M${skP(x)},${skP(y)}h.01`;
+    if (i < 16) tw += `<circle class="tw" style="animation-delay:${(-rnd() * 5).toFixed(2)}s" cx="${skP(x)}" cy="${skP(y)}" r="${skP(r + .6)}"/>`;
+    else stars += `M${skP(x)},${skP(y)}h.01`;
   }
   return `<svg viewBox="0 0 ${SK_BW} ${SK_BH}" preserveAspectRatio="xMidYMax slice"><defs>` +
     `<linearGradient id="sk-sky" x2="0" y2="1"><stop offset="0" style="stop-color:var(--s0)"/><stop offset=".4" style="stop-color:var(--s1)"/><stop offset=".72" style="stop-color:var(--s2)"/></linearGradient>` +
