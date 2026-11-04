@@ -60,6 +60,7 @@ const SK_LAYERS = [
   ["mist3", "", "back", 11, -260, 690, SK_BW + 520, "skfog skfog3"],
   ["slope", "slope.webp", "left", 14, 0, 410, 920],
   ["tree", "tree.webp", "right", 15, 0, -190, SK_BW, "sktree"],
+  ["veins", "tree-veins.webp", "right", 15, 0, -190, SK_BW, "sktree skveins"],
   ["knoll", "knoll.webp", "right", 17, 0, 60, SK_BW],
   ["samurai", "samurai.webp", "right", 17, 1062, 328, 228, "sksamurai"],  // both feet in the grass
   ["paper", "paper.webp", "right", 18, 1268, 642, 262, "skpaper"],

@@ -138,6 +138,75 @@ def pagoda_lights(valley):
     lights.save(OUT / "pagoda-lights.webp", quality=90, alpha_quality=100, method=6)
 
 
+def tree_veins():
+    """The light veins of the great tree at night (skscene.js): a few short lines of light here and
+    there on its wood, forking like glowing roots, a soft light escaping from them. Each vein is a
+    walker that climbs the bark (what is painted and not a pink blossom), turning towards where
+    there is more bark ahead, wavering, forking now and then, stopping where the wood ends; its line
+    fades as it goes. Drawn sharp, then a glow around it. A layer of the tree's size, laid over it at
+    night."""
+    import math
+    import random
+    rnd = random.Random(7)
+    tree = Image.open(OUT / "tree.webp").convert("RGBA")
+    w, h = tree.size
+    px, al = list(tree.convert("RGB").get_flattened_data()), list(tree.getchannel("A").get_flattened_data())
+    bark = Image.new("L", tree.size)
+    bark.putdata([255 if a > 230 and not (r > 140 and r - g > 55 and b > g) else 0 for (r, g, b), a in zip(px, al)])
+    bark = bark.filter(ImageFilter.MinFilter(3)).filter(ImageFilter.MaxFilter(9)).filter(ImageFilter.MinFilter(11))  # solid wood: no holes, no lone flowers
+    bk = bark.load()
+    on = lambda x, y: 0 <= x < w and 0 <= y < h and bk[int(x), int(y)] > 0
+    lines = []
+    walkers = []
+    taken = set()  # the cells (8 px) a vein went through: the others keep apart from it
+    # the seeds: a few roots of light, here and there on the wood: two in each band of height, from the
+    # limbs at the top to the roots at the foot
+    for y0, y1 in ((150, 360), (360, 570), (570, 790), (790, 1010)):
+        seeds = 0
+        while seeds < 2:
+            x, y = rnd.uniform(700, 1530), rnd.uniform(y0, y1)
+            if on(x, y):
+                walkers.append([x, y, -math.pi / 2 + rnd.uniform(-1.2, 1.2), 0])
+                seeds += 1
+    while walkers:
+        x, y, a, life = walkers.pop()
+        pts = [(x, y)]
+        for step in range(rnd.randint(30, 95)):  # short
+            best, bscore = None, -1
+            for da in (-.5, -.25, 0, .25, .5):
+                na = a + da + rnd.uniform(-.12, .12)
+                score = sum(on(x + math.cos(na) * d, y + math.sin(na) * d) for d in (6, 12, 20)) - abs(da) * .6
+                score -= 1.2 * ((int(x + math.cos(na) * 10) >> 3, int(y + math.sin(na) * 10) >> 3) in taken)
+                if score > bscore:
+                    best, bscore = na, score
+            if bscore < 1:
+                break
+            a = best * .85 + (-math.pi / 2 if y > 300 else a) * .15  # up the trunk, then along the limbs
+            x, y = x + math.cos(a) * 4, y + math.sin(a) * 4
+            pts.append((x, y))
+            if step > 3:
+                taken.add((int(pts[-4][0]) >> 3, int(pts[-4][1]) >> 3))
+            if rnd.random() < .025 and len(lines) + len(walkers) < 12:  # a fork, now and then, like a root
+                walkers.append([x, y, a + rnd.choice((-1, 1)) * rnd.uniform(.5, .9), life + 1])
+        if len(pts) > 12:
+            lines.append((pts, life))
+    core = Image.new("L", tree.size)
+    draw = ImageDraw.Draw(core)
+    for pts, life in lines:
+        n = len(pts)
+        for k in range(n - 1):
+            fade = math.sin(math.pi * k / n) ** .6 * (.75 ** life)  # fading in and out at both ends
+            draw.line([pts[k], pts[k + 1]], fill=int(210 * fade), width=2)
+    glow = core.filter(ImageFilter.GaussianBlur(8))  # a soft light escaping from them
+    alpha = Image.new("L", tree.size)
+    alpha.putdata([min(255, int(c * .9 + g * 2.8)) for c, g in zip(core.get_flattened_data(), glow.get_flattened_data())])
+    alpha = Image.composite(alpha, Image.new("L", tree.size), bark.filter(ImageFilter.MaxFilter(9)))
+    layer = Image.new("RGBA", tree.size, (255, 200, 230, 0))
+    layer.putalpha(alpha)
+    layer.save(OUT / "tree-veins.webp", quality=90, alpha_quality=100, method=6)
+    print(f"tree-veins: {len(lines)} veins")
+
+
 def main(names):
     """Cut the layers named (all of them by default): python tools/sakura/cut.py mountains valley"""
     OUT.mkdir(parents=True, exist_ok=True)
@@ -146,6 +215,8 @@ def main(names):
     done = {name: cut(name, *spec) for name, spec in LAYERS.items() if not names or name in names}
     if "valley" in done:
         pagoda_lights(done["valley"])
+    if not names or "veins" in names or "tree" in names:
+        tree_veins()
 
 
 if __name__ == "__main__":

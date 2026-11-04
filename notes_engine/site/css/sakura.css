@@ -54,6 +54,8 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 /* the great tree sways a little in the wind, about its foot (hidden behind the knoll) */
 .sktree{transform-origin:90% 95%;animation:sk-sway 9s ease-in-out infinite alternate}
 @keyframes sk-sway{from{rotate:-.35deg}to{rotate:.35deg}}
+/* the veins of light in the tree's wood, at night: light, not tinted, discreet */
+.skl.skveins{filter:none;mix-blend-mode:screen;opacity:calc(var(--lamp,0) * .8)}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 html.skhand,html.skhand body{cursor:pointer}
 
