@@ -107,6 +107,8 @@ def cut(name, mode, tol, gain, holes_too=True):
 def main(names):
     """Cut the layers named (all of them by default): python tools/sakura/cut.py mountains valley"""
     OUT.mkdir(parents=True, exist_ok=True)
+    if not names or "sky" in names:
+        Image.open(SRC / "sky.webp").convert("RGB").save(OUT / "sky.webp", quality=82, method=6)
     done = {name: cut(name, *spec) for name, spec in LAYERS.items() if not names or name in names}
 
 

@@ -48,15 +48,19 @@ const SK_NIGHT_SKY = (() => {
     `<g clip-path="url(#sk-moonclip)"><g filter="url(#sk-soft)" style="fill:#e27aa6;opacity:.45">${seas}</g></g><circle r="74" fill="url(#sk-moonlimb)"/></g></g></svg>`;
 })();
 
-const skNightSky = document.createElement("div");
+const skNightSky = document.createElement("div"), skDaySky = document.createElement("img");
 skNightSky.className = "sknightsky";
 skNightSky.innerHTML = SK_NIGHT_SKY;
+skDaySky.className = "skdaysky";
+skDaySky.alt = "";
+skDaySky.decoding = "async";
 // ── Colours by the hour ──
 const skVars = L => {
   const out = [], set = (k, c) => out.push(`--${k}:${skRgb(c)}`);
   set("s0", L.top); set("s1", L.mid); set("s2", L.hor); set("fog", L.fog);
   const night = skSmooth(.2, .9, L.night);
   out.push(`--night:${night.toFixed(3)}`, `--lamp:${skSmooth(.3, .8, L.night).toFixed(3)}`, `--moon:${L.moonVis.toFixed(3)}`, `--haze:${L.haze.toFixed(3)}`);
+  out.push(`--daysky:${(1 - night).toFixed(3)}`);
   return out.join(";");
 };
 const skPlaceMoon = () => {
@@ -66,9 +70,10 @@ const skPlaceMoon = () => {
 
 skPart({
   on() {
-    skBack.append(skNightSky);
+    if (!skDaySky.src) skDaySky.src = SK_IMG + "sky.webp";
+    skBack.append(skNightSky, skDaySky);
   },
-  off() { skNightSky.remove(); },
+  off() { skNightSky.remove(); skDaySky.remove(); },
   light() {
     skBack.style.cssText = skVars(skL);
     skPlaceMoon();

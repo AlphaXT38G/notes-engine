@@ -29,6 +29,7 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 .sknightsky,.skdaysky,.skland{position:absolute;inset:0;width:100%;height:100%}
 .sktint{position:absolute;width:0;height:0;overflow:hidden}
 .sknightsky svg{display:block;width:100%;height:100%}
+.skdaysky{object-fit:cover;object-position:50% 100%;opacity:var(--daysky,1);filter:var(--skyf)}
 #skscene .tw{fill:#fff;animation:sk-tw 4s ease-in-out infinite}
 @keyframes sk-tw{50%{opacity:.25}}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
