@@ -10,6 +10,7 @@
 // he turns to face us (skProvoked) and challenges us. The duel itself will come later, like the
 // snowman's fight (sansfight.js): skDuel, null until a duel file sets it to a function that
 // starts the fight and calls back when it ends (skDuel(onEnd)). Until then he gives up, turns back.
+const SK_GRUMBLES = ["…", "Hm.", "Let me watch the valley.", "The blossoms do not need your help.", "Revise. I meditate."];
 const skSam = () => skBack.querySelector(".sksamurai");
 let skSamBusy = false;
 // Above his hat, where he speaks from
@@ -65,6 +66,7 @@ skHit({
     const n = skTease();
     if (n >= 3) return;  // skProvoked runs
     skIai();
+    if (n === 2) { const [x, y] = skSamTop(); setTimeout(() => skSay(x, y, SK_GRUMBLES[(Math.random() * SK_GRUMBLES.length) | 0]), 900); }
   },
 });
 skPart({ off() { const s = skSam(); if (s) s.classList.remove("iai", "face"); skSamBusy = false; skTeases = []; } });
