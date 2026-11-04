@@ -14,6 +14,16 @@
 // shamisen or a flower is first reached for: ytWarm), or mp3 files of site/audio/ (screenTrack,
 // screens.js): add one to SK_TRACKS ({ id } or { file }, its name, bpm: its tempo, for the
 // strikes, and color: its flower's) to add a flower.
+const SK_TRACKS = [
+  { id: "tWzZhZU3sOI", name: "Wafū rock: shamisen and heavy bass", bpm: 140, color: "#6cd46a" },
+  { id: "AK51LblcEOw", name: "Sakura, traditional koto music", bpm: 72, color: "#5aa8ff" },
+  { id: "oxlaAdCY4jA", name: "Cherry blossom zen music", bpm: 64, color: "#e8323c" },
+  { id: "iX-11teX4Wo", name: "Sengoshin, gods of the war drums", bpm: 120, color: "#a066e0" },
+  { id: "S-h8z0zgX_U", name: "Tao, on the path of the samurai", bpm: 64, color: "#2a2230" },
+  { id: "KBgRUHG6pHU", name: "Epic shamisen, heavy Japanese rock", bpm: 140, color: "#ffd23a" },
+];
+let skTrackAt = (() => { try { return (+localStorage.getItem("sk-track") || 0) % SK_TRACKS.length; } catch (e) { return 0; } })();
+let skTrack = null, skBeat = -1;
 // ── The shamisen ──
 const skShamisen = document.createElement("div");
 skShamisen.className = "skshamisen";
@@ -59,9 +69,72 @@ skShamisen.innerHTML = `<svg viewBox="0 0 150 380" role="group" aria-label="Sham
 <path d="M57,297q15,-7 31,-2" stroke="rgba(255,250,230,.7)" stroke-width="1.2" fill="none"/>
 </g>
 </svg>`;
+const skPlayBtn = document.createElement("button");
+skPlayBtn.type = "button";
+skPlayBtn.className = "skplay";
+musicButtons.push(skPlayBtn);
+skShamisen.append(skPlayBtn);
+
+// ── Playing ──
+// skTrack: the track playing or paused: { yt: its video, paused, time } for a YouTube one, or the
+// <audio> of an mp3 (screenTrack)
+const SK_YT = {  // the player, as the owner of a YouTube player: its time and its end
+  onTime: t => { if (skTrack && skTrack.yt) skTrack.time = t; },
+  onEnd: () => skSelect((skTrackAt + 1) % SK_TRACKS.length, true),
+};
+const skPlaying = () => !!skTrack && !skTrack.paused;
+const skTrackTime = () => skTrack ? (skTrack.yt ? skTrack.time : skTrack.currentTime) : 0;
+const skTrackStart = () => {
+  const tr = SK_TRACKS[skTrackAt];
+  skBeat = -1;
+  if (tr.id) {
+    const player = ytPlay(tr.id, SK_YT, true);
+    skTrack = { yt: tr.id, paused: false, time: player.time };
+    return;
+  }
+  skTrack = screenTrack(tr.file, { loop: false });
+  skTrack.addEventListener("ended", () => skSelect((skTrackAt + 1) % SK_TRACKS.length, true));
+  ["play", "pause"].forEach(ev => skTrack.addEventListener(ev, skPlayerShow));
+};
+const skTrackPlay = on => {
+  if (!skTrack) return;
+  if (skTrack.yt) { skTrack.paused = !on; if (on) ytPlay(skTrack.yt, SK_YT, true); else ytPause(skTrack.yt, SK_YT); }
+  else if (on) skTrack.play().catch(() => {});
+  else skTrack.pause();
+};
+const skTrackDrop = () => {
+  if (skTrack && skTrack.yt) ytPause(skTrack.yt, SK_YT);  // its player stays, paused: no new ad later
+  else dropTrack(skTrack);
+  skTrack = null;
+};
+// Play track i: another track starts it; the same one plays / pauses it (a flower only plays it)
+const skSelect = (i, flower) => {
+  if (i === skTrackAt && skTrack) {
+    if (skTrack.paused) skTrackPlay(true); else if (!flower) skTrackPlay(false);
+  } else {
+    skTrackDrop();
+    skTrackAt = i;
+    try { localStorage.setItem("sk-track", i); } catch (e) {}
+    skTrackStart();
+  }
+  skPlayerShow();
+};
+skPlayBtn.addEventListener("click", () => skSelect(skTrackAt));
+const skPlayerShow = () => {
+  const playing = skPlaying();
+  skShamisen.classList.toggle("playing", playing);
+  skPlayBtn.textContent = playing ? "Pause" : "Play";
+};
+
+[skShamisen.querySelector(".skbachi"), skShamisen.querySelector(".skbody")].forEach(el => {
+  el.addEventListener("click", () => skPlayBtn.click());
+  el.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); skPlayBtn.click(); } });
+});
+
 skPart({
   on() {
     skFront.append(skShamisen);
+    skPlayerShow();
   },
-  off() { skShamisen.remove(); },
+  off() { skTrackDrop(); skShamisen.remove(); },
 });
