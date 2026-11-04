@@ -76,6 +76,9 @@ const skGroups = {}, skPlanes = [];
 // the low sun's glow over the sky and the land, in the golden hour
 const skSunGlow = document.createElement("div");
 skSunGlow.className = "sksunglow";
+// at night, the edges of the window sink into the dark (a vignette over the land)
+const skVeil = document.createElement("div");
+skVeil.className = "skveil";
 ["back", "left", "right"].forEach(g => {
   const el = document.createElement("div");
   el.className = `skgroup skg-${g}`;
@@ -149,9 +152,9 @@ skPart({
     // the images load only when the screen first shows
     skPlanes.forEach(({ el }) => { if (el.dataset.src && !el.src) el.src = el.dataset.src; });
     if (!skDaySky.src) skDaySky.src = SK_IMG + "sky.webp";
-    skBack.append(skTint, skNightSky, skDaySky, skLand, skSunGlow);
+    skBack.append(skTint, skNightSky, skDaySky, skLand, skSunGlow, skVeil);
   },
-  off() { skTint.remove(); skNightSky.remove(); skDaySky.remove(); skLand.remove(); skSunGlow.remove(); },
+  off() { skTint.remove(); skNightSky.remove(); skDaySky.remove(); skLand.remove(); skSunGlow.remove(); skVeil.remove(); },
   resize() { skPlaceGroups(); },
   light() {
     skBack.style.cssText = skVars(skL);
