@@ -26,6 +26,10 @@ skFurin.style.cssText = `left:${(SK_FURIN_AT[0] / SK_BW * 100).toFixed(3)}%;top:
 skPlanes.push({ el: skFurin, depth: 15 });  // it slides with the tree it hangs from
 let skFurinA = 0, skFurinV = 0, skFurinRungAt = 0;  // its swing: angle (degrees) and speed; its last ring
 
+// Its voice: a small glass bell, a bright tone and its high, inharmonic partials
+const skFurinRing = (k = 1) => {
+  [[2793, .06], [4186, .03], [6050, .015]].forEach(([f, g]) => skTone(f * (1 + (Math.random() - .5) * .01), 1.6, { gain: g * k }));
+};
 skPart({
   on() { skBack.querySelector(".skg-right").append(skFurin); },
   off() { skFurin.remove(); },
@@ -35,5 +39,10 @@ skPart({
     skFurinA += skFurinV * dt;
     skFurin.style.rotate = `${skP(skFurinA)}deg`;
     skFurin.style.setProperty("--strip", `${skP(skFurinA * 1.8 + Math.sin(t * 4) * 6 * skWind)}deg`);
+    const now = performance.now();
+    if (Math.abs(skFurinV) > 18 && now - skFurinRungAt > 2500 && Math.random() < dt * 4 && screenGesture()) {
+      skFurinRungAt = now;
+      skFurinRing(.45 + Math.random() * .3);
+    }
   },
 });
