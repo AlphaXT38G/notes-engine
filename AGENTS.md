@@ -158,7 +158,27 @@ finale and the jazz bar, as `kamelot` and `armstrong` do), the castle's tiny gar
 jar half buried by the dead tree opens the calm night (as `peace` does); a werewolf walks the far hill
 on the left and howls at the moon at night, a witch crosses the sky on her broom, a vampire passes behind the castle's great window, and a zombie
 screamer jumps out of the top left corner, rarely (typing `candy` on Halloween shows it at once).
-The word codes (`yeti`, `boo`, `armstrong`, `peace`, `kamelot`, `normal`) work on every screen, the shows
+The sakura screens (March 15 – April 10, or `kojiro`) can be played with as well: petals fall from
+the great tree and drift with the wind, pushed and swirled by the pointer; a click catches one.
+A click on the tree shakes it and a gust takes a handful of petals; shaken six times within
+eight seconds, it lets go of a storm of petals blown at us, clinging to the glass until
+they cover the view, then sliding down.
+A click on the samurai and he answers with an iai, the draw and cut in one move: a white crescent
+cuts the air and the petals it crosses in two. Teased three times within 30 s, he turns to face us
+and challenges us (`skProvoked()`; the duel itself is to come: `skDuel`, see `sksamurai.js`). The
+wind chime hanging from the tree swings in the wind and rings (a click rings it too). A
+shamisen leaning in the bottom left corner plays the music (its bachi; it strikes on the beat,
+its strings can be plucked), chosen on sakura flowers in an arc around it, one flower
+of its own colour per track (six YouTube videos of Japanese music, through `youtube.js`;
+`SK_TRACKS` in `skplayer.js`). The sheet of paper by the samurai flies away in the
+wind when clicked, and comes back. At night the pink moon opens the calm night (as `peace` does),
+and fireflies wander over the valley (a click and they fly off). A sake set by the samurai's paper
+pours a drink and opens the jazz bar; the shamisen plucked like mad (ten strings in five seconds)
+starts the metal show; the dragon, clicked as it passes, roars and breathes blue fire at us, and the epic finale comes
+behind it. Now and then cranes cross the sky, sky lanterns rise at
+night, a shooting star falls, and rarely a dragon snakes across, its armoured rings following
+its head, in pixel art (`?skvisit=cranes`, `lanterns`, `star` or `dragon` shows one at once; typing `shenron` calls the dragon, on any screen). At night veins of light run up the great tree's wood (`tree-veins.webp`, grown along the bark by `tools/sakura/cut.py`), a little light glows in the wind chime, and a silk lantern hangs beside the courses, lit or put out by a click, swinging in the wind.
+The word codes (`yeti`, `boo`, `kojiro`, `armstrong`, `peace`, `kamelot`, `normal`) work on every screen, the shows
 included. Each one is typed anywhere but the search field, letter by letter, or typed in the
 search field then Enter or the phone keyboard's search key (`onCode()` in `ui.js`, on the form's
 submit, since that key often sends no "Enter" keydown; the field is emptied and the keyboard
