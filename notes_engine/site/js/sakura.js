@@ -97,6 +97,11 @@ const skLight = hour => {
     hour, top: c(a.top, b.top), mid: c(a.mid, b.mid), hor: c(a.hor, b.hor), fog: c(a.fog, b.fog),
     haze: skMix(a.haze, b.haze, t), night: skMix(a.night, b.night, t), rays: skMix(a.rays, b.rays, t),
   };
+  // The sun: rises on the left at 06:20, high above the screen at noon, sets on the right behind the
+  // tree at 19:00. Positions are fractions of the window (x from the left, y from the bottom).
+  const s = (hour - 6.3) / 12.7;
+  L.sunVis = skSmooth(-.02, .04, s) * (1 - skSmooth(.96, 1.02, s));
+  L.sun = [skMix(.1, .84, skClamp(s, 0, 1)), .36 + .95 * Math.sin(Math.PI * skClamp(s, 0, 1))];
   // The moon (pink, huge): up from 18:35 to 05:35, in the left margin, climbing slowly
   const m = ((hour + 24 - 18.6) % 24) / 11;  // 0 at moonrise, 1 at its setting
   L.moonVis = m < 1 ? skSmooth(0, .08, m) * (1 - skSmooth(.9, 1, m)) : 0;
