@@ -93,3 +93,91 @@ const skLight = hour => {
   return L;
 };
 let skL = skLight(12);
+
+// ── Layout: the window's size (the layers are placed by skscene.js) ──
+const skLay = { W: 0, H: 0 };
+const skLayout = () => { skLay.W = innerWidth; skLay.H = innerHeight; };
+
+// ── The two layers, the parts, the loop ──
+const skBack = document.createElement("div"), skFront = document.createElement("div");
+skBack.id = "skscene";
+skFront.id = "skfront";
+skBack.setAttribute("aria-hidden", "true");
+const SK_PARTS = [];
+// A part is { on(), off(), night(isNight), resize(), light(), frame(dt, t) }, all optional
+const skPart = part => SK_PARTS.push(part);
+let skOn = false, skRaf = null, skLast = 0, skWasNight = null, skLightAt = -1;
+const skEach = (fn, ...args) => SK_PARTS.forEach(p => { if (p[fn]) p[fn](...args); });
+
+const skFrame = now => {
+  const dt = Math.max(0, Math.min(.05, (now - skLast) / 1000));
+  skLast = now;
+  const t = now / 1000;
+  skEach("frame", dt, t);
+  skRaf = requestAnimationFrame(skFrame);
+};
+const skStart = () => {
+  if (skRaf) return;
+  skLast = performance.now();
+  skRaf = requestAnimationFrame(skFrame);
+};
+const skStop = () => { cancelAnimationFrame(skRaf); skRaf = null; };
+// With reduced motion the scene is drawn once (and again when the light changes), nothing moves
+const skDrawStill = () => { if (skOn && skStill()) skEach("frame", 0, performance.now() / 1000); };
+
+const skResize = () => {
+  skLayout();
+  skEach("resize");
+  skDrawStill();
+};
+const skRelight = force => {
+  const h = skHour();
+  // the light changes slowly: the parts are relit every 2 minutes of the hour (or at once if forced)
+  if (!force && Math.abs(h - skLightAt) < 1 / 30 && Math.abs(h - skLightAt) < 23) return;
+  skLightAt = h;
+  skL = skLight(h);
+  skEach("light");
+  skDrawStill();
+};
+everySecond.push(() => {
+  if (!skOn) return;
+  skRelight(false);
+});
+const skVisible = () => {
+  if (!skOn) return;
+  if (document.hidden || skStill()) skStop(); else skStart();
+};
+
+const setSakura = on => {
+  if (on === skOn) return;
+  skOn = on;
+  if (on) {
+    skLayout();
+    document.body.prepend(skBack);
+    document.body.append(skFront);
+    skLightAt = -1;
+    skL = skLight(skHour());
+    skEach("on");
+    skEach("resize");
+    skEach("light");
+    skWasNight = null;
+    addEventListener("resize", skResize);
+    document.addEventListener("visibilitychange", skVisible);
+    skVisible();
+    skDrawStill();
+  } else {
+    skStop();
+    removeEventListener("resize", skResize);
+    document.removeEventListener("visibilitychange", skVisible);
+    skEach("off");
+    skBack.remove();
+    skFront.remove();
+  }
+};
+document.addEventListener("sakura", e => setSakura(e.detail));
+document.addEventListener("phase", () => {
+  if (!skOn || skNight() === skWasNight) return;
+  skWasNight = skNight();
+  skRelight(true);
+  skEach("night", skWasNight);
+});

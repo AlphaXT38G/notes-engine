@@ -23,6 +23,9 @@ body.sakura[data-phase=sakura-night] section{box-shadow:0 10px 30px rgba(0,0,0,.
 body.sakura .new{background:var(--new-bg);color:var(--new)}
 body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 
+/* The scene behind the page (#skscene), and #skfront above it */
+#skscene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:linear-gradient(var(--s0,#4c8cd8),var(--s1,#a8ccf0) 45%,var(--s2,#e6eff6) 70%,#f0c8d4)}
+#skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 /* The transition into the screen: the old page dissolves like ink in water, the new one blooms */
 [data-vt=sakura]::view-transition-old(root){animation:sk-vt-out 1.1s ease-in both}
 [data-vt=sakura]::view-transition-new(root){animation:sk-vt-in 1.4s ease-out both}
