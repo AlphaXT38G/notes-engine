@@ -162,6 +162,20 @@ const skTone = (freq, secs, { type = "sine", gain = .15, delay = 0, attack = .00
   o.stop(t0 + secs + .05);
 };
 
+// ── Speech ──
+// A short line said by the samurai (or someone of the scene), brushed in a paper bubble at a point
+// of the screen, gone after a few seconds
+const skSay = (x, y, text, ms = 2800) => {
+  const bubble = document.createElement("span");
+  bubble.className = "sksay";
+  bubble.textContent = text;
+  bubble.style.left = `${Math.round(x)}px`;
+  bubble.style.top = `${Math.round(y)}px`;
+  skFront.append(bubble);
+  setTimeout(() => bubble.classList.add("gone"), ms);
+  setTimeout(() => bubble.remove(), ms + 600);
+};
+
 // ── The two layers, the parts, the loop ──
 const skBack = document.createElement("div"), skFront = document.createElement("div");
 skBack.id = "skscene";
