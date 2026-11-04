@@ -131,8 +131,12 @@ const skVars = L => {
   set("s0", L.top); set("s1", L.mid); set("s2", L.hor); set("fog", L.fog);
   const night = skSmooth(.2, .9, L.night);
   out.push(`--night:${night.toFixed(3)}`, `--lamp:${skSmooth(.3, .8, L.night).toFixed(3)}`, `--moon:${L.moonVis.toFixed(3)}`, `--haze:${L.haze.toFixed(3)}`);
+  // the day's sky: warmer in the golden hour and at dawn, gone at night
+  const warm = skClamp(L.rays, 0, 1.7);
   out.push(`--sunglow:${(skClamp(L.rays * .6, 0, 1) * L.sunVis).toFixed(3)}`, `--sunx:${(L.sun[0] * 100).toFixed(1)}%`, `--suny:${((1 - L.sun[1]) * 100).toFixed(1)}%`);
-  out.push(`--daysky:${(1 - night).toFixed(3)}`);
+  // in the golden hour the painted sky (blue) gives way to the drawn one, golden, its clouds kept warm
+  out.push(`--skyf:sepia(${(warm * .35).toFixed(3)}) saturate(${(1 + warm * .2).toFixed(3)})`);
+  out.push(`--daysky:${((1 - night) * (1 - .6 * skClamp(warm / 1.4, 0, 1))).toFixed(3)}`);
   return out.join(";");
 };
 const skPlaceMoon = () => {
