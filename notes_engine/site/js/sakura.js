@@ -116,6 +116,21 @@ const skOnMove = e => {
   skPar.tx = (e.clientX / skLay.W - .5) * 2;
 };
 
+// ── Sounds ──
+// One Web Audio context for the screen's sounds (the wind chime, the sword, the shamisen...), made at
+// the first sound and resumed if the page had no gesture yet
+let skAudio = null;
+const skAudioCtx = () => {
+  if (!skAudio && window.AudioContext) skAudio = new AudioContext();
+  if (skAudio && skAudio.state === "suspended") skAudio.resume().catch(() => {});
+  return skAudio;
+};
+const skOut = () => {
+  const ac = skAudioCtx();
+  if (!ac || !screenGesture()) return null;
+  if (!ac.skBus) { ac.skBus = ac.createGain(); ac.skBus.gain.value = .8; ac.skBus.connect(ac.destination); }
+  return ac;
+};
 // ── The two layers, the parts, the loop ──
 const skBack = document.createElement("div"), skFront = document.createElement("div");
 skBack.id = "skscene";
