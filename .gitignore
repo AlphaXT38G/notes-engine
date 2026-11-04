@@ -1,0 +1,15 @@
+__pycache__/
+*.egg-info/
+build/
+dist/
+.claude/
+# LaTeX build files
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.out
+*.toc
+*.synctex.gz
+example/demo/*.pdf
+desktop.ini
