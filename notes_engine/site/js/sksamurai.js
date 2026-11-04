@@ -12,6 +12,12 @@
 // starts the fight and calls back when it ends (skDuel(onEnd)). Until then he gives up, turns back.
 const skSam = () => skBack.querySelector(".sksamurai");
 let skSamBusy = false;
+const skSteel = delay => {
+  // the swish of the blade (a fast filtered noise), the ring of the steel (two inharmonic tones)
+  skNoise(.28, 2400, "bandpass", .45, delay, .8, 3);
+  skTone(2637, 1.4, { gain: .05, delay: delay + .05 });
+  skTone(3951, .9, { gain: .03, delay: delay + .05 });
+};
 const skIai = () => {
   const sam = skSam();
   if (!sam || skSamBusy) return;
@@ -20,6 +26,10 @@ const skIai = () => {
   sam.classList.remove("iai");
   void sam.offsetWidth;  // restart the animation
   sam.classList.add("iai");
+  skSteel(.12);
+  // the guard clicks against the scabbard: the blade is back
+  skTone(1760, .12, { type: "square", gain: .04, delay: 1.05 });
+  skNoise(.05, 5000, "highpass", .2, 1.05);
   setTimeout(() => { sam.classList.remove("iai"); skSamBusy = false; }, 1300);
 };
 skHit({
