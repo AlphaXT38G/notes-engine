@@ -214,6 +214,17 @@ def tree_veins():
     print(f"tree-veins: {len(lines)} veins")
 
 
+def lake_dragon():
+    """The dragon's sprites (skdragon.js): the top of the sheet src/lake-dragon.png (the Lake Dragon of
+    Konami's games, ripped by Badbatman3, used with permission), its flat red background made
+    transparent, pixel for pixel: the head (mouth shut, mouth open), the big and the small armoured
+    balls of its body (two frames each), the tail (three directions)"""
+    im = Image.open(SRC / "lake-dragon.png").convert("RGBA").crop((0, 0, 302, 92))
+    im.putdata([(0, 0, 0, 0) if p[:3] == (128, 0, 0) else p for p in im.get_flattened_data()])
+    im.save(OUT / "dragon.png", optimize=True)
+    print("dragon: 302x92")
+
+
 def main(names):
     """Cut the layers named (all of them by default): python tools/sakura/cut.py mountains valley"""
     OUT.mkdir(parents=True, exist_ok=True)
@@ -222,6 +233,8 @@ def main(names):
     done = {name: cut(name, *spec) for name, spec in LAYERS.items() if not names or name in names}
     if "valley" in done:
         pagoda_lights(done["valley"])
+    if not names or "dragon" in names:
+        lake_dragon()
     if not names or "veins" in names or "tree" in names:
         tree_veins()
 
