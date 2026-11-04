@@ -69,6 +69,8 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 /* The samurai breathes; his iai is a lunge too fast to see; provoked, he turns to face us */
 .sksamurai{transform-origin:50% 100%;animation:sk-breathe 5s ease-in-out infinite}
 @keyframes sk-breathe{50%{scale:1.006 1.012}}
+.sksamurai.iai{animation:sk-iai 1.2s cubic-bezier(.2,.8,.3,1)}
+@keyframes sk-iai{8%{translate:-3% 0;opacity:.55}14%{translate:-6% 1%;opacity:1}70%{translate:-6% 1%}to{translate:0 0}}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 html.skhand,html.skhand body{cursor:pointer}
 
