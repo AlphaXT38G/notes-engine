@@ -15,7 +15,7 @@ skPetalBack.className = "skpetals";
 skPetalFront.className = "skpetals skpetals-front";
 const skPB = skPetalBack.getContext("2d"), skPF = skPetalFront.getContext("2d");
 const SK_PETAL_COLORS = ["#ff8fb8", "#ff6fa5", "#f4589a", "#ffb3cd", "#ff7eb0"];
-let skBigSprites = [], skSprites = [], skPetals = [], skSlashes = [], skSpawnB = 0, skSpawnF = 0;
+let skBigSprites = [], skSprites = [], skPetals = [], skSlashes = [], skFlies = [], skSpawnB = 0, skSpawnF = 0;
 
 // The sprites: a petal (a rounded drop with a notch at its tip, light at its base), its two
 // halves (for the cut), each in every colour
@@ -106,6 +106,22 @@ const skSlash = (x0, y0, x1, y1) => {
   });
   skPetals.push(...add);
 };
+
+// The fireflies of the night, over the valley and the knoll
+const skMakeFlies = () => {
+  const { W, H } = skLay;
+  skFlies = Array.from({ length: Math.round(Math.min(22, W / 70)) }, () => ({
+    x: W * (.15 + Math.random() * .85), y: H * (.55 + Math.random() * .4), ph: Math.random() * 6.3, sp: .3 + Math.random() * .6, flee: 0, away: 0, back: 1,
+  }));
+};
+const skFlyGlow = (() => {
+  const c = document.createElement("canvas");
+  c.width = c.height = 32;
+  const g = c.getContext("2d"), gr = g.createRadialGradient(16, 16, 0, 16, 16, 16);
+  gr.addColorStop(0, "rgba(255,255,210,1)"); gr.addColorStop(.25, "rgba(255,236,140,.8)"); gr.addColorStop(1, "rgba(255,200,80,0)");
+  g.fillStyle = gr; g.fillRect(0, 0, 32, 32);
+  return c;
+})();
 
 // ── The storm of petals ──
 // The great tree shaken again and again (skplay.js) lets go of all its petals at once, and they
@@ -240,6 +256,7 @@ skPart({
   resize() {
     const { W, H } = skLay;
     [skPetalBack, skPetalFront].forEach(c => { c.width = W; c.height = H; });
+    skMakeFlies();
   },
   light() { skMakeSprites(); },
   frame(dt, t) {
@@ -259,6 +276,35 @@ skPart({
     skPF.clearRect(0, 0, W, H);
     for (const p of skPetals) skPetalDraw(p.front ? skPF : skPB, p);
     skPB.globalAlpha = skPF.globalAlpha = 1;
+    // the fireflies, at night
+    const lamp = skSmooth(.3, .8, skL.night);
+    if (lamp > .01) {
+      skPB.setTransform(1, 0, 0, 1, 0, 0);
+      skPB.globalCompositeOperation = "lighter";
+      for (const f of skFlies) {
+        if (f.away > 0) {  // flown off: back a while later, somewhere else
+          f.away -= dt;
+          if (f.away <= 0) Object.assign(f, { x: W * (.15 + Math.random() * .85), y: H * (.55 + Math.random() * .4), flee: 0, back: 0 });
+          continue;
+        }
+        if (f.flee > 0) {  // startled: away from the click and up, brighter, fading
+          f.flee -= dt;
+          f.x += f.vx * dt; f.y += f.vy * dt;
+          f.vx *= .985; f.vy -= 30 * dt;
+          if (f.flee <= 0) f.away = 5 + Math.random() * 6;
+        } else {
+          f.back = Math.min(1, (f.back || 0) + dt * .5);  // fading in when it comes back
+          f.x += Math.sin(t * f.sp + f.ph) * 14 * dt;
+          f.y += Math.cos(t * f.sp * 1.3 + f.ph * 2) * 10 * dt;
+        }
+        const glow = f.flee > 0 ? Math.min(1, f.flee / 1.2) * 1.4 : (.35 + .65 * Math.max(0, Math.sin(t * 1.4 * f.sp + f.ph))) * f.back;
+        skPB.globalAlpha = Math.min(1, lamp * glow);
+        const r = f.flee > 0 ? 16 : 12;
+        skPB.drawImage(skFlyGlow, f.x - r, f.y - r, r * 2, r * 2);
+      }
+      skPB.globalCompositeOperation = "source-over";
+      skPB.globalAlpha = 1;
+    }
     if (skStorm) skStormStep(skPF, dt);
     // the cuts (white crescents) and the catches (a ring of light)
     skPF.setTransform(1, 0, 0, 1, 0, 0);
