@@ -72,10 +72,16 @@ const skLanternGlow = (() => {
   return c;
 })();
 
-const SK_VISITS = { cranes: skCranes, lanterns: skLanterns };
+// A shooting star
+const skMeteor = () => {
+  const { W, H } = skLay;
+  return { kind: "star", t: 0, dur: 1.1, x: W * (.2 + Math.random() * .6), y: H * (.05 + Math.random() * .2), vx: -(500 + Math.random() * 300), vy: 200 + Math.random() * 100 };
+};
+
+const SK_VISITS = { cranes: skCranes, lanterns: skLanterns, star: skMeteor };
 const skVisit = kind => {
   const night = skNight();
-  kind = kind || (night ? "lanterns" : "cranes");
+  kind = kind || (night ? (Math.random() < .55 ? "lanterns" : "star") : "cranes");
   if (SK_VISITS[kind]) skVisitors.push(SK_VISITS[kind]());  // an unknown ?skvisit= shows nothing
 };
 everySecond.push(() => {
@@ -126,6 +132,14 @@ skPart({
         g.globalCompositeOperation = "source-over";
         g.globalAlpha = 1;
         return v.t < v.dur;
+      }
+      if (v.kind === "star") {
+        const k = v.t / v.dur, x = v.x + v.vx * v.t, y = v.y + v.vy * v.t;
+        const gr = g.createLinearGradient(x, y, x - v.vx * .15, y - v.vy * .15);
+        gr.addColorStop(0, `rgba(255,240,250,${1 - k})`); gr.addColorStop(1, "rgba(255,200,230,0)");
+        g.strokeStyle = gr; g.lineWidth = 2;
+        g.beginPath(); g.moveTo(x, y); g.lineTo(x - v.vx * .15, y - v.vy * .15); g.stroke();
+        return k < 1;
       }
     });
   },
