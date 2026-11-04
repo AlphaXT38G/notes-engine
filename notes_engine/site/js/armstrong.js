@@ -30,7 +30,7 @@ OVERRIDES.push(phase => {
 // peace egg's calm night: calm.js, loaded later, as this runs on a key press), so the screen goes
 // back to what the clock gives
 const backToClock = () => {
-  jazzEgg = xmasEgg = hwEgg = peaceEgg = false;
+  jazzEgg = xmasEgg = hwEgg = peaceEgg = skEgg = false;
   if (forced) forcedDismissed = true;  // also leaves a forced ?screen=... (the bar, Christmas...)
 };
 const armstrong = () => {
