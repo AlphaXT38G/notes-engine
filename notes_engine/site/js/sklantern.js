@@ -55,4 +55,12 @@ skPart({
     skLantern.classList.toggle("night", on);
     if (on) { skLanternLit = true; skLantern.classList.add("lit"); }
   },
+  frame(dt, t) {
+    if (!skLantern.classList.contains("night")) return;
+    // a long pendulum: slow, pushed by the wind and the gusts, damped
+    const push = (skWind - .25) * 9 + Math.sin(t * .7) * skWind * 3;
+    skLanternV += (-(skLanternA - push) * 1.6 - skLanternV * .5) * dt;
+    skLanternA += skLanternV * dt;
+    skLantern.style.rotate = `${skP(skLanternA)}deg`;
+  },
 });
