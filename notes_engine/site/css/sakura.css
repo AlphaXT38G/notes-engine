@@ -56,6 +56,9 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 @keyframes sk-sway{from{rotate:-.35deg}to{rotate:.35deg}}
 /* the veins of light in the tree's wood, at night: light, not tinted, discreet */
 .skl.skveins{filter:none;mix-blend-mode:screen;opacity:calc(var(--lamp,0) * .8)}
+/* The samurai breathes; his iai is a lunge too fast to see; provoked, he turns to face us */
+.sksamurai{transform-origin:50% 100%;animation:sk-breathe 5s ease-in-out infinite}
+@keyframes sk-breathe{50%{scale:1.006 1.012}}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 html.skhand,html.skhand body{cursor:pointer}
 
@@ -74,4 +77,4 @@ html.skhand,html.skhand body{cursor:pointer}
 @media(max-width:640px){body.sakura h1{font-size:2rem}}
 
 /* Reduced motion */
-@media(prefers-reduced-motion:reduce){.sksay,.skfog,.sktree,#skscene .tw{animation:none}}
+@media(prefers-reduced-motion:reduce){.sksay,.skfog,.sktree,.sksamurai,#skscene .tw{animation:none}}
