@@ -97,6 +97,10 @@ const skLight = hour => {
     hour, top: c(a.top, b.top), mid: c(a.mid, b.mid), hor: c(a.hor, b.hor), fog: c(a.fog, b.fog),
     haze: skMix(a.haze, b.haze, t), night: skMix(a.night, b.night, t), rays: skMix(a.rays, b.rays, t),
   };
+  // The moon (pink, huge): up from 18:35 to 05:35, in the left margin, climbing slowly
+  const m = ((hour + 24 - 18.6) % 24) / 11;  // 0 at moonrise, 1 at its setting
+  L.moonVis = m < 1 ? skSmooth(0, .08, m) * (1 - skSmooth(.9, 1, m)) : 0;
+  L.moonUp = m < 1 ? Math.sin(Math.PI * m) : 0;
   return L;
 };
 let skL = skLight(12);

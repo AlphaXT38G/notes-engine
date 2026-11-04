@@ -31,12 +31,21 @@ const SK_NIGHT_SKY = (() => {
     if (i < 16) tw += `<circle class="tw" style="animation-delay:${(-rnd() * 5).toFixed(2)}s" cx="${skP(x)}" cy="${skP(y)}" r="${skP(r + .6)}"/>`;
     else stars += `M${skP(x)},${skP(y)}h.01`;
   }
+  let seas = "";
+  for (let i = 0; i < 9; i++) {
+    const a = rnd() * 6.28, q = rnd() * 44;
+    seas += `<ellipse cx="${skP(Math.cos(a) * q)}" cy="${skP(Math.sin(a) * q)}" rx="${skP(10 + rnd() * 18)}" ry="${skP(8 + rnd() * 13)}"/>`;
+  }
   return `<svg viewBox="0 0 ${SK_BW} ${SK_BH}" preserveAspectRatio="xMidYMax slice"><defs>` +
     `<linearGradient id="sk-sky" x2="0" y2="1"><stop offset="0" style="stop-color:var(--s0)"/><stop offset=".4" style="stop-color:var(--s1)"/><stop offset=".72" style="stop-color:var(--s2)"/></linearGradient>` +
-    `</defs>` +
+    `<radialGradient id="sk-moonhalo"><stop offset=".26" stop-color="#f6a0c4" stop-opacity=".32"/><stop offset=".5" stop-color="#e888b4" stop-opacity=".1"/><stop offset="1" stop-color="#e070a8" stop-opacity="0"/></radialGradient>` +
+    `<radialGradient id="sk-moonfill" cx=".4" cy=".38"><stop offset="0" stop-color="#f8e2ea"/><stop offset=".6" stop-color="#f0bcd0"/><stop offset="1" stop-color="#dc98b6"/></radialGradient>` +
+    `<radialGradient id="sk-moonlimb"><stop offset=".7" stop-color="#b04a7a" stop-opacity="0"/><stop offset="1" stop-color="#b04a7a" stop-opacity=".35"/></radialGradient>` +
+    `<clipPath id="sk-moonclip"><circle r="74"/></clipPath><filter id="sk-soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter></defs>` +
     `<rect width="${SK_BW}" height="${SK_BH}" fill="url(#sk-sky)"/>` +
     `<g style="opacity:var(--night)"><path d="${stars}" style="stroke:#fff6fa;stroke-width:2;stroke-linecap:round"/>${tw}</g>` +
-    `</svg>`;
+    `<g id="sk-moonpos" transform="translate(250,200)"><g style="opacity:var(--moon)"><circle r="270" fill="url(#sk-moonhalo)"/><circle r="74" fill="url(#sk-moonfill)"/>` +
+    `<g clip-path="url(#sk-moonclip)"><g filter="url(#sk-soft)" style="fill:#e27aa6;opacity:.45">${seas}</g></g><circle r="74" fill="url(#sk-moonlimb)"/></g></g></svg>`;
 })();
 
 const skNightSky = document.createElement("div");
@@ -47,9 +56,14 @@ const skVars = L => {
   const out = [], set = (k, c) => out.push(`--${k}:${skRgb(c)}`);
   set("s0", L.top); set("s1", L.mid); set("s2", L.hor); set("fog", L.fog);
   const night = skSmooth(.2, .9, L.night);
-  out.push(`--night:${night.toFixed(3)}`, `--lamp:${skSmooth(.3, .8, L.night).toFixed(3)}`, `--haze:${L.haze.toFixed(3)}`);
+  out.push(`--night:${night.toFixed(3)}`, `--lamp:${skSmooth(.3, .8, L.night).toFixed(3)}`, `--moon:${L.moonVis.toFixed(3)}`, `--haze:${L.haze.toFixed(3)}`);
   return out.join(";");
 };
+const skPlaceMoon = () => {
+  const moon = skNightSky.querySelector("#sk-moonpos");
+  moon.setAttribute("transform", `translate(150,${skP(320 - skL.moonUp * 60)})`);
+};
+
 skPart({
   on() {
     skBack.append(skNightSky);
@@ -57,5 +71,6 @@ skPart({
   off() { skNightSky.remove(); },
   light() {
     skBack.style.cssText = skVars(skL);
+    skPlaceMoon();
   },
 });
