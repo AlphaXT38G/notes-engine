@@ -46,7 +46,12 @@ example/              the smallest notes repository (subjects.json, site.json, o
 tests/                smoke tests (python -m unittest discover -s tests): settings, and a real build of example/
 .github/workflows/    ci.yml (tests), pages.yml (REUSABLE workflow that notes repositories call to publish)
 tools/                scripts that remake the images: bartender/ (open it through a local server),
-                      werewolf/cut.py and gargoyle/cut.py (Pillow)
+                      werewolf/cut.py and gargoyle/cut.py (Pillow), sakura/cut.py (Pillow, about a
+                      minute: the sakura screen's painted layers of sakura/src/, painted by an image
+                      generator on a light grey, cut into notes_engine/site/img/sakura/*.webp with
+                      alpha, the pagoda's night lights, the tree's veins of light, and the dragon's
+                      sprites from src/lake-dragon.png: Konami's Lake Dragon, ripped by Badbatman3,
+                      used with permission)
 ```
 
 The notes repository provides, at its root:
