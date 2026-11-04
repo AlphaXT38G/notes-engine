@@ -9,7 +9,8 @@ transparency. Each one becomes a WebP with alpha in notes_engine/site/img/sakura
     its rim anti-aliased that way;
   - the holes the fill cannot reach (sky seen between the blossoms, between an arm and the body)
     go too: pixels of the background's neutral grey, wherever they are;
-  - the sky has no background to cut: it is only converted.
+  - the sky has no background to cut: it is only converted;
+  - the samurai and the paper, small on the screen, are made smaller (SIZES).
 From the valley layer it also makes pagoda-lights.webp: the pagoda's white walls turned into warm
 light, shown at night over the valley (css/sakura.css). Run it from the repository root (needs
 Pillow):
@@ -41,6 +42,9 @@ LAYERS = {
     "samurai": ("hard", 40, 1),
     "paper": ("hard", 40, 1),
 }
+# the width the layers shown small are saved at (the height follows): still sharp on a big
+# high-density screen, a fraction of the weight
+SIZES = {"samurai": 512, "paper": 768}
 # where the pagoda's storeys are in the valley layer (its walls, under the spire)
 PAGODA = (585, 330, 865, 640)
 # the paper lanterns lit at night: under the tips of its roofs, and along its balconies
@@ -113,6 +117,9 @@ def cut(name, mode, tol, gain, holes_too=True):
         # the far mountains: their outline pulled in by a pixel, softened, so the light line the
         # painting has along the ridges (its anti-aliasing against the white) does not show
         res.putalpha(res.getchannel("A").filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(.7)))
+    if name in SIZES:
+        w = SIZES[name]
+        res = res.resize((w, round(res.size[1] * w / res.size[0])), Image.LANCZOS)
     # the alpha is saved without loss (lossy alpha makes blocks in the mist); the colour at quality 90
     res.save(OUT / f"{name}.webp", quality=90, alpha_quality=100, method=6, exact=True)
     print(f"{name}: {res.size[0]}x{res.size[1]}")
