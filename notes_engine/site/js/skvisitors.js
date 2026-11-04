@@ -78,10 +78,10 @@ const skMeteor = () => {
   return { kind: "star", t: 0, dur: 1.1, x: W * (.2 + Math.random() * .6), y: H * (.05 + Math.random() * .2), vx: -(500 + Math.random() * 300), vy: 200 + Math.random() * 100 };
 };
 
-const SK_VISITS = { cranes: skCranes, lanterns: skLanterns, star: skMeteor };
+const SK_VISITS = { cranes: skCranes, lanterns: skLanterns, star: skMeteor, dragon: skDragonNew };
 const skVisit = kind => {
   const night = skNight();
-  kind = kind || (night ? (Math.random() < .55 ? "lanterns" : "star") : "cranes");
+  kind = kind || (Math.random() < .14 ? "dragon" : night ? (Math.random() < .55 ? "lanterns" : "star") : "cranes");
   if (SK_VISITS[kind]) skVisitors.push(SK_VISITS[kind]());  // an unknown ?skvisit= shows nothing
 };
 everySecond.push(() => {
@@ -141,6 +141,10 @@ skPart({
         g.beginPath(); g.moveTo(x, y); g.lineTo(x - v.vx * .15, y - v.vy * .15); g.stroke();
         return k < 1;
       }
+      // the dragon (skdragon.js)
+      const alive = skDragonStep(v, dt);
+      skDragonDraw(g, v, t);
+      return alive;
     });
   },
 });
