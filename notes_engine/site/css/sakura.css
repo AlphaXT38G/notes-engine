@@ -17,3 +17,8 @@ body.sakura .sub{font:italic 1.05rem "Yu Mincho",Georgia,serif;color:var(--mut)}
 body.sakura h1,body.sakura .sub{text-shadow:0 0 6px var(--bg),0 0 14px var(--bg),0 0 24px var(--bg)}
 body.sakura .sub{color:var(--fg);font-weight:600}
 body.sakura footer::after{content:" · 花見: revise under the blossoms."}
+/* Cards: washi panels, a soft shadow, a few pink fibres in the paper */
+body.sakura section{position:relative;background:var(--card);border-radius:.35rem;padding:.9rem 1rem .6rem;box-shadow:0 10px 30px rgba(90,30,50,.13),0 0 0 1px rgba(200,110,140,.1)}
+body.sakura[data-phase=sakura-night] section{box-shadow:0 10px 30px rgba(0,0,0,.42),0 0 0 1px rgba(255,150,190,.1)}
+body.sakura .new{background:var(--new-bg);color:var(--new)}
+body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
