@@ -134,6 +134,8 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 @keyframes sk-puff{from{opacity:1;translate:0 0;rotate:0deg}to{opacity:0;translate:var(--dx) -150px;rotate:var(--rot)}}
 .skshamisen .skplay{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);border:0;padding:0}
 @media(max-width:640px){.skshamisen{width:4.6rem;height:11.6rem}}
+/* a phone held sideways: a small shamisen, its flowers in a row beside it (skplayer.js), room kept for them under the courses */
+@media(max-height:500px){.skshamisen{width:3.2rem;height:8rem}body.sakura .wrap{padding-bottom:4rem}}
 /* The flowers, in an arc around the shamisen (placed by skplayer.js) */
 .skflowers{position:fixed;left:0;bottom:0;width:0;height:0;pointer-events:none}
 .skflowers .skflower{position:absolute;pointer-events:auto}

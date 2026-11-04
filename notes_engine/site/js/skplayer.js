@@ -89,6 +89,12 @@ const skFlower = color => `<svg viewBox="-12 -12 24 24" aria-hidden="true"><g fi
   [0, 72, 144, 216, 288].map(a => `<path transform="rotate(${a})" d="M0,0C-4,-2 -4.5,-8 -1.3,-10.2L0,-8.8L1.3,-10.2C4.5,-8 4,-2 0,0Z"/>`).join("") +
   `</g><circle r="2.2" fill="#f6c64a"/>${[0, 72, 144, 216, 288].map(a => `<circle r=".7" cx="${(Math.sin(a * Math.PI / 180) * 3.6).toFixed(2)}" cy="${(-Math.cos(a * Math.PI / 180) * 3.6).toFixed(2)}" fill="#c8402a"/>`).join("")}</svg>`;
 const skFlowersPlace = () => {
+  if (innerHeight < 500) {
+    // a phone held sideways: no room for an arc, the flowers in a row along the bottom, beside the
+    // shamisen (smaller there: css/sakura.css)
+    skFlowers.querySelectorAll(".skflower").forEach((b, i) => { b.style.left = `${(4.2 + i * 2.6).toFixed(2)}rem`; b.style.bottom = ".3rem"; });
+    return;
+  }
   const small = innerWidth < 640, R0 = small ? 7 : 10, cx = small ? 2.9 : 3.7, cy = small ? 1.6 : 2.1;  // rem, from the bottom left
   const start = 4 * Math.PI / 180, end = 62 * Math.PI / 180;
   let ring = 0, a = start;
