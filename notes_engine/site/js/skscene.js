@@ -24,10 +24,17 @@ const SK_IMG = "img/sakura/";
 
 // ── The night sky (drawn: the day's is a painting) ──
 const SK_NIGHT_SKY = (() => {
+  const rnd = skRand(31);
+  let stars = "", tw = "";
+  for (let i = 0; i < 190; i++) {
+    const x = rnd() * SK_BW, y = Math.pow(rnd(), 1.3) * 560, r = .6 + rnd() * rnd() * 1.5;
+    stars += `M${skP(x)},${skP(y)}h.01`;
+  }
   return `<svg viewBox="0 0 ${SK_BW} ${SK_BH}" preserveAspectRatio="xMidYMax slice"><defs>` +
     `<linearGradient id="sk-sky" x2="0" y2="1"><stop offset="0" style="stop-color:var(--s0)"/><stop offset=".4" style="stop-color:var(--s1)"/><stop offset=".72" style="stop-color:var(--s2)"/></linearGradient>` +
     `</defs>` +
     `<rect width="${SK_BW}" height="${SK_BH}" fill="url(#sk-sky)"/>` +
+    `<g style="opacity:var(--night)"><path d="${stars}" style="stroke:#fff6fa;stroke-width:2;stroke-linecap:round"/>${tw}</g>` +
     `</svg>`;
 })();
 

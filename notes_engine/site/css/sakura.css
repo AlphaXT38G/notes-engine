@@ -45,3 +45,6 @@ html.skhand,html.skhand body{cursor:pointer}
 @keyframes sk-vt-in{from{opacity:0;filter:blur(8px) brightness(1.15)}}
 
 @media(max-width:640px){body.sakura h1{font-size:2rem}}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){.sksay{animation:none}}

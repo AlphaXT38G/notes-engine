@@ -43,6 +43,13 @@ const skNight = () => document.body.dataset.phase === "sakura-night";
 const skClamp = (v, a, b) => v < a ? a : v > b ? b : v;
 const skMix = (a, b, t) => a + (b - a) * t;
 const skSmooth = (a, b, v) => { const t = skClamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+// Same pseudo-random numbers on every visit (the tree grows the same way): a seeded generator
+const skRand = seed => () => {
+  seed = (seed + 0x6D2B79F5) | 0;
+  let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
 const skP = n => Math.round(n * 10) / 10;  // one decimal is plenty for coordinates
 const skHex = c => [parseInt(c.slice(1, 3), 16) / 255, parseInt(c.slice(3, 5), 16) / 255, parseInt(c.slice(5, 7), 16) / 255];
 const skRgb = (c, k = 1, a = 1) => `rgba(${Math.round(skClamp(c[0] * k, 0, 1) * 255)},${Math.round(skClamp(c[1] * k, 0, 1) * 255)},${Math.round(skClamp(c[2] * k, 0, 1) * 255)},${a})`;
