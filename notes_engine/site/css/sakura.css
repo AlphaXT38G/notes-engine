@@ -51,6 +51,9 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 .skveil{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 100% at 30% 30%,transparent 40%,rgba(4,2,14,.75));opacity:var(--night,0)}
 /* the pagoda's windows at night: warm light, glowing in the mist */
 .skl.sklights{filter:drop-shadow(0 0 5px #ffa040) drop-shadow(0 0 16px #ff8020);opacity:var(--lamp,0);mix-blend-mode:screen}
+/* the great tree sways a little in the wind, about its foot (hidden behind the knoll) */
+.sktree{transform-origin:90% 95%;animation:sk-sway 9s ease-in-out infinite alternate}
+@keyframes sk-sway{from{rotate:-.35deg}to{rotate:.35deg}}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 html.skhand,html.skhand body{cursor:pointer}
 
@@ -69,4 +72,4 @@ html.skhand,html.skhand body{cursor:pointer}
 @media(max-width:640px){body.sakura h1{font-size:2rem}}
 
 /* Reduced motion */
-@media(prefers-reduced-motion:reduce){.sksay,.skfog,#skscene .tw{animation:none}}
+@media(prefers-reduced-motion:reduce){.sksay,.skfog,.sktree,#skscene .tw{animation:none}}
