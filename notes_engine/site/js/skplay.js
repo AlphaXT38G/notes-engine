@@ -43,3 +43,15 @@ skHit({
     skNoise(1.1, 3200, "bandpass", .22, 0, .6, 1.5);
   },
 });
+
+skHit({
+  title: "The moon",
+  test(x, y) {
+    if (skL.moonVis < .3) return false;
+    const disc = skBack.querySelector("#sk-moonpos circle + circle");
+    if (!disc) return false;
+    const r = disc.getBoundingClientRect();
+    return Math.hypot(x - (r.left + r.right) / 2, y - (r.top + r.bottom) / 2) < r.width / 2;
+  },
+  click() { CODES.peace(); },
+});
