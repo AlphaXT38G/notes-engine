@@ -99,6 +99,14 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 @keyframes sk-breath{50%{scale:.9}}
 .sklantern:focus-visible{outline:none}
 .sklantern:focus-visible svg{filter:drop-shadow(0 0 4px #ffd27a)}
+/* The sake set on the knoll (skpassages.js): the flask tips and pours into the cup */
+.sksake svg{display:block;width:100%;height:auto;overflow:visible}
+.sksake .flask{transform-box:fill-box;transform-origin:85% 85%;transition:rotate .5s cubic-bezier(.4,0,.2,1)}
+.sksake.pour .flask{rotate:-58deg}
+.sksake .stream{opacity:0;transition:opacity .2s .35s}
+.sksake.pour .stream{opacity:1}
+.sksake .wine{transform-box:fill-box;transform-origin:50% 100%;scale:1 .2;transition:scale .6s .45s}
+.sksake.pour .wine{scale:1 1}
 /* The shamisen (skplayer.js), leaning in the bottom left corner: it breathes, sways a little; its
    bachi strikes on the beat while the music plays, the skin throbs, the strings tremble, the
    tassel swings, petals escape. Only its strings, its body and its bachi take clicks. */
