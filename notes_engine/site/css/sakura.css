@@ -16,3 +16,4 @@ body.sakura .sub{font:italic 1.05rem "Yu Mincho",Georgia,serif;color:var(--mut)}
 /* the title and the subtitle lie over the tree's crown: a halo of the page's colour keeps them legible */
 body.sakura h1,body.sakura .sub{text-shadow:0 0 6px var(--bg),0 0 14px var(--bg),0 0 24px var(--bg)}
 body.sakura .sub{color:var(--fg);font-weight:600}
+body.sakura footer::after{content:" · 花見: revise under the blossoms."}
