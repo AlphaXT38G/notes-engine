@@ -37,6 +37,9 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 .skl{position:absolute;display:block;max-width:none;will-change:transform;user-select:none;filter:url(#sk-tint)}
 /* the far mountains, lit by the moon at night: tinted less (skscene.js) */
 .skl.skfar{filter:url(#sk-tint-far)}
+/* the mist between the planes, and the clouds filling the valley (gradients only, drifting) */
+.skl.skfog{filter:none;background:radial-gradient(60% 50% at 30% 55%,var(--fog),transparent 70%),radial-gradient(55% 45% at 75% 45%,var(--fog),transparent 70%);opacity:calc(.35 + .3 * var(--haze));animation:sk-fog 70s ease-in-out infinite alternate}
+@keyframes sk-fog{to{translate:4% 0}}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 html.skhand,html.skhand body{cursor:pointer}
 
@@ -55,4 +58,4 @@ html.skhand,html.skhand body{cursor:pointer}
 @media(max-width:640px){body.sakura h1{font-size:2rem}}
 
 /* Reduced motion */
-@media(prefers-reduced-motion:reduce){.sksay,#skscene .tw{animation:none}}
+@media(prefers-reduced-motion:reduce){.sksay,.skfog,#skscene .tw{animation:none}}
