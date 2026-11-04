@@ -41,6 +41,12 @@ LAYERS = {
     "samurai": ("hard", 40, 1),
     "paper": ("hard", 40, 1),
 }
+# where the pagoda's storeys are in the valley layer (its walls, under the spire)
+PAGODA = (585, 330, 865, 640)
+# the paper lanterns lit at night: under the tips of its roofs, and along its balconies
+LANTERNS = [(607, 382), (812, 382), (597, 440), (826, 440), (588, 557), (836, 559), (622, 664), (858, 660)] + [(x, y) for y in (412, 506, 626) for x in range(662, 790, 46)]
+
+
 def to_alpha(c, gain=1, keep=False):
     """Colour to alpha against BG: the opacity a pixel needs over BG, and its own colour (more
     opaque by gain: the colour is then un-mixed less, nearer the background's). keep: the pixel
@@ -113,12 +119,33 @@ def cut(name, mode, tol, gain, holes_too=True):
     return res
 
 
+def pagoda_lights(valley):
+    """The pagoda's light walls as warm light, for the night"""
+    x0, y0, x1, y1 = PAGODA
+    lights = Image.new("RGBA", valley.size)
+    for y in range(y0, y1):
+        for x in range(x0, x1):
+            r, g, b, a = valley.getpixel((x, y))
+            k = min(r, g, b)
+            # the white walls: light, not coloured (not the teal roofs nor the blossoms)
+            if a > 220 and k > 165 and max(r, g, b) - k < 45 and r >= b - 4:
+                lights.putpixel((x, y), (255, 176, 84, min(255, (k - 165) * 4)))
+    # the lanterns: a warm core and its halo
+    draw = ImageDraw.Draw(lights)
+    for x, y in LANTERNS:
+        for r, a in ((7, 45), (4.5, 120), (2.6, 255)):
+            draw.ellipse((x - r, y - r * 1.25, x + r, y + r * 1.25), fill=(255, 110 + int(a / 3), 50, a))
+    lights.save(OUT / "pagoda-lights.webp", quality=90, alpha_quality=100, method=6)
+
+
 def main(names):
     """Cut the layers named (all of them by default): python tools/sakura/cut.py mountains valley"""
     OUT.mkdir(parents=True, exist_ok=True)
     if not names or "sky" in names:
         Image.open(SRC / "sky.webp").convert("RGB").save(OUT / "sky.webp", quality=82, method=6)
     done = {name: cut(name, *spec) for name, spec in LAYERS.items() if not names or name in names}
+    if "valley" in done:
+        pagoda_lights(done["valley"])
 
 
 if __name__ == "__main__":

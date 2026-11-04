@@ -46,6 +46,8 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 @keyframes sk-fog2{from{translate:-5% 0}to{translate:5% -3%}}
 @keyframes sk-fog3{0%{translate:6% 2%;opacity:.55}50%{opacity:.85}to{translate:-7% -2%;opacity:.6}}
 @keyframes sk-fog{to{translate:4% 0}}
+/* the pagoda's windows at night: warm light, glowing in the mist */
+.skl.sklights{filter:drop-shadow(0 0 5px #ffa040) drop-shadow(0 0 16px #ff8020);opacity:var(--lamp,0);mix-blend-mode:screen}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 html.skhand,html.skhand body{cursor:pointer}
 
