@@ -52,6 +52,7 @@ const SK_NIGHT_SKY = (() => {
 // [name, image or inner HTML, group, depth (px of parallax), placement in the box: x, y, width
 // (the height follows the image's proportions), extra class]
 const SK_LAYERS = [
+  ["mountains", "mountains.webp", "back", 3, -557, -164, 1920, "skfar"],
 ];
 const skNightSky = document.createElement("div"), skDaySky = document.createElement("img"), skLand = document.createElement("div");
 skNightSky.className = "sknightsky";

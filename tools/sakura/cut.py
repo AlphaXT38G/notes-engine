@@ -31,6 +31,9 @@ MARK = (255, 0, 254)  # the flood fill's colour, found nowhere in the paintings
 # how much more opaque the soft parts are made, so the far mountains are not washed out, and
 # holes_too: whether the background's grey inside the painting goes too, True by default)
 LAYERS = {
+    # the far mountains: cut crisply (they are pale, a soft cut would make them see-through),
+    # without holes (their snow is as white as the background), their rim keeping its colour
+    "mountains": ("hard", 9, 1, False),
 }
 def to_alpha(c, gain=1, keep=False):
     """Colour to alpha against BG: the opacity a pixel needs over BG, and its own colour (more
