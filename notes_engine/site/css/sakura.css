@@ -25,6 +25,10 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 
 /* The scene behind the page (#skscene), and #skfront above it */
 #skscene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:linear-gradient(var(--s0,#4c8cd8),var(--s1,#a8ccf0) 45%,var(--s2,#e6eff6) 70%,#f0c8d4)}
+/* The sky: the night's (drawn) under the day's (a painting), which fades out at night */
+.sknightsky,.skdaysky,.skland{position:absolute;inset:0;width:100%;height:100%}
+.sktint{position:absolute;width:0;height:0;overflow:hidden}
+.sknightsky svg{display:block;width:100%;height:100%}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 html.skhand,html.skhand body{cursor:pointer}
 
