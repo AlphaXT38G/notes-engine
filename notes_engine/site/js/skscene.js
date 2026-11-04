@@ -56,6 +56,7 @@ const SK_LAYERS = [
   ["mist1", "", "back", 5, 0, 560, SK_BW, "skfog"],
   ["valley", "valley.webp", "back", 7, 0, 0, SK_BW],
   ["mist2", "", "back", 9, -220, 780, SK_BW + 440, "skfog skfog2"],
+  ["mist3", "", "back", 11, -260, 690, SK_BW + 520, "skfog skfog3"],
   ["slope", "slope.webp", "left", 14, 0, 410, 920],
   ["tree", "tree.webp", "right", 15, 0, -190, SK_BW, "sktree"],
   ["knoll", "knoll.webp", "right", 17, 0, 60, SK_BW],
