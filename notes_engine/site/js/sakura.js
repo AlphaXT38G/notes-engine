@@ -4,6 +4,8 @@ const isSkDaytime = () => { const t = clockSeconds(); return t >= 7 * 3600 && t 
 const skSubtitle = () => {
   const d = new Date(), m = d.getMonth(), day = d.getDate();
   if (!isSkDate(d)) return "Hanami, whatever the season. Revise under the blossoms.";
+  if (m === 2 && day < 25) return "The first blossoms open. So do the notes.";
+  if (m === 3 && day > 4) return "The petals fall. Revise before the last one does.";
   return "Full bloom. Hanami season: revise under the blossoms.";
 };
 SCREENS.sakura = { className: "sakura", subtitle: skSubtitle, transition: "sakura" };
