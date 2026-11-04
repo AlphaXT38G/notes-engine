@@ -30,6 +30,18 @@ let skFurinA = 0, skFurinV = 0, skFurinRungAt = 0;  // its swing: angle (degrees
 const skFurinRing = (k = 1) => {
   [[2793, .06], [4186, .03], [6050, .015]].forEach(([f, g]) => skTone(f * (1 + (Math.random() - .5) * .01), 1.6, { gain: g * k }));
 };
+skHit({
+  title: "The wind chime",
+  test(x, y) {
+    const r = skFurin.querySelector(".bell").getBoundingClientRect();
+    return x > r.left - 8 && x < r.right + 8 && y > r.top - 8 && y < r.bottom + 60;
+  },
+  click() {
+    skFurinV += 26 * (Math.random() < .5 ? 1 : -1);
+    skFurinRing();
+    skFurinRungAt = performance.now();
+  },
+});
 skPart({
   on() { skBack.querySelector(".skg-right").append(skFurin); },
   off() { skFurin.remove(); },
