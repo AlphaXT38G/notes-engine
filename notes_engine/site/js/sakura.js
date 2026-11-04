@@ -60,3 +60,30 @@ const skHour = () => {
   if (skNight() && day) return 23;
   return h;
 };
+// The palette through the day: keyframes of the sky (top, middle, horizon), the haze (fog colour
+// and how thick), how much it is night (stars, lanterns, the tint of the land), the warmth of the
+// low sun (rays: 1 a golden light, more pushes it further). Interpolated by skLight(hour). The
+// golden hour runs from 17:30 to 18:30, warmer and warmer; at 18:45 it is night.
+const SK_KEYS = [
+  //  hour  sky top    sky mid    horizon    fog        haze night rays
+  [0,     "#05030e", "#120922", "#2e1438", "#3a2450", .45, 1,    0],
+  [4.6,   "#06040f", "#140a26", "#30163a", "#3a2450", .45, 1,    0],
+  [8.6,   "#9cc0e2", "#e4e2ec", "#f4ece6", "#efe9ec", .8,  0,    .2],
+  [12,    "#4c8cd8", "#a8ccf0", "#e6eff6", "#dde6f0", .4,  0,    0],
+  [15.4,  "#588cd0", "#b6cfea", "#f4e8da", "#ece2dc", .4,  0,    .3],
+  [18.8,  "#05030e", "#120922", "#2e1438", "#3a2450", .45, 1,    0],
+  [21,    "#05030e", "#120922", "#2e1438", "#3a2450", .45, 1,    0],
+  [24,    "#05030e", "#120922", "#2e1438", "#3a2450", .45, 1,    0],
+].map(k => ({ h: k[0], top: skHex(k[1]), mid: skHex(k[2]), hor: skHex(k[3]), fog: skHex(k[4]), haze: k[5], night: k[6], rays: k[7] }));
+const skLight = hour => {
+  let i = 0;
+  while (i < SK_KEYS.length - 2 && SK_KEYS[i + 1].h <= hour) i++;
+  const a = SK_KEYS[i], b = SK_KEYS[i + 1], t = skSmooth(0, 1, (hour - a.h) / (b.h - a.h));
+  const c = (x, y) => x.map((v, j) => skMix(v, y[j], t));
+  const L = {
+    hour, top: c(a.top, b.top), mid: c(a.mid, b.mid), hor: c(a.hor, b.hor), fog: c(a.fog, b.fog),
+    haze: skMix(a.haze, b.haze, t), night: skMix(a.night, b.night, t), rays: skMix(a.rays, b.rays, t),
+  };
+  return L;
+};
+let skL = skLight(12);
