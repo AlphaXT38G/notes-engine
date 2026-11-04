@@ -72,6 +72,11 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 .sksamurai.iai{animation:sk-iai 1.2s cubic-bezier(.2,.8,.3,1)}
 @keyframes sk-iai{8%{translate:-3% 0;opacity:.55}14%{translate:-6% 1%;opacity:1}70%{translate:-6% 1%}to{translate:0 0}}
 .sksamurai.face{animation:none;scale:-1 1;transition:scale .5s}
+/* The wind chime (skfurin.js), hanging from the tree; its paper strip flutters more */
+.skfurin{position:absolute;transform-origin:50% 0}
+.skfurin-art{filter:url(#sk-tint)}
+.skfurin svg{display:block;width:100%;height:auto;overflow:visible}
+.skfurin .strip{transform-box:fill-box;transform-origin:50% 0;rotate:var(--strip,0deg)}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 html.skhand,html.skhand body{cursor:pointer}
 
