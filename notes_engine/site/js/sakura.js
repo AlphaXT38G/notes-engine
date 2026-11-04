@@ -98,6 +98,12 @@ let skL = skLight(12);
 const skLay = { W: 0, H: 0 };
 const skLayout = () => { skLay.W = innerWidth; skLay.H = innerHeight; };
 
+// ── Wind and parallax ──
+// skWind: 0 calm to 1 a strong gust; a breeze that wanders, gusts now and then (skGust), and the
+// pointer moving fast stirs it a little. skPar: the pointer and the scroll, eased, -1..1 / 0..1,
+// for the planes to slide (the nearest the most).
+let skWind = .25, skGustT = 0, skGustK = 0, skGustIn = 14;
+const skGust = (k = 1) => { skGustK = Math.max(skGustK, k); skGustT = 0; };
 const skPar = { x: 0, y: 0, tx: 0, ty: 0 };
 const skPointer = { x: -1, y: -1, vx: 0, vy: 0, t: 0 };
 const skOnMove = e => {
@@ -125,6 +131,13 @@ const skFrame = now => {
   const dt = Math.max(0, Math.min(.05, (now - skLast) / 1000));
   skLast = now;
   const t = now / 1000;
+  // The wind: a wandering breeze, a gust when one comes, the pointer's speed
+  skGustT += dt;
+  const gust = skGustK * Math.sin(Math.PI * skClamp(skGustT / 4, 0, 1));
+  if (skGustT > 4) skGustK = 0;
+  const stir = skClamp(Math.hypot(skPointer.vx, skPointer.vy) / 4000, 0, .3);
+  skPointer.vx *= .9; skPointer.vy *= .9;
+  skWind = skMix(skWind, .22 + .12 * Math.sin(t * .23) * Math.sin(t * .071 + 1) + gust * .7 + stir, Math.min(1, dt * 2));
   // The parallax, eased: the pointer's side and the scroll
   skPar.ty = skClamp(scrollY / Math.max(1, document.documentElement.scrollHeight - skLay.H), 0, 1);
   skPar.x = skMix(skPar.x, skPar.tx, Math.min(1, dt * 1.5));
@@ -158,6 +171,7 @@ const skRelight = force => {
 everySecond.push(() => {
   if (!skOn) return;
   skRelight(false);
+  if (!skStill() && !document.hidden && --skGustIn <= 0) { skGust(.6 + Math.random() * .5); skGustIn = 18 + Math.random() * 40; }
 });
 const skVisible = () => {
   if (!skOn) return;
