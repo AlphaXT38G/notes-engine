@@ -61,6 +61,8 @@ const skDragonStep = (d, dt) => {
     b[0] = a[0] + dx / l * gap;
     b[1] = a[1] + dy / l * gap;
   }
+  // its jaws: it opens and shuts its mouth as it flies (the two heads of the sheet)
+  d.jaws = d.roaring || (d.t % 1.5) > 1 ? 1 : 0;  // roaring (clicked: skpassages.js), they stay wide
   const tailX = d.parts[d.parts.length - 1][0];
   return d.dir > 0 ? tailX < W + 80 * P : tailX > -80 * P;
 };
@@ -94,7 +96,7 @@ const skDragonDraw = (g, d, t) => {
   // left corner so the jaw drops when it opens; it leans with the climb or the dive
   const [hx, hy] = d.parts[0], [nx, ny] = d.parts[1];
   const lean = Math.max(-.35, Math.min(.35, Math.atan2(hy - ny, Math.abs(hx - nx))));
-  put("head", hx, hy, { rot: lean, ox: 8, oy: 25 });
+  put(d.jaws ? "jaws" : "head", hx, hy, { rot: lean, ox: 8, oy: 25 });
   g.restore();
 };
 skPart({ light() { skDragonTinted = null; } });
