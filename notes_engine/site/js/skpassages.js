@@ -133,6 +133,23 @@ const skBlueFire = (x0, y0, onCovered) => {
   requestAnimationFrame(step);
 };
 
+// ── The fireflies ──
+const skFlyNear = (x, y) => skFlies.some(f => !f.away && Math.hypot(f.x - x, f.y - y) < 30);
+skHit({
+  title: "Fireflies",
+  test: (x, y) => skNight() && skFlyNear(x, y),
+  click(x, y) {
+    skFlies.forEach(f => {
+      const dx = f.x - x, dy = f.y - y, d = Math.hypot(dx, dy);
+      if (f.away || d > 160) return;
+      const k = 160 + Math.random() * 120;
+      Object.assign(f, { flee: 1.6 + Math.random(), vx: dx / (d || 1) * k, vy: dy / (d || 1) * k - 120 });
+    });
+    skTone(2637, .25, { gain: .02 });
+    skTone(3520, .2, { gain: .015, delay: .06 });
+  },
+});
+
 skPart({
   on() { skBack.querySelector(".skg-right").append(skSake); },
   off() { skSake.remove(); skSake.classList.remove("pour"); skSakeBusy = false; },
