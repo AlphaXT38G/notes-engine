@@ -70,7 +70,7 @@ skShamisen.innerHTML = `<svg viewBox="0 0 150 380" role="group" aria-label="Sham
 <path d="M54,298q17,-10 36,-3l-11,22q-3,3 -6,0z" fill="url(#sk-shell)" stroke="#5a3418" stroke-width=".8"/>
 <path d="M57,297q15,-7 31,-2" stroke="rgba(255,250,230,.7)" stroke-width="1.2" fill="none"/>
 </g>
-</svg>`;
+</svg><i class="skpuffs" aria-hidden="true"></i>`;
 const skPlayBtn = document.createElement("button");
 skPlayBtn.type = "button";
 skPlayBtn.className = "skplay";
@@ -184,6 +184,16 @@ const skStrike = (strong = false) => {
   void bachi.getBoundingClientRect();
   bachi.classList.add(skStrokeUp ? "up" : "down");
   skStrokeUp = !skStrokeUp;
+  if (Math.random() < (strong ? 1 : .35)) {
+    const puff = document.createElement("i");
+    puff.className = "skpuff";
+    puff.style.setProperty("--dx", `${(Math.random() * 60 - 10).toFixed(0)}px`);
+    puff.style.setProperty("--rot", `${(Math.random() * 360).toFixed(0)}deg`);
+    puff.style.background = SK_TRACKS[skTrackAt].color;
+    const puffs = skShamisen.querySelector(".skpuffs");
+    if (puffs.childElementCount < 8) puffs.append(puff);
+    setTimeout(() => puff.remove(), 2600);
+  }
 };
 [skShamisen.querySelector(".skbachi"), skShamisen.querySelector(".skbody")].forEach(el => {
   el.addEventListener("click", () => skPlayBtn.click());
