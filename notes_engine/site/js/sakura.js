@@ -99,6 +99,17 @@ const skLay = { W: 0, H: 0 };
 const skLayout = () => { skLay.W = innerWidth; skLay.H = innerHeight; };
 
 const skPar = { x: 0, y: 0, tx: 0, ty: 0 };
+const skPointer = { x: -1, y: -1, vx: 0, vy: 0, t: 0 };
+const skOnMove = e => {
+  const now = performance.now(), dt = Math.max(8, now - skPointer.t);
+  if (skPointer.x >= 0) {
+    skPointer.vx = skMix(skPointer.vx, (e.clientX - skPointer.x) / dt * 1000, .3);
+    skPointer.vy = skMix(skPointer.vy, (e.clientY - skPointer.y) / dt * 1000, .3);
+  }
+  skPointer.x = e.clientX; skPointer.y = e.clientY; skPointer.t = now;
+  skPar.tx = (e.clientX / skLay.W - .5) * 2;
+};
+
 // ── The two layers, the parts, the loop ──
 const skBack = document.createElement("div"), skFront = document.createElement("div");
 skBack.id = "skscene";
@@ -167,12 +178,14 @@ const setSakura = on => {
     skEach("light");
     skWasNight = null;
     addEventListener("resize", skResize);
+    addEventListener("pointermove", skOnMove, { passive: true });
     document.addEventListener("visibilitychange", skVisible);
     skVisible();
     skDrawStill();
   } else {
     skStop();
     removeEventListener("resize", skResize);
+    removeEventListener("pointermove", skOnMove);
     document.removeEventListener("visibilitychange", skVisible);
     skEach("off");
     skBack.remove();
