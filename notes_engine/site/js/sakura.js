@@ -98,6 +98,7 @@ let skL = skLight(12);
 const skLay = { W: 0, H: 0 };
 const skLayout = () => { skLay.W = innerWidth; skLay.H = innerHeight; };
 
+const skPar = { x: 0, y: 0, tx: 0, ty: 0 };
 // ── The two layers, the parts, the loop ──
 const skBack = document.createElement("div"), skFront = document.createElement("div");
 skBack.id = "skscene";
@@ -113,6 +114,10 @@ const skFrame = now => {
   const dt = Math.max(0, Math.min(.05, (now - skLast) / 1000));
   skLast = now;
   const t = now / 1000;
+  // The parallax, eased: the pointer's side and the scroll
+  skPar.ty = skClamp(scrollY / Math.max(1, document.documentElement.scrollHeight - skLay.H), 0, 1);
+  skPar.x = skMix(skPar.x, skPar.tx, Math.min(1, dt * 1.5));
+  skPar.y = skMix(skPar.y, skPar.ty, Math.min(1, dt * 3));
   skEach("frame", dt, t);
   skRaf = requestAnimationFrame(skFrame);
 };
