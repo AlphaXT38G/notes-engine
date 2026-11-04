@@ -53,10 +53,29 @@ const skDrawCrane = (g, x, y, s, dir, flap) => {
   g.restore();
 };
 
-const SK_VISITS = { cranes: skCranes };
+// Sky lanterns rising from the valley at night
+const skLanterns = () => {
+  const { W, H } = skLay;
+  return {
+    kind: "lanterns", t: 0, dur: 30,
+    items: Array.from({ length: 4 + ((Math.random() * 5) | 0) }, () => ({
+      x: W * (.15 + Math.random() * .6), y: H * (.75 + Math.random() * .2), vy: 14 + Math.random() * 12, ph: Math.random() * 6.3, s: 8 + Math.random() * 6, delay: Math.random() * 6,
+    })),
+  };
+};
+const skLanternGlow = (() => {
+  const c = document.createElement("canvas");
+  c.width = c.height = 64;
+  const g = c.getContext("2d"), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gr.addColorStop(0, "rgba(255,220,150,.9)"); gr.addColorStop(.3, "rgba(255,150,60,.35)"); gr.addColorStop(1, "rgba(255,120,40,0)");
+  g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
+  return c;
+})();
+
+const SK_VISITS = { cranes: skCranes, lanterns: skLanterns };
 const skVisit = kind => {
   const night = skNight();
-  kind = kind || "cranes";
+  kind = kind || (night ? "lanterns" : "cranes");
   if (SK_VISITS[kind]) skVisitors.push(SK_VISITS[kind]());  // an unknown ?skvisit= shows nothing
 };
 everySecond.push(() => {
@@ -91,6 +110,22 @@ skPart({
         v.birds.forEach(b => skDrawCrane(g, v.x + v.dir * b.dx, v.y + b.dy + Math.sin(v.t * 1.3 + b.ph) * 3, v.size, v.dir, v.t * 5 + b.ph));
         g.globalAlpha = 1;
         return v.dir > 0 ? v.x < v.end : v.x > -300;
+      }
+      if (v.kind === "lanterns") {
+        g.globalCompositeOperation = "lighter";
+        v.items.forEach(l => {
+          const tt = v.t - l.delay;
+          if (tt < 0) return;
+          const y = l.y - tt * l.vy, x = l.x + Math.sin(tt * .6 + l.ph) * 14 - tt * skWind * 6;
+          const a = Math.min(1, tt / 3) * Math.max(0, 1 - tt / (v.dur - 4)) * (.8 + .2 * Math.sin(t * 9 + l.ph));
+          g.globalAlpha = a;
+          g.drawImage(skLanternGlow, x - l.s * 3, y - l.s * 3, l.s * 6, l.s * 6);
+          g.fillStyle = "#ffcf80";
+          g.fillRect(x - l.s * .45, y - l.s * .6, l.s * .9, l.s * 1.1);
+        });
+        g.globalCompositeOperation = "source-over";
+        g.globalAlpha = 1;
+        return v.t < v.dur;
       }
     });
   },
