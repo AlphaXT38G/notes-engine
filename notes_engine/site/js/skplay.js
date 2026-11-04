@@ -8,6 +8,7 @@
 //     Christmas and Halloween).
 // Each one is tested on its painted part only (skOpaqueAt), where no card covers it (skHit).
 const skTreeImg = () => skBack.querySelector(".sktree");
+let skShakes = [];  // when the tree was last clicked
 const skPaperImg = () => skBack.querySelector(".skpaper");
 skHit({
   title: "A sheet of paper",
@@ -41,6 +42,11 @@ skHit({
     });
     skPetalBurst(x, y, 36);
     skGust(.8);
+    // shaken again and again (six times within eight seconds): the storm of petals (skpetals.js)
+    const now = performance.now();
+    skShakes = skShakes.filter(t => now - t < 8000);
+    skShakes.push(now);
+    if (skShakes.length >= 6) { skShakes = []; skPetalStorm(); }
     skNoise(1.1, 3200, "bandpass", .22, 0, .6, 1.5);
   },
 });

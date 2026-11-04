@@ -15,7 +15,7 @@ skPetalBack.className = "skpetals";
 skPetalFront.className = "skpetals skpetals-front";
 const skPB = skPetalBack.getContext("2d"), skPF = skPetalFront.getContext("2d");
 const SK_PETAL_COLORS = ["#ff8fb8", "#ff6fa5", "#f4589a", "#ffb3cd", "#ff7eb0"];
-let skSprites = [], skPetals = [], skSlashes = [], skSpawnB = 0, skSpawnF = 0;
+let skBigSprites = [], skSprites = [], skPetals = [], skSlashes = [], skSpawnB = 0, skSpawnF = 0;
 
 // The sprites: a petal (a rounded drop with a notch at its tip, light at its base), its two
 // halves (for the cut), each in every colour
@@ -31,6 +31,7 @@ const skPetalPath = g => {
 const skMakeSprites = () => {
   const m = typeof skTintRGB === "function" ? skTintRGB(skL) : [1, 1, 1];
   const tint = hex => skRgb(skHex(hex).map((c, i) => c * m[i]));
+  // k: drawn k times bigger (the petals of the storm come right up to us)
   const make = (col, half, k = 1) => {
     const c = document.createElement("canvas");
     c.width = c.height = 40 * k;
@@ -54,6 +55,7 @@ const skMakeSprites = () => {
     return c;
   };
   skSprites = SK_PETAL_COLORS.map(col => [0, 1, 2].map(half => make(col, half)));
+  skBigSprites = SK_PETAL_COLORS.map(col => make(col, 0, 3));
 };
 
 // Where the tree's crown is on the screen (the petals come from there)
@@ -103,6 +105,78 @@ const skSlash = (x0, y0, x1, y1) => {
     return false;
   });
   skPetals.push(...add);
+};
+
+// ── The storm of petals ──
+// The great tree shaken again and again (skplay.js) lets go of all its petals at once, and they
+// come at us: thousands of petals in 3D, blown from the tree towards the window, growing as they
+// come near (their screen size is their size over their distance), swirling in the wind; those
+// that reach us hit the glass and cling to it, big, until the view is covered with petals, then
+// slide down it and fall away. On the front canvas, over the courses; a long rushing wind with it.
+// skPetalStorm() starts it.
+let skStorm = null;
+const SK_STORM_BLOW = 4.2;  // seconds of petals blown at us
+const skPetalStorm = () => {
+  if (skStorm || skStill()) return;
+  const { W } = skLay, tree = skCrownImg(), r = tree && tree.getBoundingClientRect();
+  skStorm = { t: 0, from: r ? Math.min(W - 60, r.left + r.width * .75) : W * .8, flying: [], stuck: [], rate: Math.min(1500, W * .8) };
+  skGust(1.5);
+  skNoise(7.5, 420, "bandpass", .4, 0, .6, .4);
+  skNoise(6, 1500, "bandpass", .12, .5, 3, .6);
+};
+const skStormStep = (g, dt) => {
+  const S = skStorm, { W, H } = skLay, F = Math.max(W, H) * .9, cx = W / 2, cy = H / 2;
+  S.t += dt;
+  // new petals, blown from the tree's side of the scene towards us, more and more, then none
+  if (S.t < SK_STORM_BLOW) {
+    let n = S.rate * dt * skSmooth(0, .8, S.t);
+    while (n-- > 0 && S.flying.length < 2200) {
+      const z = 4 + Math.random() * 7, sx = skMix(S.from, W * (Math.random() * 1.2 - .1), .4 + Math.random() * .6), sy = H * (Math.random() * .9 - .1);
+      S.flying.push({
+        x: (sx - cx) * z / F, y: (sy - cy) * z / F, z, vz: -(2.4 + Math.random() * 2.2),
+        vx: (Math.random() - .5) * .8, vy: (Math.random() - .3) * .5, ph: Math.random() * 6.3,
+        s: (Math.random() * SK_PETAL_COLORS.length) | 0, f: Math.random() * 6.3, vf: 3 + Math.random() * 5, rot: Math.random() * 6.3, vr: (Math.random() - .5) * 4,
+      });
+    }
+  }
+  // the flying petals: they come at us, swirl in the wind; at the glass, they cling to it
+  const keep = [];
+  for (const p of S.flying) {
+    p.z += p.vz * dt;
+    p.x += (p.vx + Math.sin(S.t * 2.1 + p.ph) * .6) * dt;
+    p.y += (p.vy + Math.cos(S.t * 1.7 + p.ph) * .4 + .15) * dt;
+    p.f += p.vf * dt; p.rot += p.vr * dt;
+    const sx = cx + p.x / p.z * F, sy = cy + p.y / p.z * F, sz = 6 / p.z * F / 60;
+    if (p.z < .9) {
+      if (S.stuck.length < 1400 && sx > -40 && sx < W + 40 && sy > -40 && sy < H + 40) {
+        S.stuck.push({ x: sx, y: sy, sz: Math.min(sz, 150) * (.7 + Math.random() * .3), rot: p.rot, s: p.s, k: Math.cos(p.f) * .4 + .7, t: 0, slide: 0, hold: 2 + Math.random() * 2.5 });
+        if (Math.random() < .02) skNoise(.04, 2400, "bandpass", .05);  // a soft tap on the glass
+      }
+      continue;
+    }
+    if (sx < -200 || sx > W + 200 || sy < -200 || sy > H + 200) continue;
+    keep.push(p);
+    const k = Math.cos(p.f), c = Math.cos(p.rot), s = Math.sin(p.rot);
+    g.globalAlpha = Math.min(1, (12 - p.z) / 3);
+    g.setTransform(c, s, -s * k, c * k, sx, sy);
+    g.drawImage(skBigSprites[p.s], -sz / 2, -sz / 2, sz, sz);
+  }
+  S.flying = keep;
+  // the petals on the glass: they cling a while, then slide down and fall away, fading
+  S.stuck = S.stuck.filter(p => {
+    p.t += dt;
+    if (p.t > p.hold) { p.slide += dt * (60 + p.sz); p.y += p.slide * dt; }
+    const fade = 1 - skSmooth(p.hold + .5, p.hold + 2.5, p.t);
+    if (fade <= 0 || p.y > H + p.sz) return false;
+    const c = Math.cos(p.rot), s = Math.sin(p.rot);
+    g.globalAlpha = .95 * fade;
+    g.setTransform(c, s, -s * p.k, c * p.k, p.x, p.y);
+    g.drawImage(skBigSprites[p.s], -p.sz / 2, -p.sz / 2, p.sz, p.sz);
+    return true;
+  });
+  g.globalAlpha = 1;
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  if (S.t > SK_STORM_BLOW && !S.flying.length && !S.stuck.length) skStorm = null;
 };
 
 // Catching a petal: the nearest to the click, near enough
@@ -162,7 +236,7 @@ skPart({
     skPetals = [];
     skSlashes = [];
   },
-  off() { skPetalBack.remove(); skPetalFront.remove(); skPetals = []; },
+  off() { skPetalBack.remove(); skPetalFront.remove(); skPetals = []; skStorm = null; },
   resize() {
     const { W, H } = skLay;
     [skPetalBack, skPetalFront].forEach(c => { c.width = W; c.height = H; });
@@ -185,6 +259,7 @@ skPart({
     skPF.clearRect(0, 0, W, H);
     for (const p of skPetals) skPetalDraw(p.front ? skPF : skPB, p);
     skPB.globalAlpha = skPF.globalAlpha = 1;
+    if (skStorm) skStormStep(skPF, dt);
     // the cuts (white crescents) and the catches (a ring of light)
     skPF.setTransform(1, 0, 0, 1, 0, 0);
     skSlashes = skSlashes.filter(sl => {
