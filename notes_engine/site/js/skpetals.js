@@ -105,6 +105,28 @@ const skSlash = (x0, y0, x1, y1) => {
   skPetals.push(...add);
 };
 
+// Catching a petal: the nearest to the click, near enough
+const skPetalNear = (x, y) => {
+  let best = null, bd = 1e9;
+  for (const p of skPetals) {
+    if (p.half) continue;
+    const d = Math.hypot(p.x - x, p.y - y), r = Math.max(14, 16 * p.z);
+    if (d < r && d < bd) { best = p; bd = d; }
+  }
+  return best;
+};
+skHit({
+  title: "A falling petal",
+  test: (x, y) => skPetals.length > 0 && !!skPetalNear(x, y),
+  click(x, y) {
+    const p = skPetalNear(x, y);
+    if (!p) return;
+    skPetals.splice(skPetals.indexOf(p), 1);
+    skSlashes.push({ ring: true, x: p.x, y: p.y, t: 0 });
+    skTone(1568 + ((Math.random() * 5) | 0) * 196, .9, { gain: .05 });
+  },
+});
+
 // ── The loop ──
 const skPetalStep = (p, dt, t) => {
   const wind = skWind;
