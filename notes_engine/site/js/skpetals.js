@@ -86,6 +86,15 @@ const skPetalStep = (p, dt, t) => {
   p.vx += (tvx - p.vx) * Math.min(1, dt * .9);
   p.vy += (tvy - p.vy) * Math.min(1, dt * .7);
   p.sway += dt * (1.2 + p.z);
+  // the pointer: pushes away and swirls what is near, drags with its speed
+  if (skPointer.x >= 0) {
+    const dx = p.x - skPointer.x, dy = p.y - skPointer.y, d = Math.hypot(dx, dy), R = 130;
+    if (d < R && d > 1) {
+      const k = (1 - d / R) * 900 * dt;
+      p.vx += dx / d * k - dy / d * k * .6 + skPointer.vx * .02 * (1 - d / R);
+      p.vy += dy / d * k + dx / d * k * .6 + skPointer.vy * .02 * (1 - d / R);
+    }
+  }
   p.x += (p.vx + Math.sin(p.sway) * 26 * p.z) * dt;
   p.y += p.vy * dt;
   p.a += p.va * dt;
