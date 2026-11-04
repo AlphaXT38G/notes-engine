@@ -73,8 +73,65 @@ skHit({
     d.roaring = true;  // its jaws stay wide (skdragon.js)
     skNoise(2.4, 140, "lowpass", .6, 0, .8, 1.1);
     skTone(62, 2.2, { type: "sawtooth", gain: .07, attack: .15, glide: .6 });
+    // its breath: a jet of blue fire at us, filling the view; the epic finale behind it
+    const P = skPixel(), [hx, hy] = d.parts[0];
+    setTimeout(() => skBlueFire(hx + d.dir * 40 * P, hy + 4 * P, () => CODES.kamelot()), 450);
   },
 });
+
+// The dragon's breath: blue fire rushing at us from its jaws, puffs of flame growing as they come,
+// until the whole view is a wall of blue fire; then (onCovered) the screen changes behind it, and
+// the fire thins away. On a canvas of its own over the whole page (outside the scene, which goes
+// when the screen changes), with its own loop, gone when the fire is.
+const skFirePuff = (() => {
+  const c = document.createElement("canvas");
+  c.width = c.height = 128;
+  const g = c.getContext("2d"), gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+  gr.addColorStop(0, "rgba(235,248,255,.95)"); gr.addColorStop(.2, "rgba(140,215,255,.8)");
+  gr.addColorStop(.5, "rgba(50,110,255,.45)"); gr.addColorStop(1, "rgba(20,40,180,0)");
+  g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+  return c;
+})();
+const skBlueFire = (x0, y0, onCovered) => {
+  const cv = document.createElement("canvas"), g = cv.getContext("2d"), W = innerWidth, H = innerHeight;
+  cv.className = "skbluefire";
+  cv.width = W; cv.height = H;
+  document.body.append(cv);
+  skNoise(2.2, 700, "bandpass", .5, 0, .7, .6);  // the roar of the fire
+  skNoise(1.6, 260, "lowpass", .4, .2, .7, 1);
+  const puffs = [], t0 = performance.now(), reach = Math.hypot(W, H);
+  let covered = false, last = t0;
+  const step = now => {
+    const t = (now - t0) / 1000, dt = Math.min(.05, (now - last) / 1000);
+    last = now;
+    if (t < 1.3) for (let i = 0; i < 7; i++) {  // the jet: puffs from the jaws towards us, spreading
+      const a = Math.random() * 6.283, sp = 180 + Math.random() * 520;
+      puffs.push({ x: x0, y: y0, vx: (W / 2 - x0) * 1.1 + Math.cos(a) * sp, vy: (H / 2 - y0) * 1.1 + Math.sin(a) * sp, r: 20 + Math.random() * 30, life: 0 });
+    }
+    g.clearRect(0, 0, W, H);
+    // the wall of fire: the view fills with blue, then clears
+    const wall = Math.min(1, skSmooth(.5, 1.25, t)) * (1 - skSmooth(1.6, 2.6, t));
+    g.globalCompositeOperation = "source-over";
+    g.globalAlpha = wall;
+    g.fillStyle = "#1a3cc8";
+    g.fillRect(0, 0, W, H);
+    g.globalCompositeOperation = "lighter";
+    for (let i = puffs.length - 1; i >= 0; i--) {
+      const p = puffs[i];
+      p.life += dt;
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      p.r += (reach * .35) * dt;  // coming at us: they grow
+      const a = Math.max(0, 1 - p.life / 1.1) * (1 - skSmooth(1.6, 2.6, t));
+      if (a <= 0) { puffs.splice(i, 1); continue; }
+      g.globalAlpha = a * .5;
+      g.drawImage(skFirePuff, p.x - p.r, p.y - p.r, p.r * 2, p.r * 2);
+    }
+    g.globalCompositeOperation = "source-over";
+    if (!covered && t > 1.25) { covered = true; onCovered(); }
+    if (t < 2.7) requestAnimationFrame(step); else cv.remove();
+  };
+  requestAnimationFrame(step);
+};
 
 skPart({
   on() { skBack.querySelector(".skg-right").append(skSake); },

@@ -107,6 +107,8 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 .sksake.pour .stream{opacity:1}
 .sksake .wine{transform-box:fill-box;transform-origin:50% 100%;scale:1 .2;transition:scale .6s .45s}
 .sksake.pour .wine{scale:1 1}
+/* the dragon's blue fire (skpassages.js): over everything, the whole window */
+.skbluefire{position:fixed;inset:0;width:100%;height:100%;z-index:9999;pointer-events:none}
 /* The shamisen (skplayer.js), leaning in the bottom left corner: it breathes, sways a little; its
    bachi strikes on the beat while the music plays, the skin throbs, the strings tremble, the
    tassel swings, petals escape. Only its strings, its body and its bachi take clicks. */
