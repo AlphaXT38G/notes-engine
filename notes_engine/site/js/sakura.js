@@ -176,6 +176,24 @@ const skSay = (x, y, text, ms = 2800) => {
   setTimeout(() => bubble.remove(), ms + 600);
 };
 
+// ── Clicks on the scene ──
+// The scene is behind the page, click-through: a click that lands on the page's background (not on
+// a card, the header, a link or a control) is tested against what registered here, from the front
+// (the last registered) to the back. A hit is { test(x, y), click(x, y), title }; the pointer
+// becomes a hand over one.
+const SK_HITS = [];
+const skHit = hit => SK_HITS.push(hit);
+const skFree = el => !el || !el.closest || !el.closest("section, header, footer, a, button, input, label, summary, #empty, .tapes, [data-skblock]");
+const skHitAt = (x, y) => {
+  for (let i = SK_HITS.length - 1; i >= 0; i--) if (SK_HITS[i].test(x, y)) return SK_HITS[i];
+  return null;
+};
+const skOnClick = e => {
+  if (e.button || !skFree(e.target)) return;
+  const hit = skHitAt(e.clientX, e.clientY);
+  if (hit) hit.click(e.clientX, e.clientY);
+};
+
 // ── The two layers, the parts, the loop ──
 const skBack = document.createElement("div"), skFront = document.createElement("div");
 skBack.id = "skscene";
@@ -253,6 +271,7 @@ const setSakura = on => {
     skWasNight = null;
     addEventListener("resize", skResize);
     addEventListener("pointermove", skOnMove, { passive: true });
+    document.addEventListener("click", skOnClick);
     document.addEventListener("visibilitychange", skVisible);
     skVisible();
     skDrawStill();
@@ -260,6 +279,7 @@ const setSakura = on => {
     skStop();
     removeEventListener("resize", skResize);
     removeEventListener("pointermove", skOnMove);
+    document.removeEventListener("click", skOnClick);
     document.removeEventListener("visibilitychange", skVisible);
     skEach("off");
     skBack.remove();
