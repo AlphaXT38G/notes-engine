@@ -49,6 +49,11 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 /* the low sun's glow in the golden hour; the night's vignette */
 .sksunglow{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:var(--sunglow,0);background:radial-gradient(55% 60% at var(--sunx,80%) var(--suny,40%),rgba(255,190,110,.85),rgba(255,120,60,.35) 45%,transparent 75%)}
 .skveil{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 100% at 30% 30%,transparent 40%,rgba(4,2,14,.75));opacity:var(--night,0)}
+/* The sheet of paper blown away (skplay.js), and its return, fluttering down to its place */
+.skpaper.fly{animation:sk-paper-fly 4.5s cubic-bezier(.4,0,.8,.6) forwards}
+@keyframes sk-paper-fly{20%{translate:-6vw -14vh;rotate:-40deg}50%{translate:-40vw -30vh;rotate:-200deg}to{translate:-130vw -45vh;rotate:-480deg}}
+.skpaper.back{animation:sk-paper-back 4s cubic-bezier(.2,.6,.3,1)}
+@keyframes sk-paper-back{from{translate:20vw -70vh;rotate:260deg;opacity:0}15%{opacity:1}40%{translate:8vw -40vh;rotate:90deg}70%{translate:-2vw -12vh;rotate:-15deg}85%{translate:1vw -3vh;rotate:6deg}to{translate:0 0;rotate:0deg}}
 /* the pagoda's windows at night: warm light, glowing in the mist */
 .skl.sklights{filter:drop-shadow(0 0 5px #ffa040) drop-shadow(0 0 16px #ff8020);opacity:var(--lamp,0);mix-blend-mode:screen}
 /* the great tree sways a little in the wind, about its foot (hidden behind the knoll) */
@@ -80,4 +85,4 @@ html.skhand,html.skhand body{cursor:pointer}
 @media(max-width:640px){body.sakura h1{font-size:2rem}}
 
 /* Reduced motion */
-@media(prefers-reduced-motion:reduce){.sksay,.skfog,.sktree,.sksamurai,#skscene .tw{animation:none}}
+@media(prefers-reduced-motion:reduce){.skpaper.fly,.skpaper.back,.sksay,.skfog,.sktree,.sksamurai,#skscene .tw{animation:none}}

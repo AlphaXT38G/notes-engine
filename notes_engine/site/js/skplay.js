@@ -8,6 +8,23 @@
 //     Christmas and Halloween).
 // Each one is tested on its painted part only (skOpaqueAt), where no card covers it (skHit).
 const skTreeImg = () => skBack.querySelector(".sktree");
+const skPaperImg = () => skBack.querySelector(".skpaper");
+skHit({
+  title: "A sheet of paper",
+  test: (x, y) => { const p = skPaperImg(); return !!p && !p.classList.contains("fly") && skSeenAt(p, x, y); },
+  click() {
+    const p = skPaperImg();
+    p.classList.remove("back");
+    p.classList.add("fly");
+    skGust(1);
+    skNoise(.6, 2600, "bandpass", .25, 0, .7, 1.2);
+    clearTimeout(p.flight);
+    p.flight = setTimeout(() => {
+      p.classList.replace("fly", "back");
+      p.flight = setTimeout(() => p.classList.remove("back"), 4200);
+    }, 9000);
+  },
+});
 // The hits are tested from the last registered: the tree first here, so the moon, then
 // the samurai and the petals (later files) are tested before it
 skHit({
