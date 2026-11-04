@@ -209,6 +209,16 @@ const skOpaqueAt = (img, x, y, min = 80) => {
   const px = Math.min(m.w - 1, ((x - r.left) / r.width * m.w) | 0), py = Math.min(m.h - 1, ((y - r.top) / r.height * m.h) | 0);
   return m.data[(py * m.w + px) * 4 + 3] > min;
 };
+// The painted layer seen at a point: the front-most one painted there (the scene's layers are in
+// the page in the order they are painted), so a click on the knoll is the knoll's, not the tree's
+// behind it. The lights and the mist are left out (one sees through them).
+const skTopAt = (x, y) => {
+  const layers = skBack.querySelectorAll("img.skl:not(.skveins):not(.sklights)");
+  for (let i = layers.length - 1; i >= 0; i--) if (skOpaqueAt(layers[i], x, y)) return layers[i];
+  return null;
+};
+// Whether img is what is seen at that point
+const skSeenAt = (img, x, y) => !!img && skTopAt(x, y) === img;
 let skHovered = null;
 const skHover = e => {
   const hit = skFree(e.target) ? skHitAt(e.clientX, e.clientY) : null;
