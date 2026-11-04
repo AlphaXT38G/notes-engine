@@ -40,6 +40,13 @@ const skLanternPlace = () => {
   skLantern.style.left = `${Math.round(x - 40)}px`;
   skLantern.style.setProperty("--chain", `${Math.round(H * .17)}px`);
 };
+skLantern.addEventListener("click", () => {
+  skLanternLit = !skLanternLit;
+  skLantern.classList.toggle("lit", skLanternLit);
+  skLanternV += (Math.random() < .5 ? -1 : 1) * 10;
+  if (skLanternLit) { skNoise(.5, 600, "lowpass", .18, 0, .7, 1.5); skTone(1320, .4, { gain: .02 }); }  // a soft whoosh: the flame takes
+  else skNoise(.25, 1800, "bandpass", .2, 0, .8, 2);  // a puff: blown out
+});
 skPart({
   on() { skFront.append(skLantern); },
   off() { skLantern.remove(); },
