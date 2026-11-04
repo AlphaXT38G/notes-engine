@@ -58,6 +58,7 @@ const SK_LAYERS = [
   ["tree", "tree.webp", "right", 15, 0, -190, SK_BW, "sktree"],
   ["knoll", "knoll.webp", "right", 17, 0, 60, SK_BW],
   ["samurai", "samurai.webp", "right", 17, 1062, 328, 228, "sksamurai"],  // both feet in the grass
+  ["paper", "paper.webp", "right", 18, 1268, 642, 262, "skpaper"],
 ];
 const SK_RATIO = { "samurai.webp": 1.5 };  // height / width (the others are 1024 / 1536)
 const skNightSky = document.createElement("div"), skDaySky = document.createElement("img"), skLand = document.createElement("div");
