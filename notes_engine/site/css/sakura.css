@@ -7,3 +7,7 @@ body.sakura{--bg:#fbf2f1;--fg:#2a1d24;--card:rgba(255,251,248,.88);--line:rgba(1
 body.sakura[data-phase=sakura-night]{--bg:#120a1c;--fg:#f7e9f0;--card:rgba(26,14,36,.86);--line:rgba(255,150,190,.16);--mut:#c4a6ba;--acc:#ff92b6;--acc-bg:rgba(255,146,182,.13);--new:#2a0c18;--new-bg:#ff92b6}
 body.sakura .wrap{position:relative;z-index:1}
 @media(max-width:1040px){body.sakura .wrap{overflow-x:clip}}
+
+/* Title: a Mincho serif in ink, a red hanko seal stamped after it */
+body.sakura h1{font:600 2.45rem "Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",Georgia,serif;letter-spacing:.04em;color:var(--fg);text-shadow:0 1px 0 rgba(255,255,255,.35)}
+body.sakura h1::after{content:"桜";display:inline-grid;place-items:center;box-sizing:border-box;width:1.45em;height:1.45em;margin-left:.45em;vertical-align:.2em;font-size:.48em;line-height:1;font-weight:700;color:#fff4f2;background:#c4302b;border-radius:.14em;text-shadow:none;box-shadow:inset 0 0 0 .08em #c4302b,inset 0 0 0 .13em rgba(255,240,236,.55);transform:rotate(-4deg)}
