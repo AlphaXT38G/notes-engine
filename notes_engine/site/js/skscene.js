@@ -48,12 +48,47 @@ const SK_NIGHT_SKY = (() => {
     `<g clip-path="url(#sk-moonclip)"><g filter="url(#sk-soft)" style="fill:#e27aa6;opacity:.45">${seas}</g></g><circle r="74" fill="url(#sk-moonlimb)"/></g></g></svg>`;
 })();
 
-const skNightSky = document.createElement("div"), skDaySky = document.createElement("img");
+// ── The planes ──
+// [name, image or inner HTML, group, depth (px of parallax), placement in the box: x, y, width
+// (the height follows the image's proportions), extra class]
+const SK_LAYERS = [
+];
+const skNightSky = document.createElement("div"), skDaySky = document.createElement("img"), skLand = document.createElement("div");
 skNightSky.className = "sknightsky";
 skNightSky.innerHTML = SK_NIGHT_SKY;
 skDaySky.className = "skdaysky";
 skDaySky.alt = "";
 skDaySky.decoding = "async";
+skLand.className = "skland";
+const skGroups = {}, skPlanes = [];
+["back", "left", "right"].forEach(g => {
+  const el = document.createElement("div");
+  el.className = `skgroup skg-${g}`;
+  skGroups[g] = el;
+  skLand.append(el);
+});
+SK_LAYERS.forEach(([name, file, group, depth, x, y, w, cls = ""]) => {
+  const el = document.createElement(file ? "img" : "div");
+  el.className = `skl skl-${name} ${cls}`;
+  if (file) { el.alt = ""; el.decoding = "async"; el.dataset.src = SK_IMG + file; }
+  const h = w * SK_BH / SK_BW * (file ? 1 : 0) || 244;
+  el.style.cssText = `left:${(x / SK_BW * 100).toFixed(3)}%;top:${(y / SK_BH * 100).toFixed(3)}%;width:${(w / SK_BW * 100).toFixed(3)}%;height:${(h / SK_BH * 100).toFixed(3)}%`;
+  skGroups[group].append(el);
+  skPlanes.push({ el, depth });
+});
+// Where each group's box is on the screen: the back covers the window, the sides fit its height
+// Each box reaches SK_PAD px past the window's sides (and the bottom), more than the parallax
+// ever slides a plane: their edges never show
+const SK_PAD = 26;
+const skPlaceGroups = () => {
+  const { W, H } = skLay, P = SK_PAD;
+  const cover = Math.max((W + 2 * P) / SK_BW, (H + P) / SK_BH), fit = (H + P) / SK_BH;
+  const set = (el, s, x) => { el.style.cssText = `left:${skP(x)}px;top:${skP(H + P - SK_BH * s)}px;width:${skP(SK_BW * s)}px;height:${skP(SK_BH * s)}px`; };
+  set(skGroups.back, cover, (W - SK_BW * cover) / 2);
+  set(skGroups.left, fit, -P);
+  set(skGroups.right, fit, W + P - SK_BW * fit);
+};
+
 // ── Colours by the hour ──
 const skVars = L => {
   const out = [], set = (k, c) => out.push(`--${k}:${skRgb(c)}`);
@@ -70,10 +105,13 @@ const skPlaceMoon = () => {
 
 skPart({
   on() {
+    // the images load only when the screen first shows
+    skPlanes.forEach(({ el }) => { if (el.dataset.src && !el.src) el.src = el.dataset.src; });
     if (!skDaySky.src) skDaySky.src = SK_IMG + "sky.webp";
-    skBack.append(skNightSky, skDaySky);
+    skBack.append(skNightSky, skDaySky, skLand);
   },
-  off() { skNightSky.remove(); skDaySky.remove(); },
+  off() { skNightSky.remove(); skDaySky.remove(); skLand.remove(); },
+  resize() { skPlaceGroups(); },
   light() {
     skBack.style.cssText = skVars(skL);
     skPlaceMoon();

@@ -32,6 +32,9 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 .skdaysky{object-fit:cover;object-position:50% 100%;opacity:var(--daysky,1);filter:var(--skyf)}
 #skscene .tw{fill:#fff;animation:sk-tw 4s ease-in-out infinite}
 @keyframes sk-tw{50%{opacity:.25}}
+/* The land: three groups of planes placed by skscene.js, each layer tinted by the hour */
+.skgroup{position:absolute}
+.skl{position:absolute;display:block;max-width:none;will-change:transform;user-select:none}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 html.skhand,html.skhand body{cursor:pointer}
 
