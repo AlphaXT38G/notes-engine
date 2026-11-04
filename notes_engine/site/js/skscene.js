@@ -163,4 +163,8 @@ skPart({
     far.setAttribute("values", skTintMatrix(skL, true));
     skPlaceMoon();
   },
+  frame() {
+    const x = -skPar.x, y = skPar.y;
+    skPlanes.forEach(p => { p.el.style.transform = `translate(${skP(x * p.depth)}px,${skP(y * p.depth * .6)}px)`; });
+  },
 });
