@@ -15,6 +15,9 @@ SCREENS["sakura-night"] = { className: "sakura", subtitle: () => "Yozakura: the 
 // periods never meet). This file is loaded after halloween.js and before armstrong.js and calm.js,
 // so the yeti and boo codes typed after kojiro win (they clear skEgg), and the armstrong and peace
 // codes too, and the shows of the clock.
+// Easter egg: typing k o j i r o brings the sakura screen at any time of the year, day or night by
+// the clock, over Christmas and Halloween too; outside the period, typed again on it it goes back
+// to the normal screen. It drops the other screens' eggs; yeti or boo typed after it wins.
 let skEgg = false, skEggYeti = 0;
 OVERRIDES.push(phase => {
   if (skEgg && yetiTyped !== skEggYeti) skEgg = false;
@@ -22,4 +25,14 @@ OVERRIDES.push(phase => {
   const replaced = isNormal(phase) || cls === "night" || skEgg && (cls === "christmas" || cls === "halloween");
   if (!replaced || !(skEgg || (!forced || forcedDismissed) && isSkDate())) return phase;
   return isSkDaytime() ? "sakura" : "sakura-night";
+});
+onCode("kojiro", () => {
+  leaveShows();  // typed during a show, it ends it first (epic.js)
+  const onSk = document.body.classList.contains("sakura");
+  if (onSk && isSkDate()) return;  // it is the season anyway
+  skEgg = !onSk;
+  skEggYeti = yetiTyped;
+  jazzEgg = peaceEgg = xmasEgg = hwEgg = false;
+  if (onSk && forced && forced.startsWith("sakura")) forcedDismissed = true;
+  applyScreen();
 });

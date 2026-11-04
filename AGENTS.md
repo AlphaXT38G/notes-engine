@@ -171,6 +171,9 @@ of the moment (e.g. on a normal day, `boo`, the saxophonist, then `armstrong` sh
 - `boo`: Halloween day or night by the clock, any time of the year, over Christmas too. Outside
   the Halloween period, typed on a Halloween screen it goes back to the normal one. It drops the
   armstrong, peace and yeti eggs; `yeti` typed after it wins.
+- `kojiro`: the sakura screen (day or night by the clock) any time of the year, over Christmas and
+  Halloween too. Outside the season, typed on it it goes back to the normal one. It drops the other
+  eggs; `yeti` or `boo` typed after it wins.
 - `armstrong`: the jazz bar at any time (over Christmas and the calm night too). Typed again in
   the bar it goes back to the normal screen of that moment, by the clock alone: it drops the
   `armstrong`, `yeti` and `boo` eggs and a forced `?screen=`, so it shows the day (or the calm
