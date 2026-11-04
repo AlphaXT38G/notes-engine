@@ -84,6 +84,18 @@ const skVisit = kind => {
   kind = kind || (Math.random() < .14 ? "dragon" : night ? (Math.random() < .55 ? "lanterns" : "star") : "cranes");
   if (SK_VISITS[kind]) skVisitors.push(SK_VISITS[kind]());  // an unknown ?skvisit= shows nothing
 };
+// Easter egg: typing s h e n r o n calls the dragon at once, with a far roar; on another screen
+// the sakura screen comes first (the kojiro code), then the dragon
+onCode("shenron", () => {
+  const come = () => {
+    skVisitors = skVisitors.filter(v => v.kind !== "dragon");
+    skVisit("dragon");
+    skNoise(2.2, 160, "lowpass", .5, 0, .8, 1.2);
+    skTone(70, 2, { type: "sawtooth", gain: .05, attack: .3, glide: .7 });
+  };
+  if (skOn) come();
+  else { CODES.kojiro(); setTimeout(() => skOn && come(), 1800); }
+});
 everySecond.push(() => {
   if (!skOn || skStill() || document.hidden) return;
   if (--skVisitIn <= 0) { skVisit(); skVisitIn = 35 + Math.random() * 45; }
