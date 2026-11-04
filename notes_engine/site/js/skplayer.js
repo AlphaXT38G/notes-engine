@@ -58,6 +58,7 @@ skShamisen.innerHTML = `<svg viewBox="0 0 150 380" role="group" aria-label="Sham
 <line class="wire" x1="66" y1="57" x2="62" y2="356" stroke="#f8f0de" stroke-width="1.1"/>
 <line class="wire" x1="70" y1="57" x2="70" y2="356" stroke="#f8f0de" stroke-width=".9"/>
 <line class="wire" x1="74" y1="57" x2="78" y2="356" stroke="#f8f0de" stroke-width=".7"/>
+<g data-string="0" role="button" tabindex="0" aria-label="String"><line x1="66" y1="57" x2="62" y2="330" stroke="transparent" stroke-width="7"/></g>
 <g data-string="1" role="button" tabindex="0" aria-label="String"><line x1="70" y1="57" x2="70" y2="330" stroke="transparent" stroke-width="7"/></g>
 <g data-string="2" role="button" tabindex="0" aria-label="String"><line x1="74" y1="57" x2="78" y2="330" stroke="transparent" stroke-width="7"/></g>
 </g>
@@ -172,6 +173,15 @@ const skPlayerShow = () => {
   });
 };
 
+// ── Sound and motion ──
+const SK_STRINGS = [130.8, 174.6, 261.6];  // tuned honchoshi: C, F, C
+const skTwang = k => {
+  // a shamisen's dry, buzzing twang: a bright tone dying fast, and the bachi's click on the skin
+  const f = SK_STRINGS[k];
+  skTone(f, 1.4, { type: "sawtooth", gain: .05, attack: .002 });
+  skTone(f * 2, .8, { type: "triangle", gain: .04, attack: .002 });
+  skNoise(.05, 3000, "bandpass", .25, 0, 1.5, 4);
+};
 // Restart a CSS animation on an element (a class taken off and put back)
 const skReplay = (el, cls) => { el.classList.remove(cls); void el.getBoundingClientRect(); el.classList.add(cls); };
 // A strike of the bachi, down through the strings or back up (the upstroke, sukui), on alternate
@@ -195,6 +205,16 @@ const skStrike = (strong = false) => {
     setTimeout(() => puff.remove(), 2600);
   }
 };
+skShamisen.querySelectorAll("[data-string]").forEach(el => {
+  const pluck = () => {
+    const k = +el.dataset.string;
+    skTwang(k);
+    skReplay(skShamisen.querySelectorAll(".skstrings .wire")[k], "pluck");
+    skStrike(true);
+  };
+  el.addEventListener("click", pluck);
+  el.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); pluck(); } });
+});
 [skShamisen.querySelector(".skbachi"), skShamisen.querySelector(".skbody")].forEach(el => {
   el.addEventListener("click", () => skPlayBtn.click());
   el.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); skPlayBtn.click(); } });
