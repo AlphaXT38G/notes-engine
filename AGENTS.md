@@ -363,6 +363,10 @@ so the metal show (01:00 or easter egg) and the epic finale still take over. A f
 turns it off, except `?screen=christmas` / `?screen=christmas-night` themselves and the `yeti` easter egg.
 Halloween works the same way (its override in `halloween.js`, after Christmas', before
 `armstrong.js`); its parts each live in a file of their own and register with `hwPart()`.
+Sakura too (`sakura.js`, after Halloween's, before `armstrong.js`), its parts registered with
+`skPart()`. Its landscape is made of painted layers (`img/sakura/`, cut out of their light
+background by `tools/sakura/cut.py`), stacked in depth with mist, a parallax and a tint of the hour
+(an SVG colour matrix on each layer, `#sk-tint`); `?skhour=` shows the light of any hour.
 
 ### Adding a new screen, step by step
 

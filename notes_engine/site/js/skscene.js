@@ -84,6 +84,27 @@ SK_LAYERS.forEach(([name, file, group, depth, x, y, w, cls = ""]) => {
   skGroups[group].append(el);
   skPlanes.push({ el, depth });
 });
+// The tint of the hour, an SVG colour matrix every layer is drawn through (filter: url(#sk-tint)):
+// each channel multiplied (violet at night, warm in the golden hour), a little desaturated at
+// night. A filter on each image rather than one over the land: an image's filter is worked out
+// once, and the parallax only moves the result.
+const skTint = document.createElement("div");
+skTint.className = "sktint";
+skTint.innerHTML = '<svg width="0" height="0" aria-hidden="true"><filter id="sk-tint" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"/></filter>' +
+  '</svg>';
+// The channels' factors of the hour: day white, golden hour warm, night violet. far: the snowy
+// volcano and the far ranges, lit by the moon at night (darkened less). Also used for the petals.
+const skTintRGB = (L, far) => {
+  const night = skSmooth(.2, .9, L.night) * (far ? .72 : 1), warm = skClamp(L.rays, 0, 1.7);
+  return [0, 1, 2].map(i => skMix(1, [1.06, .93, .8][i], warm) * skMix(1, [.27, .24, .5][i], night));
+};
+const skTintMatrix = (L, far) => {
+  const night = skSmooth(.2, .9, L.night) * (far ? .72 : 1), m = skTintRGB(L, far);
+  const d = night * .35, g = [.3, .59, .11];  // desaturation towards grey
+  const rows = [0, 1, 2].map(i => [0, 1, 2].map(j => (m[i] * ((i === j ? 1 - d : 0) + d * g[j])).toFixed(3)).join(" ") + " 0 0");
+  return `${rows.join(" ")} 0 0 0 1 0`;
+};
+
 // Where each group's box is on the screen: the back covers the window, the sides fit its height
 // Each box reaches SK_PAD px past the window's sides (and the bottom), more than the parallax
 // ever slides a plane: their edges never show
@@ -116,12 +137,14 @@ skPart({
     // the images load only when the screen first shows
     skPlanes.forEach(({ el }) => { if (el.dataset.src && !el.src) el.src = el.dataset.src; });
     if (!skDaySky.src) skDaySky.src = SK_IMG + "sky.webp";
-    skBack.append(skNightSky, skDaySky, skLand);
+    skBack.append(skTint, skNightSky, skDaySky, skLand);
   },
-  off() { skNightSky.remove(); skDaySky.remove(); skLand.remove(); },
+  off() { skTint.remove(); skNightSky.remove(); skDaySky.remove(); skLand.remove(); },
   resize() { skPlaceGroups(); },
   light() {
     skBack.style.cssText = skVars(skL);
+    const [near] = skTint.querySelectorAll("feColorMatrix");
+    near.setAttribute("values", skTintMatrix(skL));
     skPlaceMoon();
   },
 });
