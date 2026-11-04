@@ -146,6 +146,22 @@ const skNoise = (secs, freq, type = "bandpass", gain = .3, delay = 0, q = 1, sha
   src.connect(filter).connect(g).connect(ac.skBus);
   src.start(ac.currentTime + delay);
 };
+// A tone with a quick attack and an exponential decay (bells, plucked strings, birds' notes)
+const skTone = (freq, secs, { type = "sine", gain = .15, delay = 0, attack = .005, glide = 0 } = {}) => {
+  const ac = skOut();
+  if (!ac) return;
+  const o = ac.createOscillator(), g = ac.createGain(), t0 = ac.currentTime + delay;
+  o.type = type;
+  o.frequency.setValueAtTime(freq, t0);
+  if (glide) o.frequency.exponentialRampToValueAtTime(freq * glide, t0 + secs);
+  g.gain.setValueAtTime(0, t0);
+  g.gain.linearRampToValueAtTime(gain, t0 + attack);
+  g.gain.exponentialRampToValueAtTime(.0001, t0 + secs);
+  o.connect(g).connect(ac.skBus);
+  o.start(t0);
+  o.stop(t0 + secs + .05);
+};
+
 // ── The two layers, the parts, the loop ──
 const skBack = document.createElement("div"), skFront = document.createElement("div");
 skBack.id = "skscene";
