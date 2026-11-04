@@ -39,6 +39,8 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 .skl.skfar{filter:url(#sk-tint-far)}
 /* the mist between the planes, and the clouds filling the valley (gradients only, drifting) */
 .skl.skfog{filter:none;background:radial-gradient(60% 50% at 30% 55%,var(--fog),transparent 70%),radial-gradient(55% 45% at 75% 45%,var(--fog),transparent 70%);opacity:calc(.35 + .3 * var(--haze));animation:sk-fog 70s ease-in-out infinite alternate}
+.skl.skfog2{background:linear-gradient(transparent,var(--fog) 40%,var(--fog));opacity:.92;animation:sk-fog2 26s ease-in-out infinite alternate}
+@keyframes sk-fog2{from{translate:-5% 0}to{translate:5% -3%}}
 @keyframes sk-fog{to{translate:4% 0}}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 html.skhand,html.skhand body{cursor:pointer}
