@@ -397,6 +397,6 @@ const startPeace = () => {
   leaveShows();
   peaceEgg = true;
   peaceYeti = yetiTyped;
-  jazzEgg = xmasEgg = hwEgg = false;
+  jazzEgg = xmasEgg = hwEgg = skEgg = false;
   applyScreen();
 };
