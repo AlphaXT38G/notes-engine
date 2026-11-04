@@ -131,6 +131,21 @@ const skOut = () => {
   if (!ac.skBus) { ac.skBus = ac.createGain(); ac.skBus.gain.value = .8; ac.skBus.connect(ac.destination); }
   return ac;
 };
+// A burst of noise through a filter (wind, a swish, the bamboo's knock)
+const skNoise = (secs, freq, type = "bandpass", gain = .3, delay = 0, q = 1, shape = 2) => {
+  const ac = skOut();
+  if (!ac) return;
+  const n = Math.round(ac.sampleRate * secs), buf = ac.createBuffer(1, n, ac.sampleRate), data = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, shape);
+  const src = ac.createBufferSource(), filter = ac.createBiquadFilter(), g = ac.createGain();
+  src.buffer = buf;
+  filter.type = type;
+  filter.frequency.value = freq;
+  filter.Q.value = q;
+  g.gain.value = gain;
+  src.connect(filter).connect(g).connect(ac.skBus);
+  src.start(ac.currentTime + delay);
+};
 // ── The two layers, the parts, the loop ──
 const skBack = document.createElement("div"), skFront = document.createElement("div");
 skBack.id = "skscene";
