@@ -35,6 +35,8 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 /* The land: three groups of planes placed by skscene.js, each layer tinted by the hour */
 .skgroup{position:absolute}
 .skl{position:absolute;display:block;max-width:none;will-change:transform;user-select:none;filter:url(#sk-tint)}
+/* the far mountains, lit by the moon at night: tinted less (skscene.js) */
+.skl.skfar{filter:url(#sk-tint-far)}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 html.skhand,html.skhand body{cursor:pointer}
 

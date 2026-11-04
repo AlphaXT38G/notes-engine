@@ -91,7 +91,7 @@ SK_LAYERS.forEach(([name, file, group, depth, x, y, w, cls = ""]) => {
 const skTint = document.createElement("div");
 skTint.className = "sktint";
 skTint.innerHTML = '<svg width="0" height="0" aria-hidden="true"><filter id="sk-tint" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"/></filter>' +
-  '</svg>';
+  '<filter id="sk-tint-far" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"/></filter></svg>';
 // The channels' factors of the hour: day white, golden hour warm, night violet. far: the snowy
 // volcano and the far ranges, lit by the moon at night (darkened less). Also used for the petals.
 const skTintRGB = (L, far) => {
@@ -143,8 +143,9 @@ skPart({
   resize() { skPlaceGroups(); },
   light() {
     skBack.style.cssText = skVars(skL);
-    const [near] = skTint.querySelectorAll("feColorMatrix");
+    const [near, far] = skTint.querySelectorAll("feColorMatrix");
     near.setAttribute("values", skTintMatrix(skL));
+    far.setAttribute("values", skTintMatrix(skL, true));
     skPlaceMoon();
   },
 });
