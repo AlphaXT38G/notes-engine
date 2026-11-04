@@ -26,6 +26,8 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 /* The scene behind the page (#skscene), and #skfront above it */
 #skscene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:linear-gradient(var(--s0,#4c8cd8),var(--s1,#a8ccf0) 45%,var(--s2,#e6eff6) 70%,#f0c8d4)}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
+html.skhand,html.skhand body{cursor:pointer}
+
 /* Speech bubbles: a scrap of paper, brushed text */
 .sksay{position:absolute;transform:translate(-50%,-100%);max-width:15rem;padding:.4rem .7rem;font:italic 600 .95rem "Yu Mincho",Georgia,serif;color:#2a1d24;background:#fbf4ea;border-radius:.3rem .9rem .4rem .8rem;box-shadow:0 4px 14px rgba(40,10,20,.25);white-space:nowrap;animation:sksay-in .35s ease-out;transition:opacity .6s}
 .sksay::after{content:"";position:absolute;left:50%;bottom:-.35rem;width:.7rem;height:.7rem;background:inherit;transform:translateX(-50%) rotate(45deg)}

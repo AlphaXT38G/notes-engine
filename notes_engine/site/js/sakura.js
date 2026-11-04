@@ -114,6 +114,7 @@ const skOnMove = e => {
   }
   skPointer.x = e.clientX; skPointer.y = e.clientY; skPointer.t = now;
   skPar.tx = (e.clientX / skLay.W - .5) * 2;
+  skHover(e);
 };
 
 // ── Sounds ──
@@ -187,6 +188,14 @@ const skFree = el => !el || !el.closest || !el.closest("section, header, footer,
 const skHitAt = (x, y) => {
   for (let i = SK_HITS.length - 1; i >= 0; i--) if (SK_HITS[i].test(x, y)) return SK_HITS[i];
   return null;
+};
+let skHovered = null;
+const skHover = e => {
+  const hit = skFree(e.target) ? skHitAt(e.clientX, e.clientY) : null;
+  if (hit === skHovered) return;
+  skHovered = hit;
+  root.classList.toggle("skhand", !!hit);
+  document.body.title = hit && hit.title || "";
 };
 const skOnClick = e => {
   if (e.button || !skFree(e.target)) return;
@@ -284,6 +293,9 @@ const setSakura = on => {
     skEach("off");
     skBack.remove();
     skFront.remove();
+    root.classList.remove("skhand");
+    document.body.title = "";
+    skHovered = null;
   }
 };
 document.addEventListener("sakura", e => setSakura(e.detail));
