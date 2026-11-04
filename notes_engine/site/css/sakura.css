@@ -81,6 +81,24 @@ body.sakura .bar span{background:linear-gradient(90deg,#f4a6c0,#d9577f)}
 @keyframes sk-flicker{20%{scale:.88;opacity:.85}45%{scale:1.06}70%{scale:.94;opacity:.95}}
 .skfurin svg{display:block;width:100%;height:auto;overflow:visible}
 .skfurin .strip{transform-box:fill-box;transform-origin:50% 0;rotate:var(--strip,0deg)}
+/* The silk lantern of the night (sklantern.js): on its chain from the top of the window, in the
+   left margin; it swings about the chain's top (rotate, set by its pendulum) */
+.sklantern{display:none;position:fixed;top:0;width:80px;height:calc(var(--chain,30vh) + 136px);padding:0;border:0;background:none;overflow:visible;cursor:pointer;transform-origin:50% 0;pointer-events:auto;z-index:1}
+.sklantern.night{display:block}
+.sklantern[hidden]{display:none}
+.sklantern .skchain{position:absolute;left:39px;top:0;width:3px;height:var(--chain,30vh);background:repeating-linear-gradient(#2a1810 0 5px,#b08a4a 5px 7px,#1a0e08 7px 10px)}
+.sklantern svg{position:absolute;left:-5px;top:calc(var(--chain,30vh) - 4px);width:90px;height:135px;overflow:visible;filter:drop-shadow(0 6px 8px rgba(0,0,0,.5))}
+.sklantern .p0{stop-color:#7a3418}.sklantern .p1{stop-color:#58200e}.sklantern .p2{stop-color:#2e0e06}
+.sklantern.lit .p0{stop-color:#ffd680}.sklantern.lit .p1{stop-color:#ff8a3a}.sklantern.lit .p2{stop-color:#c83a18}
+.sklantern .skflora{color:#3a1206;opacity:.3}
+.sklantern.lit .skflora{color:#fff0d0;opacity:.42}
+.sklantern .skorb{opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+.sklantern.lit .skorb{opacity:1;animation:sk-flicker 2.4s ease-in-out infinite}
+.sklantern .skhalo{position:absolute;left:-120px;top:calc(var(--chain,30vh) - 80px);width:320px;height:320px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,214,140,.95),rgba(255,160,70,.45) 35%,rgba(255,120,50,.15) 65%,transparent);mix-blend-mode:screen;opacity:0;transition:opacity .8s;pointer-events:none}
+.sklantern.lit .skhalo{opacity:1;animation:sk-breath 3.4s ease-in-out infinite}
+@keyframes sk-breath{50%{scale:.9}}
+.sklantern:focus-visible{outline:none}
+.sklantern:focus-visible svg{filter:drop-shadow(0 0 4px #ffd27a)}
 #skfront{position:fixed;inset:0;z-index:30;pointer-events:none}
 html.skhand,html.skhand body{cursor:pointer}
 
@@ -99,4 +117,4 @@ html.skhand,html.skhand body{cursor:pointer}
 @media(max-width:640px){body.sakura h1{font-size:2rem}}
 
 /* Reduced motion */
-@media(prefers-reduced-motion:reduce){.skpaper.fly,.skpaper.back,.sksay,.skfog,.sktree,.sksamurai,.skfurin-glow .flame,#skscene .tw{animation:none}}
+@media(prefers-reduced-motion:reduce){.sklantern *,.skpaper.fly,.skpaper.back,.sksay,.skfog,.sktree,.sksamurai,.skfurin-glow .flame,#skscene .tw{animation:none}}

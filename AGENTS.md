@@ -300,6 +300,7 @@ The search field finds subjects and documents by name (`ui.js`) and by what the 
 | `sksamurai.js` | the samurai: breathing, the iai (`skIai()`), his grumbles, provoked at the third tease (`skProvoked()`), the hook for the duel to come (`skDuel`) |
 | `skpetals.js` | the petals (two canvases, behind and in front of the courses, sharp), the pointer's swirl, `skPetalBurst()`, `skSlash()` (the cut, the petals cut in two), the petals caught, the storm of petals blown at us (`skPetalStorm()`), the fireflies at night |
 | `skfurin.js` | the wind chime: swinging in the wind, ringing (a click, or the wind when it swings hard), a little light in its glass at night |
+| `sklantern.js` | the silk lantern of the night, hanging on a short chain from the top of the left margin, beside the courses: lit or put out by a click, swinging in the wind (a pendulum) |
 | `armstrong.js` | `armstrong` code: the jazz bar at any time (after `christmas.js` to win over it, before `metal.js` so the shows still win); typed again, back to the clock's screen |
 | `metal.js` | metal show: lightning, chains, fire, silhouettes, guitar amp and song (played 3 times) |
 | `epic.js` | epic finale: blue fire, motes, rune circle, the "More epicness ?" medallion and the summoning before the finale (overlay, flash timed to the end of the show, Web Audio whoosh and boom), `leaveEpic()`, `leaveShows()` (a code typed during a show ends it), the `kamelot` code (the finale at any time) |
