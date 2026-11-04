@@ -42,6 +42,9 @@ notes_engine/site/    the index page (HTML, CSS, JS inlined into one dist/index.
                         snowman's snowball leaves on the window; screamer.webp is Halloween's zombie,
                         werewolf/ the layers of its werewolf, gargoyle.png its castle's statues
 notes_engine/shared/  course.sty and cheatsheet.sty, the LaTeX styles of every course / cheat sheet
+example/              the smallest notes repository (subjects.json, site.json, one course): the tests build it
+tests/                smoke tests (python -m unittest discover -s tests): settings, and a real build of example/
+.github/workflows/    ci.yml (tests), pages.yml (REUSABLE workflow that notes repositories call to publish)
 tools/                scripts that remake the images: bartender/ (open it through a local server),
                       werewolf/cut.py and gargoyle/cut.py (Pillow)
 ```
@@ -66,7 +69,8 @@ In the rest of this guide, `site/` and `shared/` are `notes_engine/site/` and `n
   `repo`, no link.
 - **Page texts**: `{{title}}`, `{{subtitle}}` and `{{short}}` in `template.html` come from
   `site.json`; scripts read the short name from `<html data-short>` (the amp's logo, `metal.js`).
-- **Versioning**: a notes repository pins a tag of the engine. Change the contract (a new setting, a
+- **Versioning**: a notes repository pins a tag of the engine (`pip install` of that tag and
+  `uses: .../pages.yml@tag`, both). Change the contract (a new setting, a
   renamed file) in a new tag, never silently.
 
 ## Build and preview locally

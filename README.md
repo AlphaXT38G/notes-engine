@@ -24,8 +24,8 @@ notes-engine --root ../notes    # build another directory
 ```
 
 Needs `latexmk`; `pdftoppm` / `pdftotext` (poppler) and `node` are optional (previews, search, a
-syntax check of the page). A ready-made GitHub Pages workflow is in `.github/workflows/pages.yml`
-(reusable: `uses: <owner>/notes-engine/.github/workflows/pages.yml@v0.1.0`).
+syntax check of the page). A reusable GitHub Pages workflow is in `.github/workflows/pages.yml` (its header shows the
+10 lines a notes repository needs). A runnable minimal notes repository is in `example/`.
 
 ## Contributing
 

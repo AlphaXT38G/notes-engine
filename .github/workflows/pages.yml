@@ -1,0 +1,75 @@
+# Reusable workflow: builds a notes repository with this engine and publishes it on GitHub Pages.
+#
+# In the notes repository (.github/workflows/pages.yml):
+#
+#   name: Publish notes
+#   on:
+#     push: {branches: [main]}
+#     schedule: [{cron: "0 4 * * *"}]   # daily, so the "New" badges expire
+#     workflow_dispatch:
+#   permissions: {contents: read, pages: write, id-token: write}
+#   concurrency: {group: pages, cancel-in-progress: true}
+#   jobs:
+#     publish:
+#       uses: <owner>/notes-engine/.github/workflows/pages.yml@v0.1.0
+#       with: {engine-ref: v0.1.0}
+#
+# Pin the same tag twice (the workflow's, and engine-ref): the workflow and the engine it installs.
+name: Publish notes
+
+on:
+  workflow_call:
+    inputs:
+      engine-ref:
+        description: Tag (or branch) of the engine to build with
+        type: string
+        required: true
+      engine-repo:
+        description: Repository of the engine
+        type: string
+        default: ""   # empty: notes-engine, next to the notes repository's owner
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history: document dates come from git log
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.engine-repo || format('{0}/notes-engine', github.repository_owner) }}
+          ref: ${{ inputs.engine-ref }}
+          path: .notes-engine
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # poppler-utils: the first-page previews and the text the search looks into
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            latexmk lmodern texlive-latex-recommended texlive-latex-extra \
+            texlive-fonts-recommended texlive-fonts-extra \
+            texlive-science texlive-lang-french poppler-utils
+      - run: pip install ./.notes-engine
+      # Publish whatever compiled; failed documents are reported but do not block the deploy.
+      - name: Build PDFs and index
+        run: notes-engine
+        continue-on-error: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
