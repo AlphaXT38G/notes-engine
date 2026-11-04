@@ -57,7 +57,9 @@ const SK_LAYERS = [
   ["slope", "slope.webp", "left", 14, 0, 410, 920],
   ["tree", "tree.webp", "right", 15, 0, -190, SK_BW, "sktree"],
   ["knoll", "knoll.webp", "right", 17, 0, 60, SK_BW],
+  ["samurai", "samurai.webp", "right", 17, 1062, 328, 228, "sksamurai"],  // both feet in the grass
 ];
+const SK_RATIO = { "samurai.webp": 1.5 };  // height / width (the others are 1024 / 1536)
 const skNightSky = document.createElement("div"), skDaySky = document.createElement("img"), skLand = document.createElement("div");
 skNightSky.className = "sknightsky";
 skNightSky.innerHTML = SK_NIGHT_SKY;
@@ -76,7 +78,7 @@ SK_LAYERS.forEach(([name, file, group, depth, x, y, w, cls = ""]) => {
   const el = document.createElement(file ? "img" : "div");
   el.className = `skl skl-${name} ${cls}`;
   if (file) { el.alt = ""; el.decoding = "async"; el.dataset.src = SK_IMG + file; }
-  const h = w * SK_BH / SK_BW * (file ? 1 : 0) || 244;
+  const h = w * (SK_RATIO[file] || SK_BH / SK_BW) * (file ? 1 : 0) || 244;
   el.style.cssText = `left:${(x / SK_BW * 100).toFixed(3)}%;top:${(y / SK_BH * 100).toFixed(3)}%;width:${(w / SK_BW * 100).toFixed(3)}%;height:${(h / SK_BH * 100).toFixed(3)}%`;
   skGroups[group].append(el);
   skPlanes.push({ el, depth });

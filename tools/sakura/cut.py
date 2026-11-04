@@ -38,6 +38,7 @@ LAYERS = {
     "slope": ("hard", 40, 1),
     "knoll": ("hard", 40, 1),
     "tree": ("hard", 40, 1),
+    "samurai": ("hard", 40, 1),
 }
 def to_alpha(c, gain=1, keep=False):
     """Colour to alpha against BG: the opacity a pixel needs over BG, and its own colour (more
