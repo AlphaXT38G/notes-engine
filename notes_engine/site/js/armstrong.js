@@ -18,9 +18,9 @@ let jazzEgg = false,    // the code was typed: the jazz bar stays open
 const inBar = phase => screenClass(phase) === "night";
 OVERRIDES.push(phase => {
   if (jazzEgg && yetiTyped !== jazzEggYeti) jazzEgg = false;  // yeti typed since: Christmas wins
-  // Only the normal screens (the day, the calm night), Christmas and Halloween are replaced: a
+  // Only the normal screens (the day, the calm night), Christmas, Halloween and Sakura are replaced: a
   // show on the clock (metal at 01:00) still wins
-  if (!jazzEgg || !isNormal(phase) && !inBar(phase) && screenClass(phase) !== "christmas" && screenClass(phase) !== "halloween") return phase;
+  if (!jazzEgg || !isNormal(phase) && !inBar(phase) && !["christmas", "halloween", "sakura"].includes(screenClass(phase))) return phase;
   // Keeps "closing" when the clock says so, even if Christmas had replaced it before this override
   const clock = scheduledPhase();
   return inBar(phase) ? phase : inBar(clock) ? clock : "evening";
@@ -30,7 +30,7 @@ OVERRIDES.push(phase => {
 // peace egg's calm night: calm.js, loaded later, as this runs on a key press), so the screen goes
 // back to what the clock gives
 const backToClock = () => {
-  jazzEgg = xmasEgg = hwEgg = peaceEgg = false;
+  jazzEgg = xmasEgg = hwEgg = peaceEgg = skEgg = false;
   if (forced) forcedDismissed = true;  // also leaves a forced ?screen=... (the bar, Christmas...)
 };
 const armstrong = () => {

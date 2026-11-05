@@ -58,7 +58,7 @@ onCode("boo", () => {
   if (onHw && isHwDate()) return;  // it is Halloween anyway
   hwEgg = !onHw;
   hwEggYeti = yetiTyped;
-  jazzEgg = peaceEgg = xmasEgg = false;
+  jazzEgg = peaceEgg = xmasEgg = skEgg = false;  // skEgg: the kojiro code's (sakura.js, loaded later)
   if (onHw && forced && forced.startsWith("halloween")) forcedDismissed = true;
   applyScreen();
 });

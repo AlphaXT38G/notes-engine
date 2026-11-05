@@ -8,7 +8,7 @@ Guide for anyone working on the engine, human or AI agent (Claude Code reads it 
 The engine behind a notes site: it compiles the LaTeX subjects of a **notes repository** (such as
 `notes_ba5`) to PDF and writes `dist/index.html`, an index page of all the PDFs, with its
 search, its previews and its screens (a flame mode, a jazz bar at night, a metal show, an epic
-finale, a calm night, Christmas, Halloween, a cassette deck by day, easter eggs...).
+finale, a calm night, Christmas, Halloween, the cherry blossoms, a cassette deck by day, easter eggs...).
 
 The engine knows nothing about any particular set of notes. Everything specific comes from the
 notes repository, in its root: `subjects.json` (the subjects) and `site.json` (title, subtitle,
@@ -46,7 +46,12 @@ example/              the smallest notes repository (subjects.json, site.json, o
 tests/                smoke tests (python -m unittest discover -s tests): settings, and a real build of example/
 .github/workflows/    ci.yml (tests), pages.yml (REUSABLE workflow that notes repositories call to publish)
 tools/                scripts that remake the images: bartender/ (open it through a local server),
-                      werewolf/cut.py and gargoyle/cut.py (Pillow)
+                      werewolf/cut.py and gargoyle/cut.py (Pillow), sakura/cut.py (Pillow, about a
+                      minute: the sakura screen's painted layers of sakura/src/, painted by an image
+                      generator on a light grey, cut into notes_engine/site/img/sakura/*.webp with
+                      alpha, the pagoda's night lights, the tree's veins of light, and the dragon's
+                      sprites from src/lake-dragon.png: Konami's Lake Dragon, ripped by Badbatman3,
+                      used with permission)
 ```
 
 The notes repository provides, at its root:
@@ -120,6 +125,7 @@ The night screens follow the clock. Force one with the URL (`?night=`, the old n
 | `?screen=calm` | calm night (no dawn when forced outside 04:45 – 05:30) |
 | `?screen=christmas` / `?screen=christmas-night` | Christmas day / Christmas night |
 | `?screen=halloween` / `?screen=halloween-night` | Halloween day / Halloween night |
+| `?screen=sakura` / `?screen=sakura-night` | Sakura day / Sakura night (add `&skhour=17.5` to show the light of any hour) |
 
 Easter eggs: 20 clicks on 🔥 within a minute (metal show), the Konami code ↑↑↓↓←→←→BA, the word
 codes (below), a random surprise banner on some visits, and on both Christmas screens (day and night) a small golden sax hidden among the tree ornaments that
@@ -152,7 +158,27 @@ finale and the jazz bar, as `kamelot` and `armstrong` do), the castle's tiny gar
 jar half buried by the dead tree opens the calm night (as `peace` does); a werewolf walks the far hill
 on the left and howls at the moon at night, a witch crosses the sky on her broom, a vampire passes behind the castle's great window, and a zombie
 screamer jumps out of the top left corner, rarely (typing `candy` on Halloween shows it at once).
-The word codes (`yeti`, `boo`, `armstrong`, `peace`, `kamelot`, `normal`) work on every screen, the shows
+The sakura screens (March 15 – April 10, or `kojiro`) can be played with as well: petals fall from
+the great tree and drift with the wind, pushed and swirled by the pointer; a click catches one.
+A click on the tree shakes it and a gust takes a handful of petals; shaken six times within
+eight seconds, it lets go of a storm of petals blown at us, clinging to the glass until
+they cover the view, then sliding down.
+A click on the samurai and he answers with an iai, the draw and cut in one move: a white crescent
+cuts the air and the petals it crosses in two. Teased three times within 30 s, he turns to face us
+and challenges us (`skProvoked()`; the duel itself is to come: `skDuel`, see `sksamurai.js`). The
+wind chime hanging from the tree swings in the wind and rings (a click rings it too). A
+shamisen leaning in the bottom left corner plays the music (its bachi; it strikes on the beat,
+its strings can be plucked), chosen on sakura flowers in an arc around it, one flower
+of its own colour per track (six YouTube videos of Japanese music, through `youtube.js`;
+`SK_TRACKS` in `skplayer.js`). The sheet of paper by the samurai flies away in the
+wind when clicked, and comes back. At night the pink moon opens the calm night (as `peace` does),
+and fireflies wander over the valley (a click and they fly off). A sake set by the samurai's paper
+pours a drink and opens the jazz bar; the shamisen plucked like mad (ten strings in five seconds)
+starts the metal show; the dragon, clicked as it passes, roars and breathes blue fire at us, and the epic finale comes
+behind it. Now and then cranes cross the sky, sky lanterns rise at
+night, a shooting star falls, and rarely a dragon snakes across, its armoured rings following
+its head, in pixel art (`?skvisit=cranes`, `lanterns`, `star` or `dragon` shows one at once; typing `shenron` calls the dragon, on any screen). At night veins of light run up the great tree's wood (`tree-veins.webp`, grown along the bark by `tools/sakura/cut.py`), a little light glows in the wind chime, and a silk lantern hangs beside the courses, lit or put out by a click, swinging in the wind.
+The word codes (`yeti`, `boo`, `kojiro`, `armstrong`, `peace`, `kamelot`, `normal`) work on every screen, the shows
 included. Each one is typed anywhere but the search field, letter by letter, or typed in the
 search field then Enter or the phone keyboard's search key (`onCode()` in `ui.js`, on the form's
 submit, since that key often sends no "Enter" keydown; the field is emptied and the keyboard
@@ -171,6 +197,9 @@ of the moment (e.g. on a normal day, `boo`, the saxophonist, then `armstrong` sh
 - `boo`: Halloween day or night by the clock, any time of the year, over Christmas too. Outside
   the Halloween period, typed on a Halloween screen it goes back to the normal one. It drops the
   armstrong, peace and yeti eggs; `yeti` typed after it wins.
+- `kojiro`: the sakura screen (day or night by the clock) any time of the year, over Christmas and
+  Halloween too. Outside the season, typed on it it goes back to the normal one. It drops the other
+  eggs; `yeti` or `boo` typed after it wins.
 - `armstrong`: the jazz bar at any time (over Christmas and the calm night too). Typed again in
   the bar it goes back to the normal screen of that moment, by the clock alone: it drops the
   `armstrong`, `yeti` and `boo` eggs and a forced `?screen=`, so it shows the day (or the calm
@@ -285,6 +314,17 @@ The search field finds subjects and documents by name (`ui.js`) and by what the 
 | `hwmusic.js` | Halloween music: `HW_TRACKS` (each with the colour of its soup, and its icon and label colour for the day's cassette deck, which plays them too), play / pause / sound; the other tracks as potion flasks on a plank beside the cocotte (`hwShelf`), a click pours one in (the flask flies over the pot and is shaken, uncorks and tips, the lid lifts, the potion runs in, the empty flask is thrown in too, the soup takes its colour in a puff of steam and a cloud of smoke of that colour rises shaped like a skull, a bat, a jack-o'-lantern or a ghost, that track plays, the flask comes back refilled with the one that was playing) |
 | `hwcocotte.js` | the player: the enamelled pumpkin cocotte, its soup the colour of the track (`HW_COCOTTE`), the potion flasks (`hwFlaskSvg`, three shapes in turn) and the smoke clouds (`HW_SMOKES`, `hwSmokeSrc()`: an `<img>` whose fraying filters are rendered once) |
 | `hwmotion.js` | the scene alive: the planes slid by the pointer and the scroll (parallax, in the effects canvas' loop; the werewolf, the castle's buttons and the jar follow their plane), gusts of wind (`#hwscene.gust`, `hwWind`: the tree bends, the leaves blow across), shooting stars, a light walking from window to window, bats bursting from the keep, the hand rising from the earth |
+| `sakura.js` | Sakura screens: date override and `kojiro` code, the two layers (`#skscene` behind the page, `#skfront` above it), the parts registry (`skPart()`: `{on, off, night, resize, light, frame}`), one animation loop for them all, the light of the hour (`skLight()`, `skHour()`, `?skhour=`), the layout, the wind (`skWind`, `skGust()`), the parallax, the Web Audio sounds (`skTone()`, `skNoise()`), `skSay()` speech bubbles, the clicks on the scene (`skHit()`, tested on the painted pixels: `skOpaqueAt()`), the teasing (`skTease()`) and the duel hook (`skDuel`) |
+| `skscene.js` | the landscape from painted layers: the day's sky (a painting) over the night's (drawn: stars, the pink moon), the far volcano, mist, the valley and its pagoda (its windows lit at night), the clouds of the valley and banks of mist drifting between it and the near ground (gradients slid and faded: compositor only), the left slope, the great tree, the knoll, the samurai, the paper; three groups fitted to the window (`skPlaceGroups()`), the parallax, the tint of the hour (`skTintRGB()`, `#sk-tint`) |
+| `skplay.js` | what is clicked in the scene: the tree (shaken, petals), the sheet of paper (blown away, back), the moon at night (`peace`) |
+| `sksamurai.js` | the samurai: breathing, the iai (`skIai()`), his grumbles, provoked at the third tease (`skProvoked()`), the hook for the duel to come (`skDuel`) |
+| `skpetals.js` | the petals (two canvases, behind and in front of the courses, sharp), the pointer's swirl, `skPetalBurst()`, `skSlash()` (the cut, the petals cut in two), the petals caught, the storm of petals blown at us (`skPetalStorm()`), the fireflies at night |
+| `skfurin.js` | the wind chime: swinging in the wind, ringing (a click, or the wind when it swings hard), a little light in its glass at night |
+| `sklantern.js` | the silk lantern of the night, hanging on a short chain from the top of the left margin, beside the courses: lit or put out by a click, swinging in the wind (a pendulum) |
+| `skplayer.js` | the music: the shamisen in the bottom left corner (its bachi plays and pauses, strikes down then up through the strings on the beat of the track, its strings twang when plucked) and the sakura flowers in an arc around it, one of its own colour per track, from the bottom up, an arc full and the next starts a wider one (`SK_TRACKS`: YouTube videos played through `youtube.js`, or mp3 files of `site/audio/`, their `bpm` and flower `color`); its hidden play button in `musicButtons` |
+| `skdragon.js` | the dragon: the Lake Dragon of Konami's games (sprites ripped by Badbatman3, used with permission; `img/sakura/dragon.png`, cut from `tools/sakura/src/lake-dragon.png`), in pixel art: its head, big and small armoured balls and tail following one another (follow the leader), the balls' two frames alternating, its jaws opening, tinted by the hour |
+| `skpassages.js` | the hidden ways to the other screens: the sake set on the knoll (it pours: the jazz bar), the shamisen plucked ten times in five seconds (`skShred()`: the metal show), the dragon clicked (it roars: the epic finale); the fireflies flying off when clicked |
+| `skvisitors.js` | what crosses the sky: cranes, sky lanterns, shooting stars (far, on a canvas behind the land), the dragon (near, over it) (`?skvisit=`) |
 | `armstrong.js` | `armstrong` code: the jazz bar at any time (after `christmas.js` to win over it, before `metal.js` so the shows still win); typed again, back to the clock's screen |
 | `metal.js` | metal show: lightning, chains, fire, silhouettes, guitar amp and song (played 3 times) |
 | `epic.js` | epic finale: blue fire, motes, rune circle, the "More epicness ?" medallion and the summoning before the finale (overlay, flash timed to the end of the show, Web Audio whoosh and boom), `leaveEpic()`, `leaveShows()` (a code typed during a show ends it), the `kamelot` code (the finale at any time) |
@@ -298,7 +338,7 @@ The search field finds subjects and documents by name (`ui.js`) and by what the 
 ### CSS files, in cascade order
 
 `base.css` (layout, cards, search, previews) → `flames.css` → `surprise.css` → `jazz.css` → `closing.css` →
-`metal.css` → `epic.css` → `bard.css` → `christmas.css` → `snowman.css` → `sansfight.css` → `halloween.css` → `hwlife.css` → `hwcreatures.css` → `hwmusic.css` → `calm.css` → `tapes.css` → `screens.css` (effects canvas, view transitions) → `konami.css`.
+`metal.css` → `epic.css` → `bard.css` → `christmas.css` → `snowman.css` → `sansfight.css` → `halloween.css` → `hwlife.css` → `hwcreatures.css` → `hwmusic.css` → `sakura.css` → `calm.css` → `tapes.css` → `screens.css` (effects canvas, view transitions) → `konami.css`.
 The Konami file is last on purpose: during its animation `body.rift .wrap` must win over every
 theme's `.wrap` rule.
 
@@ -342,6 +382,8 @@ Current screens:
 | `christmas-night` | `christmas` | Dec 1 – Jan 3, 18:00 – 06:00 (replaces the day, the jazz bar and the calm night) | `christmas.js`, `christmas.css` |
 | `halloween` | `halloween` | Oct 25 – Nov 1, 07:00 – 18:00 (replaces the day, the jazz bar and the calm night), or the `boo` code | `halloween.js`, `hw*.js`, `halloween.css`, `hwlife.css`, `hwcreatures.css`, `hwmusic.css` |
 | `halloween-night` | `halloween` | Oct 25 – Nov 1, 18:00 – 07:00 | the same |
+| `sakura` | `sakura` | Mar 15 – Apr 10, 07:00 – 18:30, the golden hour from 17:30 (replaces the day, the jazz bar and the calm night), or the `kojiro` code | `sakura.js`, `skscene.js`, `sakura.css`, `img/sakura/` |
+| `sakura-night` | `sakura` | Mar 15 – Apr 10, 18:30 – 07:00 (the yozakura: night from 18:45, the pink moon until 05:35) | the same |
 
 The Christmas screens depend on the date, so they are an override rather than a `SCHEDULE` slot:
 it only rewrites the normal screens (no screen, the calm night: `isNormal()` in `screens.js`) and
@@ -350,6 +392,10 @@ so the metal show (01:00 or easter egg) and the epic finale still take over. A f
 turns it off, except `?screen=christmas` / `?screen=christmas-night` themselves and the `yeti` easter egg.
 Halloween works the same way (its override in `halloween.js`, after Christmas', before
 `armstrong.js`); its parts each live in a file of their own and register with `hwPart()`.
+Sakura too (`sakura.js`, after Halloween's, before `armstrong.js`), its parts registered with
+`skPart()`. Its landscape is made of painted layers (`img/sakura/`, cut out of their light
+background by `tools/sakura/cut.py`), stacked in depth with mist, a parallax and a tint of the hour
+(an SVG colour matrix on each layer, `#sk-tint`); `?skhour=` shows the light of any hour.
 
 ### Adding a new screen, step by step
 
