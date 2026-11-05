@@ -10,7 +10,7 @@
 //   when the tape came back. Now a player, once made, stays in the page (paused, out of sight),
 //   so coming back to a video plays on where it was, with no ad. And ytWarm() makes the players
 //   ahead, muted, lets them go through their ads, then pauses them at the start of the music:
-//   picking one later plays the music at once.
+//   picking one later plays the music at once. ytall.js makes every video of the site ahead.
 // One player per video, shared by its users (the cassette deck and the Christmas turntable may
 // both play the Christmas radio): the last to play it owns it, and only the owner pauses it.
 //   ytWarm(id)                      makes the player ahead: muted, its ad played, then paused

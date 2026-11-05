@@ -1120,17 +1120,11 @@ xmasSleeve.addEventListener("click", e => {  // the records swap: the one on goe
   clearTimeout(xmasSwapEnd);
   xmasSwapEnd = setTimeout(() => { xmasDeck.classList.remove("swap"); xmasSleeve.classList.remove("swap"); }, 600);
 });
-const carolsWarm = () => ytWarm(XMAS_LIVE);
 const setCarols = on => {
   document.removeEventListener("pointerdown", carolsSound);
   document.removeEventListener("keydown", carolsSound);
   if (!on) { carolsStop(); carolsPlaying = carolsMuted = false; xmasDeck.remove(); xmasSleeve.remove(); return; }
   document.body.append(xmasSleeve, xmasDeck);
-  // The radio made ahead, through its ads, once the turntable is reached for (youtube.js)
-  ["pointerenter", "touchstart", "focusin"].forEach(type => {
-    xmasDeck.addEventListener(type, carolsWarm, { passive: true });
-    xmasSleeve.addEventListener(type, carolsWarm, { passive: true });
-  });
   if (!carolsOff()) {
     const canSound = screenGesture();
     carolsPlay(!canSound);

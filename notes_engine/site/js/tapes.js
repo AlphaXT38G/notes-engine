@@ -3,7 +3,7 @@
 // (brushed aluminium, smoked cassette door, two backlit VU meters, a red tape counter and a row of
 // piano keys). The music comes in bands, the deck's "stations": the Lofi Girl mixes from YouTube,
 // then the music of the screens (jazz bar, late night, metal show, epic finale, Christmas,
-// Halloween), then Radio Impuls and Hit Radio live. A tape is a YouTube video (`id`, a hidden <iframe> driven by
+// Halloween, sakura), then Radio Impuls and Hit Radio live. A tape is a YouTube video (`id`, a hidden <iframe> driven by
 // postMessage commands, like the Christmas radio: youtube.js, muted during ads), an mp3 of
 // site/audio (`file`) or a live stream (`stream`), both played by an <audio>.
 // The keys: ⏏ puts in the next tape of the band, ◀◀ / ▶▶ wind 30 s back / forward, ▶❚❚ plays or
@@ -41,6 +41,8 @@ const TAPE_BANDS = [
   ] },
   // the Halloween screens' tracks (hwmusic.js), the label in their tape colour
   { name: "Halloween", short: "SPOOKY", tapes: HW_TRACKS.map(t => Object.assign({}, t, { color: t.tape })) },
+  // the sakura screens' tracks (skplayer.js), the label in their flower's colour
+  { name: "Sakura", short: "SAKURA", tapes: SK_TRACKS.map(t => Object.assign({}, t, { icon: "🌸" })) },
   { name: "Radio Impuls", short: "IMPULS", tapes: [
     { stream: "https://stream.sepia.sk:8000/impuls128.mp3", icon: "📡", short: "Impuls", name: "Radio Impuls (live)", color: "#e30613", live: true },
   ] },
@@ -132,12 +134,6 @@ const tapeStop = () => {  // the tape out of the deck: a YouTube player waits, p
   tapeReady = false;
   tapeTime = 0;
 };
-// Every YouTube tape made ahead, muted, through its ads: done once the deck is first reached for
-// (pointer over it, a tap, the keyboard), not for every visitor, who may never want music
-const tapeWarm = () => {
-  TAPE_BANDS.forEach(band => band.tapes.forEach(tape => { if (tape.id) ytWarm(tape.id); }));
-  ["pointerenter", "touchstart", "focusin"].forEach(type => tapeDeck.removeEventListener(type, tapeWarm));
-};
 const tapeStart = () => {
   const tape = tapeNow();
   if (tape.id) {
@@ -145,7 +141,6 @@ const tapeStart = () => {
     tapeSrc = player.frame;
     tapeReady = true;  // commands before the player is ready wait in youtube.js
     tapeTime = player.time;
-    tapeWarm();  // and the other tapes get ready meanwhile
     return;
   }
   const track = tapeSrc = tape.file ? preloadTrack(tape.file, { loop: false }) : new Audio(tape.stream);
@@ -238,7 +233,6 @@ const setTapes = on => {
   if (tapeDeck.isConnected) return;
   tapeBay.innerHTML = cassette(tapeNow());
   document.body.append(tapeDeck);
-  ["pointerenter", "touchstart", "focusin"].forEach(type => tapeDeck.addEventListener(type, tapeWarm, { passive: true }));
   paintTapes();
 };
 // Only during the day: the first screen is set by start.js, after this file, hence the timeout
