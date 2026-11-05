@@ -10,17 +10,17 @@
 // flower of the track chosen is open wider, it turns slowly while its track plays. Its name only shows as the
 // flower's tooltip. The play / pause (.skplay, hidden) is in musicButtons: the space bar clicks it.
 // Nothing plays by itself; the track chosen is remembered (sk-track). The tracks are YouTube
-// videos, played through youtube.js (hidden players, muted during their ads, made ahead once the
-// shamisen or a flower is first reached for: ytWarm), or mp3 files of site/audio/ (screenTrack,
-// screens.js): add one to SK_TRACKS ({ id } or { file }, its name, bpm: its tempo, for the
-// strikes, and color: its flower's) to add a flower.
+// videos, played through youtube.js (hidden players, muted during their ads, made ahead by
+// ytall.js), or mp3 files of site/audio/ (screenTrack, screens.js): add one to SK_TRACKS ({ id } or
+// { file }, its name, short: its cassette's label, bpm: its tempo, for the strikes, and color: its
+// flower's) to add a flower. They are also the cassette deck's "Sakura" band (tapes.js).
 const SK_TRACKS = [
-  { id: "tWzZhZU3sOI", name: "Wafū rock: shamisen and heavy bass", bpm: 140, color: "#6cd46a" },
-  { id: "AK51LblcEOw", name: "Sakura, traditional koto music", bpm: 72, color: "#5aa8ff" },
-  { id: "oxlaAdCY4jA", name: "Cherry blossom zen music", bpm: 64, color: "#e8323c" },
-  { id: "iX-11teX4Wo", name: "Sengoshin, gods of the war drums", bpm: 120, color: "#a066e0" },
-  { id: "S-h8z0zgX_U", name: "Tao, on the path of the samurai", bpm: 64, color: "#2a2230" },
-  { id: "KBgRUHG6pHU", name: "Epic shamisen, heavy Japanese rock", bpm: 140, color: "#ffd23a" },
+  { id: "tWzZhZU3sOI", name: "Wafū rock: shamisen and heavy bass", short: "Wafū", bpm: 140, color: "#6cd46a" },
+  { id: "AK51LblcEOw", name: "Sakura, traditional koto music", short: "Koto", bpm: 72, color: "#5aa8ff" },
+  { id: "oxlaAdCY4jA", name: "Cherry blossom zen music", short: "Zen", bpm: 64, color: "#e8323c" },
+  { id: "iX-11teX4Wo", name: "Sengoshin, gods of the war drums", short: "Drums", bpm: 120, color: "#a066e0" },
+  { id: "S-h8z0zgX_U", name: "Tao, on the path of the samurai", short: "Tao", bpm: 64, color: "#2a2230" },
+  { id: "KBgRUHG6pHU", name: "Epic shamisen, heavy Japanese rock", short: "Epic", bpm: 140, color: "#ffd23a" },
 ];
 let skTrackAt = (() => { try { return (+localStorage.getItem("sk-track") || 0) % SK_TRACKS.length; } catch (e) { return 0; } })();
 let skTrack = null, skBeat = -1;
