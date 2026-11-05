@@ -127,7 +127,6 @@ const skTrackStart = () => {
   if (tr.id) {
     const player = ytPlay(tr.id, SK_YT, true);
     skTrack = { yt: tr.id, paused: false, time: player.time };
-    skWarmAll();
     return;
   }
   skTrack = screenTrack(tr.file, { loop: false });
@@ -145,13 +144,6 @@ const skTrackDrop = () => {
   else dropTrack(skTrack);
   skTrack = null;
 };
-// The YouTube players made ahead, muted, through their ads, once the music is first reached for
-let skWarmed = false;
-const skWarmAll = () => {
-  if (skWarmed) return;
-  skWarmed = true;
-  SK_TRACKS.forEach(t => { if (t.id) ytWarm(t.id); });
-};
 // Play track i: another track starts it; the same one plays / pauses it (a flower only plays it)
 const skSelect = (i, flower) => {
   if (i === skTrackAt && skTrack) {
@@ -165,8 +157,6 @@ const skSelect = (i, flower) => {
   skPlayerShow();
 };
 skPlayBtn.addEventListener("click", () => skSelect(skTrackAt));
-// the YouTube players get ready when the music is first reached for, not for every visitor
-[skShamisen, skFlowers].forEach(el => ["pointerenter", "touchstart", "focusin"].forEach(type => el.addEventListener(type, skWarmAll, { once: true })));
 const skPlayerShow = () => {
   const playing = skPlaying();
   skShamisen.classList.toggle("playing", playing);

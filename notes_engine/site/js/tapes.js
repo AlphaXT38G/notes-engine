@@ -132,12 +132,6 @@ const tapeStop = () => {  // the tape out of the deck: a YouTube player waits, p
   tapeReady = false;
   tapeTime = 0;
 };
-// Every YouTube tape made ahead, muted, through its ads: done once the deck is first reached for
-// (pointer over it, a tap, the keyboard), not for every visitor, who may never want music
-const tapeWarm = () => {
-  TAPE_BANDS.forEach(band => band.tapes.forEach(tape => { if (tape.id) ytWarm(tape.id); }));
-  ["pointerenter", "touchstart", "focusin"].forEach(type => tapeDeck.removeEventListener(type, tapeWarm));
-};
 const tapeStart = () => {
   const tape = tapeNow();
   if (tape.id) {
@@ -145,7 +139,6 @@ const tapeStart = () => {
     tapeSrc = player.frame;
     tapeReady = true;  // commands before the player is ready wait in youtube.js
     tapeTime = player.time;
-    tapeWarm();  // and the other tapes get ready meanwhile
     return;
   }
   const track = tapeSrc = tape.file ? preloadTrack(tape.file, { loop: false }) : new Audio(tape.stream);
@@ -238,7 +231,6 @@ const setTapes = on => {
   if (tapeDeck.isConnected) return;
   tapeBay.innerHTML = cassette(tapeNow());
   document.body.append(tapeDeck);
-  ["pointerenter", "touchstart", "focusin"].forEach(type => tapeDeck.addEventListener(type, tapeWarm, { passive: true }));
   paintTapes();
 };
 // Only during the day: the first screen is set by start.js, after this file, hence the timeout

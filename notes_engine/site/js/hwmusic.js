@@ -171,12 +171,6 @@ const hwPour = (slot, flask) => {
     setTimeout(() => hwMusic.classList.remove("puff"), 3500),  // its steam gone: the simmering one again
   ];
 };
-// The YouTube tracks made ahead, through their ads, once the player is reached for
-const hwWarm = () => HW_TRACKS.forEach(t => { if (t.id) ytWarm(t.id); });
-["pointerenter", "touchstart", "focusin"].forEach(type => {
-  hwMusic.addEventListener(type, hwWarm, { passive: true });
-  hwShelfEl.addEventListener(type, hwWarm, { passive: true });
-});
 
 hwPart({
   on() {
