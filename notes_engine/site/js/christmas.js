@@ -1025,7 +1025,7 @@ everySecond.push(() => {
 
 // Christmas music, on a Christmas turntable in the bottom left corner (red lacquer and gold, snow
 // on the lid, holly, a candy-cane tonearm). Two records: "Jingle Bell Rock"
-// (audio/jingle-bell-rock.mp3, looped, red label) or a live of Christmas songs from YouTube (the
+// (christmas/jingle-bell-rock.mp3 of notes-musics, looped, red label) or a live of Christmas songs from YouTube (the
 // only music of the page still from YouTube: a radio that never ends, no file; green label). The
 // other record waits in its sleeve, leaning behind the turntable: clicking the sleeve swaps them
 // and plays the new one. The turntable plays / pauses the record on; the choice and the pause
@@ -1068,7 +1068,7 @@ const paintDeck = () => {
 // The radio's player stays in the page once made (paused when the record is off), and is muted
 // during YouTube's ads: coming back to it plays on with no new ad (youtube.js)
 const carolsStart = muted => {  // puts the chosen record on, playing
-  if (carolsRecord === "rock") carolsRock = screenTrack("jingle-bell-rock.mp3", { muted });
+  if (carolsRecord === "rock") carolsRock = screenTrack("christmas/jingle-bell-rock.mp3", { muted });
   else { ytPlay(XMAS_LIVE, CAROLS_YT, !muted); carolsRadio = true; }
   carolsMuted = muted;
 };

@@ -50,7 +50,7 @@ const setAir = on => {
 setAir(document.body.classList.contains("night"));
 document.addEventListener("night", e => setAir(e.detail));
 
-// Night music: "Just One More Drink", jazz noir (audio/jazz.mp3), looped. It starts by itself when
+// Night music: "Just One More Drink", jazz noir (jazz/just-one-more-drink.mp3 of notes-musics), looped. It starts by itself when
 // the night begins. Browsers only allow sound after a user gesture, so if the page has not had one
 // yet it autoplays muted and the sound comes on at the first click or key press anywhere. The
 // vinyl button then plays / pauses it. Pausing is remembered: no autoplay on the next visits until
@@ -69,7 +69,7 @@ const paintVinyl = () => {
   vinyl.title = !playing ? "Play the music" : jazzMuted() ? "Turn the sound on" : "Pause the music";
 };
 const play = (muted = false) => {
-  if (!jazz) jazz = screenTrack("jazz.mp3", { muted });  // first time: muted when there was no gesture yet
+  if (!jazz) jazz = screenTrack("jazz/just-one-more-drink.mp3", { muted });  // first time: muted when there was no gesture yet
   else jazz.play().catch(() => {});
   playing = true;
   try { localStorage.removeItem("jazz"); } catch (e) {}

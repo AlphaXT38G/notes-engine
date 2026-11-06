@@ -4,8 +4,8 @@
 // piano keys). The music comes in bands, the deck's "stations": the Lofi Girl mixes from YouTube,
 // then the music of the screens (jazz bar, late night, metal show, epic finale, Christmas,
 // Halloween, sakura), then Radio Impuls and Hit Radio live. A tape is a YouTube video (`id`, a hidden <iframe> driven by
-// postMessage commands, like the Christmas radio: youtube.js, muted during ads), an mp3 of
-// site/audio (`file`) or a live stream (`stream`), both played by an <audio>.
+// postMessage commands, like the Christmas radio: youtube.js, muted during ads), an audio file of
+// notes-musics (`file`, its path there) or a live stream (`stream`), both played by an <audio>.
 // The keys: ⏏ puts in the next tape of the band, ◀◀ / ▶▶ wind 30 s back / forward, ▶❚❚ plays or
 // pauses, and the station key goes to the next band (its name shows on the counter a moment).
 // As the Christmas turntable's sleeve, the next tape of the band waits in its case leaning behind
@@ -23,20 +23,20 @@ const TAPE_BANDS = [
     { id: "rFZHOHl-L8A", icon: "📻", short: "Radio", name: "Lofi hip hop radio", color: "#c43d6a", live: true },
   ] },
   { name: "Jazz bar", short: "JAZZ", tapes: [
-    { file: "jazz.mp3", icon: "🎷", short: "Jazz", name: "Just One More Drink", color: "#9a4a1c" },
+    { file: "jazz/just-one-more-drink.mp3", icon: "🎷", short: "Jazz", name: "Just One More Drink", color: "#9a4a1c" },
   ] },
   { name: "Late night", short: "NIGHT", tapes: [
-    { file: "calm.mp3", icon: "🌙", short: "Night", name: "Mystical Forest", color: "#2f5d8a" },
+    { file: "night/mystical-forest.mp3", icon: "🌙", short: "Night", name: "Mystical Forest", color: "#2f5d8a" },
   ] },
   { name: "Metal show", short: "METAL", tapes: [
-    { file: "metal.mp3", icon: "🤘", short: "Metal", name: "Master of Puppets solo", color: "#b3121f" },
+    { file: "metal/master-of-puppets-solo.mp3", icon: "🤘", short: "Metal", name: "Master of Puppets solo", color: "#b3121f" },
   ] },
   { name: "Epic finale", short: "EPIC", tapes: [
-    { file: "epic.mp3", icon: "🔥", short: "Epic", name: "Epic finale", color: "#2a62d4" },
-    { file: "dragonborn.mp3", icon: "🐉", short: "Dragon", name: "Dragonborn", color: "#8a5a1c" },
+    { file: "epic/two-steps-from-hell-mix.mp3", icon: "🔥", short: "Epic", name: "Epic finale", color: "#2a62d4" },
+    { file: "epic/dragonborn.mp3", icon: "🐉", short: "Dragon", name: "Dragonborn", color: "#8a5a1c" },
   ] },
   { name: "Christmas", short: "XMAS", tapes: [
-    { file: "jingle-bell-rock.mp3", icon: "🔔", short: "Rock", name: "Jingle Bell Rock", color: "#c8102e" },
+    { file: "christmas/jingle-bell-rock.mp3", icon: "🔔", short: "Rock", name: "Jingle Bell Rock", color: "#c8102e" },
     { id: "XSXEaikz0Bc", icon: "🎄", short: "Xmas", name: "Christmas radio", color: "#1f7a3e", live: true },
   ] },
   // the Halloween screens' tracks (hwmusic.js), the label in their tape colour

@@ -99,8 +99,9 @@ const applyScreen = () => {
   setTimeout(done, 2500);  // never leave data-vt behind
 };
 
-// Screen music: the mp3 files of site/audio/ (copied to dist/audio/ by the build), each played by
-// an <audio> that is never shown nor put in the page. Browsers only allow sound after a user
+// Screen music: the audio files of the notes-musics repository, played from its GitHub Pages (the
+// "music" setting of the build, in <html data-music>; a file is named by its path there,
+// "jazz/just-one-more-drink.mp3"), each played by an <audio> that is never shown nor put in the page. Browsers only allow sound after a user
 // gesture, but they let a muted track autoplay: the screens start it muted when the page has had
 // no gesture yet, and unmute it on the first click or key press. The long tracks (jazz, epic,
 // night) only download what is played: the browser streams them by ranges.
@@ -111,8 +112,10 @@ const applyScreen = () => {
 //   dropTrack(track)                            stops it for good and lets the download go
 //   screenGesture()                             whether the page has had a click or key press yet
 const screenGesture = () => navigator.userActivation ? navigator.userActivation.hasBeenActive : false;
+const MUSIC = document.documentElement.dataset.music || "";
+const musicUrl = file => MUSIC + file;
 const preloadTrack = (file, { loop = true } = {}) => {
-  const track = new Audio(`audio/${file}`);
+  const track = new Audio(musicUrl(file));
   track.loop = loop;
   track.preload = "auto";
   return track;

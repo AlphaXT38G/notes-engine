@@ -4,7 +4,7 @@
 //   - behind the page: the moon as it is tonight, hills with pines and a lone tree, drifting mist,
 //     and from 4:45 the dawn rising from the horizon,
 //   - on the effects canvas (fx.js): twinkling stars, a shooting star now and then, fireflies,
-//   - the sounds of the night: a recording of a forest at night (audio/calm.mp3), a little
+//   - the sounds of the night: a recording of a forest at night (night/mystical-forest.mp3 of notes-musics), a little
 //     quieter than the other music, and the first birds at dawn (Web Audio); a firefly jar in the
 //     bottom left corner pauses / resumes them.
 // It is a "normal" screen (screens.js): the usual look of those hours, which Christmas, Halloween
@@ -238,7 +238,7 @@ fxLayers.push({
 });
 
 // ── Sounds of the night ──
-// The night is a recording: "Mystical Forest", the sounds of a forest at night (audio/calm.mp3),
+// The night is a recording: "Mystical Forest", the sounds of a forest at night (night/mystical-forest.mp3 of notes-musics),
 // looped, started at a random point so that each night sounds a little different. It plays a bit
 // quieter than the other music (volume 60 %). From the dawn it fades a little, and the first birds
 // sing over it (made in the page with Web Audio, below). Browsers only allow sound after a user
@@ -253,7 +253,7 @@ const calmClock = how => { if (calmAudio) calmAudio.ac[how](); };  // "resume" /
 const paintCalmVolume = () => { calmTrack.volume = CALM_VOLUME * (1 - calmDawn * .5); };  // lower as the dawn comes
 everySecond.push(() => { if (calmTrack) paintCalmVolume(); });
 const makeCalmTrack = muted => {
-  calmTrack = screenTrack("calm.mp3", { muted, start: duration => Math.random() * duration * .9 });
+  calmTrack = screenTrack("night/mystical-forest.mp3", { muted, start: duration => Math.random() * duration * .9 });
   paintCalmVolume();
 };
 
