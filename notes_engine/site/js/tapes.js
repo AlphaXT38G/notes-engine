@@ -4,7 +4,7 @@
 // piano keys). The music comes in bands, the deck's "stations": the Lofi Girl mixes from YouTube,
 // then the music of the screens (jazz bar, late night, metal show, epic finale, Christmas,
 // Halloween, sakura), then Radio Impuls and Hit Radio live. A tape is a YouTube video (`id`, a hidden <iframe> driven by
-// postMessage commands, like the Christmas radio: youtube.js, muted during ads), an audio file of
+// postMessage commands, like the Christmas mix: youtube.js, muted during ads), an audio file of
 // notes-musics (`file`, its path there) or a live stream (`stream`), both played by an <audio>.
 // The keys: ⏏ puts in the next tape of the band, ◀◀ / ▶▶ wind 30 s back / forward, ▶❚❚ plays or
 // pauses, and the station key goes to the next band (its name shows on the counter a moment).
@@ -19,11 +19,16 @@ const TAPE_BANDS = [
   { name: "Lofi", short: "LOFI", tapes: [
     { id: "_jH2oTNRe7g", icon: "🍂", short: "Autumn", name: "Cozy autumn lofi", color: "#d9622b" },
     { id: "XVFUtEh9zrY", icon: "☀️", short: "Summer", name: "Summer lofi", color: "#e8a92a" },
-    { id: "lTRiuFIWV54", icon: "📚", short: "1 A.M.", name: "1 A.M. study session", color: "#5a5fc4" },
+    { file: "lofi/1-am-study-session.mp3", icon: "📚", short: "1 A.M.", name: "1 A.M. study session", color: "#5a5fc4" },
+    { id: "FJs41oeAnHU", icon: "🌃", short: "Tokyo", name: "Tokyo lofi hip hop night", color: "#2a8fa8" },
+    { id: "09K79_bD6w0", icon: "📼", short: "Silence", name: "Japanese lofi night", color: "#7a4fb0" },
     { id: "rFZHOHl-L8A", icon: "📻", short: "Radio", name: "Lofi hip hop radio", color: "#c43d6a", live: true },
   ] },
   { name: "Jazz bar", short: "JAZZ", tapes: [
     { file: "jazz/just-one-more-drink.mp3", icon: "🎷", short: "Jazz", name: "Just One More Drink", color: "#9a4a1c" },
+    { file: "jazz/whispers-and-jazz.mp3", icon: "🕯️", short: "Noir", name: "Whispers & Jazz", color: "#5c3a2e" },
+    { file: "jazz/bunny-chic-swing-time.mp3", icon: "🐰", short: "Swing", name: "Bunny Chic Swing Time", color: "#c2417a" },
+    { file: "jazz/electro-swing-queen.mp3", icon: "🎤", short: "Queen", name: "Electro Swing Queen", color: "#8a6a12" },
   ] },
   { name: "Late night", short: "NIGHT", tapes: [
     { file: "night/mystical-forest.mp3", icon: "🌙", short: "Night", name: "Mystical Forest", color: "#2f5d8a" },
@@ -37,7 +42,7 @@ const TAPE_BANDS = [
   ] },
   { name: "Christmas", short: "XMAS", tapes: [
     { file: "christmas/jingle-bell-rock.mp3", icon: "🔔", short: "Rock", name: "Jingle Bell Rock", color: "#c8102e" },
-    { id: "XSXEaikz0Bc", icon: "🎄", short: "Xmas", name: "Christmas radio", color: "#1f7a3e", live: true },
+    { id: "7O9jGGm7PlE", icon: "🎄", short: "Xmas", name: "Lofi Girl - Christmas 2025", color: "#1f7a3e" },
   ] },
   // the Halloween screens' tracks (hwmusic.js), the label in their tape colour
   { name: "Halloween", short: "SPOOKY", tapes: HW_TRACKS.map(t => Object.assign({}, t, { color: t.tape })) },

@@ -50,12 +50,30 @@ const setAir = on => {
 setAir(document.body.classList.contains("night"));
 document.addEventListener("night", e => setAir(e.detail));
 
-// Night music: "Just One More Drink", jazz noir (jazz/just-one-more-drink.mp3), looped. It starts
-// by itself when the night begins. Browsers only allow sound after a user gesture, so if the page
+// Night music: JAZZ_TRACKS, one after the other, back to the first after the last: "Just One More
+// Drink" (jazz noir), "Whispers & Jazz" (1940s noir) and two electro swing mixes. The track playing
+// is remembered (jazz-track): the next night goes on with it. It starts by itself when the night begins. Browsers only allow sound after a user gesture, so if the page
 // has not had one yet it autoplays muted and the sound comes on at the first click or key press
 // anywhere. The vinyl button then plays / pauses it. Pausing is remembered: no autoplay on the next
 // visits until it is played again.
+const JAZZ_TRACKS = [
+  "jazz/just-one-more-drink.mp3",
+  "jazz/whispers-and-jazz.mp3",
+  "jazz/bunny-chic-swing-time.mp3",
+  "jazz/electro-swing-queen.mp3",
+];
+let jazzAt = (() => { try { return (+localStorage.getItem("jazz-track") || 0) % JAZZ_TRACKS.length; } catch (e) { return 0; } })();
 let jazz = null, playing = false, jazzSoundAt = 0;
+const jazzStart = muted => {  // the track jazzAt, playing; at its end the next one
+  jazz = screenTrack(JAZZ_TRACKS[jazzAt], { loop: false, muted });
+  jazz.addEventListener("ended", () => {
+    const wasMuted = jazz.muted;
+    dropTrack(jazz);
+    jazzAt = (jazzAt + 1) % JAZZ_TRACKS.length;
+    try { localStorage.setItem("jazz-track", jazzAt); } catch (e) {}
+    jazzStart(wasMuted);
+  });
+};
 const vinyl = document.createElement("button");
 vinyl.id = "vinyl";
 vinyl.type = "button";
@@ -69,7 +87,7 @@ const paintVinyl = () => {
   vinyl.title = !playing ? "Play the music" : jazzMuted() ? "Turn the sound on" : "Pause the music";
 };
 const play = (muted = false) => {
-  if (!jazz) jazz = screenTrack("jazz/just-one-more-drink.mp3", { muted });  // first time: muted when there was no gesture yet
+  if (!jazz) jazzStart(muted);  // first time: muted when there was no gesture yet
   else jazz.play().catch(() => {});
   playing = true;
   try { localStorage.removeItem("jazz"); } catch (e) {}

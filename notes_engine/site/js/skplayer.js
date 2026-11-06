@@ -15,11 +15,11 @@
 // { file }, its name, short: its cassette's label, bpm: its tempo, for the strikes, and color: its
 // flower's) to add a flower. They are also the cassette deck's "Sakura" band (tapes.js).
 const SK_TRACKS = [
-  { id: "tWzZhZU3sOI", name: "Wafū rock: shamisen and heavy bass", short: "Wafū", bpm: 140, color: "#6cd46a" },
+  { file: "sakura/wafu-rock.mp3", name: "Wafū rock: shamisen and heavy bass", short: "Wafū", bpm: 140, color: "#6cd46a" },
   { id: "AK51LblcEOw", name: "Sakura, traditional koto music", short: "Koto", bpm: 72, color: "#5aa8ff" },
   { id: "oxlaAdCY4jA", name: "Cherry blossom zen music", short: "Zen", bpm: 64, color: "#e8323c" },
-  { id: "iX-11teX4Wo", name: "Sengoshin, gods of the war drums", short: "Drums", bpm: 120, color: "#a066e0" },
-  { id: "S-h8z0zgX_U", name: "Tao, on the path of the samurai", short: "Tao", bpm: 64, color: "#2a2230" },
+  { file: "sakura/sengoshin.mp3", name: "Sengoshin, gods of the war drums", short: "Drums", bpm: 120, color: "#a066e0" },
+  { file: "sakura/tao.m4a", name: "Tao, on the path of the samurai", short: "Tao", bpm: 64, color: "#2a2230" },
   { id: "KBgRUHG6pHU", name: "Epic shamisen, heavy Japanese rock", short: "Epic", bpm: 140, color: "#ffd23a" },
 ];
 let skTrackAt = (() => { try { return (+localStorage.getItem("sk-track") || 0) % SK_TRACKS.length; } catch (e) { return 0; } })();

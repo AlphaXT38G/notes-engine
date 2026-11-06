@@ -1025,16 +1025,19 @@ everySecond.push(() => {
 
 // Christmas music, on a Christmas turntable in the bottom left corner (red lacquer and gold, snow
 // on the lid, holly, a candy-cane tonearm). Two records: "Jingle Bell Rock"
-// (christmas/jingle-bell-rock.mp3, looped, red label) or a live of Christmas songs from YouTube (the
-// only music of the page still from YouTube: a radio that never ends, no file; green label). The
+// (christmas/jingle-bell-rock.mp3, looped, red label) or Lofi Girl's Christmas 2025 mix from YouTube
+// (the only music of the page still from YouTube, played again from the start when it ends; green
+// label; its key stays "radio", the name of the live it replaced, for the choice remembered). The
 // other record waits in its sleeve, leaning behind the turntable: clicking the sleeve swaps them
 // and plays the new one. The turntable plays / pauses the record on; the choice and the pause
 // are remembered. It starts with the screen and keeps playing from day to night. As for the
 // jazz, without a user gesture yet it starts muted and the sound comes on at the first click or
 // key press.
-const XMAS_LIVE = "XSXEaikz0Bc";
-let carolsRock = null, carolsRadio = false;  // the record on: an <audio>, or the YouTube radio (youtube.js)
-const CAROLS_YT = {};  // the turntable, as the owner of the radio's player
+const XMAS_YT = "7O9jGGm7PlE";
+let carolsRock = null, carolsRadio = false;  // the record on: an <audio>, or the YouTube mix (youtube.js)
+const CAROLS_YT = {  // the turntable, as the owner of the mix's player: at its end, from the start again
+  onEnd: () => { ytSeek(XMAS_YT, CAROLS_YT, 0); ytPlay(XMAS_YT, CAROLS_YT, !carolsMuted); },
+};
 let carolsPlaying = false, carolsMuted = false, carolsSoundAt = 0;
 let carolsRecord = (() => { try { return localStorage.getItem("xmas-record") === "radio" ? "radio" : "rock"; } catch (e) { return "rock"; } })();
 const xmasDeck = document.createElement("button");
@@ -1045,7 +1048,7 @@ xmasDeck.innerHTML = '<span class="deck"><span class="lid"></span><span class="d
   '<path d="M20,14C26,4 34,8 39,4 36,9 38,12 34,14 37,16 34,20 36,24 30,20 26,22 20,14Z" fill="#17643a"/>' +
   '<circle cx="17" cy="15" r="3" fill="#d6203a"/><circle cx="23" cy="15" r="3" fill="#c8102e"/><circle cx="20" cy="11" r="3" fill="#e0263f"/></svg></span><span class="label"></span>';
 // The sleeve of the other record, behind the turntable: its cover shows what it would put on
-const XMAS_RECORDS = { rock: { icon: "🔔", short: "Rock", name: "Jingle Bell Rock" }, radio: { icon: "📻", short: "Radio", name: "Christmas radio" } };
+const XMAS_RECORDS = { rock: { icon: "🔔", short: "Rock", name: "Jingle Bell Rock" }, radio: { icon: "🎄", short: "Lofi", name: "Lofi Christmas" } };
 const xmasSleeve = document.createElement("button");
 xmasSleeve.id = "xsleeve";
 xmasSleeve.type = "button";
@@ -1065,36 +1068,36 @@ const paintDeck = () => {
   xmasSleeve.title = `Put on ${XMAS_RECORDS[other].name}`;
   xmasSleeve.setAttribute("aria-label", xmasSleeve.title);
 };
-// The radio's player stays in the page once made (paused when the record is off), and is muted
+// The mix's player stays in the page once made (paused when the record is off), and is muted
 // during YouTube's ads: coming back to it plays on with no new ad (youtube.js)
 const carolsStart = muted => {  // puts the chosen record on, playing
   if (carolsRecord === "rock") carolsRock = screenTrack("christmas/jingle-bell-rock.mp3", { muted });
-  else { ytPlay(XMAS_LIVE, CAROLS_YT, !muted); carolsRadio = true; }
+  else { ytPlay(XMAS_YT, CAROLS_YT, !muted); carolsRadio = true; }
   carolsMuted = muted;
 };
 const carolsStop = () => {  // takes the record off
   dropTrack(carolsRock);
-  if (carolsRadio) ytPause(XMAS_LIVE, CAROLS_YT);
+  if (carolsRadio) ytPause(XMAS_YT, CAROLS_YT);
   carolsRock = null;
   carolsRadio = false;
 };
 const carolsPlay = (muted = false) => {
   if (carolsRock) carolsRock.play().catch(() => {});
-  else if (carolsRadio) ytPlay(XMAS_LIVE, CAROLS_YT, !carolsMuted);
+  else if (carolsRadio) ytPlay(XMAS_YT, CAROLS_YT, !carolsMuted);
   else carolsStart(muted);
   carolsPlaying = true;
   try { localStorage.removeItem("xmas-music"); } catch (e) {}
   paintDeck();
 };
 const carolsPause = () => {
-  if (carolsRock) carolsRock.pause(); else ytPause(XMAS_LIVE, CAROLS_YT);
+  if (carolsRock) carolsRock.pause(); else ytPause(XMAS_YT, CAROLS_YT);
   carolsPlaying = false;
   try { localStorage.setItem("xmas-music", "off"); } catch (e) {}
   paintDeck();
 };
 const carolsSound = () => {
   if (!carolsMuted) return;
-  if (carolsRock) carolsRock.muted = false; else ytSound(XMAS_LIVE, CAROLS_YT, true);
+  if (carolsRock) carolsRock.muted = false; else ytSound(XMAS_YT, CAROLS_YT, true);
   carolsMuted = false;
   carolsSoundAt = performance.now();
   paintDeck();

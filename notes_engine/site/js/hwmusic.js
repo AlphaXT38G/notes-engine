@@ -19,7 +19,7 @@
 const HW_TRACKS = [
   { id: "FEKpdb4Kkp4", name: "Lofi Girl - Halloween 2025", short: "2025", icon: "🎃", color: "#ff8a2a", tape: "#c4561c" },
   { id: "0sfDth4lMLc", name: "Spooky lofi radio", short: "Spooky", icon: "👻", color: "#a66bff", tape: "#6a3d9a", live: true },
-  { id: "D6TSIHxNzfU", name: "Lofi Girl - Halloween 2024", short: "2024", icon: "🦇", color: "#62d03e", tape: "#3d7a24" },
+  { file: "halloween/lofi-girl-halloween-2024.mp3", name: "Lofi Girl - Halloween 2024", short: "2024", icon: "🦇", color: "#62d03e", tape: "#3d7a24" },
   { id: "vuPhCSunt5U", name: "Autumn village ambience", short: "Cozy", icon: "🏚️", color: "#e8443a", tape: "#a8302a" },
 ];
 const HW_YT = {};  // the Halloween player, as the owner of a YouTube player (youtube.js)
