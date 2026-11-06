@@ -326,12 +326,13 @@ const setMetalStage = on => {
 setMetalStage(document.body.classList.contains("metal"));
 document.addEventListener("metal", e => setMetalStage(e.detail));
 
-// Metal music: a cover of the Master of Puppets solo (metal/master-of-puppets-solo.mp3 of notes-musics, 37 s), played three times in
-// a row: the show ends with the third play. It is in sync with the takeover: opened late, it starts
-// at the right play, further into the song, so both end together. It starts by itself when the
-// phase begins. Browsers only allow sound after a user gesture, so if the page has not had one yet
-// the song autoplays muted and the sound comes on at the first click or key press anywhere (the
-// song keeps its place in time). The amp plays / pauses it; the end of the phase stops it.
+// Metal music: a cover of the Master of Puppets solo (metal/master-of-puppets-solo.mp3, 37 s),
+// played three times in a row: the show ends with the third play. It is in sync with the takeover:
+// opened late, it starts at the right play, further into the song, so both end together. It starts
+// by itself when the phase begins. Browsers only allow sound after a user gesture, so if the page
+// has not had one yet the song autoplays muted and the sound comes on at the first click or key
+// press anywhere (the song keeps its place in time). The amp plays / pauses it; the end of the
+// phase stops it.
 let riff = null, rocking = false, soundAt = 0;
 const amp = document.createElement("button");
 amp.id = "amp";

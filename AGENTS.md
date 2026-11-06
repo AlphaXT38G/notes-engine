@@ -35,9 +35,8 @@ notes_engine/site/    the index page (HTML, CSS, JS inlined into one dist/index.
   template.html         the HTML skeleton, with {{placeholders}}
   manifest.json         which CSS / JS files go in the page, IN ORDER
   css/  js/             one file per theme / screen / feature
-  img/  audio/          images and sound effects (wolf.mp3), copied as files to dist/img/ and
-                        dist/audio/ (too heavy to inline; the music is not here, see "The music"
-                        below); img/bartender/ holds the closing bartender's layers (the Gigachad
+  img/  audio/          images and sound effects, copied as files to dist/img/ and dist/audio/
+                        (too heavy to inline; the music is in notes-musics, see "The music" below); img/bartender/ holds the closing bartender's layers (the Gigachad
                         meme photo, dressed as a bartender by an image generator, used as an
                         illustration in this non-commercial project); frost.png is the frost the
                         snowman's snowball leaves on the window; screamer.webp is Halloween's zombie,
@@ -75,15 +74,12 @@ In the rest of this guide, `site/` and `shared/` are `notes_engine/site/` and `n
   `repo`, no link.
 - **Page texts**: `{{title}}`, `{{subtitle}}` and `{{short}}` in `template.html` come from
   `site.json`; scripts read the short name from `<html data-short>` (the amp's logo, `metal.js`).
-- **The music**: the audio files live in their own repository, `notes-musics` (one folder per
-  screen: `jazz/`, `night/`, `metal/`, `epic/`, `christmas/`, `snowman/`...), published on
-  GitHub Pages. The build writes the `music` setting (its address by default; the
-  `NOTES_MUSIC` environment variable overrides it, e.g. a local `http.server` of notes-musics) in
-  `<html data-music>`, and `preloadTrack()` / `screenTrack()` (`screens.js`) ask for
-  `<music><path>`. Nothing is copied into `dist/`. A player names a track by its path in
-  notes-musics (`"jazz/just-one-more-drink.mp3"`); `tests/test_example.py` checks that every
-  such path exists when notes-musics sits next to the engine. Add the file there first (its
-  README), then name it here.
+- **The music**: the audio files live in the `notes-musics` repository (one folder per screen),
+  served by GitHub Pages; nothing is copied into `dist/`. A player names a track by its path
+  there (`"jazz/just-one-more-drink.mp3"`), and `preloadTrack()` (`screens.js`) prefixes it with
+  the `music` setting, written in `<html data-music>`. Add the file to notes-musics first (see its
+  README), then name it here: the tests check that notes-musics has every path committed (CI
+  clones it next to the engine).
 - **Versioning**: a notes repository pins a tag of the engine (`pip install` of that tag and
   `uses: .../pages.yml@tag`, both). Change the contract (a new setting, a
   renamed file) in a new tag, never silently.
@@ -98,9 +94,10 @@ python -m http.server 8765 --directory dist   # then open http://localhost:8765/
 ```
 
 - **Windows**: prefix the build with `PYTHONIOENCODING=utf-8`, or the console cannot print ✔ / →.
-- **Music offline, or before a new track is pushed**: serve notes-musics too and build with it,
-  `python -m http.server 8766 --directory ../notes-musics`, then
-  `NOTES_MUSIC=http://localhost:8766/ python -m notes_engine --root ../notes_ba5 --index-only`.
+- **Music not yet pushed to notes-musics**: serve it and build with `NOTES_MUSIC`, which overrides
+  the `music` setting: `python -m http.server 8766 --directory ../notes-musics`, then
+  `NOTES_MUSIC=http://localhost:8766/ python -m notes_engine --root ../notes_ba5 --index-only`
+  (that server cannot seek in a track; GitHub Pages can).
 - **Optional tools**: `pdftoppm` and `pdftotext` (poppler) make the thumbnails; without them the
   page shows names only. `pdftotext` also extracts the text of every PDF (cached next to it,
   `<name>.pdf.txt`) into `dist/search.json`, so the search field finds words inside the
@@ -153,7 +150,7 @@ The third tease (hat, nose, melting him flat) makes him bend down, scoop snow fr
 a snowball and throw it in our face: it grows until it fills the window and splashes, then lumps
 of snow, blinks, frost and a slow pointer (about 15 s). His fifth, lowest button plays
 Megalovania, one note per click (his eye glows blue); the 22nd click plays the whole song
-(`snowman/megalovania.mp3` of notes-musics) and starts a fight in the style of the old pixel RPG duels: the page
+(`snowman/megalovania.mp3`) and starts a fight in the style of the old pixel RPG duels: the page
 goes black around him and the fight lands with a quake (a run of jolts and thuds, another when the
 attacks begin); he rises, bigger, floating, his bottom out of the window, before a column of blue
 fire, and a blue flame rises from his glowing eye; the battle box takes the place of the courses
@@ -248,8 +245,9 @@ of the moment (e.g. on a normal day, `boo`, the saxophonist, then `armstrong` sh
 
 The result is a single self-contained `dist/index.html`: no request for CSS or JS. Only images
 (`site/img/`, e.g. the bartender's head) are separate files, copied to `dist/img/`, with the sound
-effects (`dist/audio/`), the music (played from notes-musics, see "The music" below) and `dist/search.json`, the text of the PDFs (`notes_engine/search.py`), fetched by
-`search.js` the first time the search field is used.
+effects (`dist/audio/`) and `dist/search.json`, the text of the PDFs (`notes_engine/search.py`),
+fetched by `search.js` the first time the search field is used. The music comes from notes-musics
+(see "The music" above).
 
 In the Previews view, a document alone in its list (the course notes, the only document of a
 section: `li.solo`, set by `page.py`) or with extracts found inside it (`li.found`) takes a whole
@@ -297,7 +295,7 @@ The search field finds subjects and documents by name (`ui.js`) and by what the 
 | `blackhole.js` | `createBlackHole()`: the Konami black hole, ray-traced in WebGL (light bent by gravity, disk with Doppler beaming, lensed stars), on two canvases so the page falls between its sky and its disk |
 | `supernova.js` | `createSupernova()`: the multi-stage supernova that ends the Konami black hole (flash, shock wave, ejecta, nebula, pulsar), one WebGL canvas over the page |
 | `konami.js` | Konami code: black hole (CSS drawing as a fallback without WebGL) swallowing the page letter by letter, then its boxes and the music player (the Christmas garland, jar, sax and guitar fade out, `konami.css`; they stay hidden during the party theme), until it overheats, implodes and explodes in a supernova; confetti, party theme |
-| `screens.js` | **the screen engine**: `SCREENS`, `SCHEDULE`, `OVERRIDES`, `everySecond`, `applyScreen()`; `screenTrack()` / `preloadTrack()` / `dropTrack()` for the screens' music, `musicUrl()` (a file of notes-musics by its path there); `musicButtons`, the play / pause buttons the space bar clicks |
+| `screens.js` | **the screen engine**: `SCREENS`, `SCHEDULE`, `OVERRIDES`, `everySecond`, `applyScreen()`; `screenTrack()` / `preloadTrack()` / `dropTrack()` for the screens' music; `musicButtons`, the play / pause buttons the space bar clicks |
 | `youtube.js` | the YouTube players of the music (the day's cassettes, the Christmas radio): `ytPlay()` / `ytPause()` / `ytSound()` / `ytSeek()` / `ytWarm()`. One hidden `<iframe>` per video, kept once made (coming back to a video plays on, with no new ad), muted while YouTube plays an ad (the video's own time stands still), and made ahead by `ytWarm()` to go through its ads muted (all of them, by `ytall.js`) |
 | `jazz.js` | jazz bar screens (`evening`, `closing`): smoke, notes, turntable playing `jazz/just-one-more-drink.mp3`, neon sign going out |
 | `closing.js` | closing time: the life-size bartender behind his bar (photo layers from `img/bartender/`: head nodding, forearm tapping the desk bell, chest breathing), swinging lamp, desk bell "ding" (Web Audio), typed speech, chalkboard with countdown, "Good night" |
@@ -485,9 +483,9 @@ Example: a calm "dawn" screen from 06:00 to 07:00.
 - **localStorage can throw** (private mode): always `try { ... } catch (e) {}`.
 - **Sound needs a user gesture**: players start muted when there was none, and unmute on the
   first click (see `jazz.js`, `metal.js`); a Web Audio context waits suspended and is resumed
-  on the first click (see the dawn birds in `calm.js`). Music is an audio file of the notes-musics
-  repository (see "The music"), named by its path there, played with `screenTrack()` (`screens.js`, or loaded ahead with `preloadTrack()` when a show
-  is coming), never put in the page, and stopped with `dropTrack()` when its screen ends (the
+  on the first click (see the dawn birds in `calm.js`). Music is an audio file of notes-musics
+  (see "The music"), played with `screenTrack()` (`screens.js`, or loaded ahead with
+  `preloadTrack()` when a show is coming), never put in the page, and stopped with `dropTrack()` when its screen ends (the
   day's cassette deck also plays a radio's live stream, `tapes.js`, the same way). The
   YouTube players left (the Christmas radio, the day's cassettes in `tapes.js`) go through
   `youtube.js`: hidden `<iframe>`s driven by `postMessage` commands, never removed, muted during

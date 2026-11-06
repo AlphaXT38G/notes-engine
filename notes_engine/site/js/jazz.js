@@ -50,11 +50,11 @@ const setAir = on => {
 setAir(document.body.classList.contains("night"));
 document.addEventListener("night", e => setAir(e.detail));
 
-// Night music: "Just One More Drink", jazz noir (jazz/just-one-more-drink.mp3 of notes-musics), looped. It starts by itself when
-// the night begins. Browsers only allow sound after a user gesture, so if the page has not had one
-// yet it autoplays muted and the sound comes on at the first click or key press anywhere. The
-// vinyl button then plays / pauses it. Pausing is remembered: no autoplay on the next visits until
-// it is played again.
+// Night music: "Just One More Drink", jazz noir (jazz/just-one-more-drink.mp3), looped. It starts
+// by itself when the night begins. Browsers only allow sound after a user gesture, so if the page
+// has not had one yet it autoplays muted and the sound comes on at the first click or key press
+// anywhere. The vinyl button then plays / pauses it. Pausing is remembered: no autoplay on the next
+// visits until it is played again.
 let jazz = null, playing = false, jazzSoundAt = 0;
 const vinyl = document.createElement("button");
 vinyl.id = "vinyl";

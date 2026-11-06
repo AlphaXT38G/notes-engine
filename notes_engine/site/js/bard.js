@@ -7,9 +7,9 @@
 // old parchment standing behind the painting, its name inked in pixels on the part that peeks out
 // above the frame: clicking it changes the song. Clicking the knight plays / pauses.
 // The finale has two songs (BARD_SONGS), each with its mood in the scene: the Two Steps From Hell
-// mix (epic/two-steps-from-hell-mix.mp3 of notes-musics: blue arcane fire, blue motes) and Dragonborn, the theme of Skyrim
-// (epic/dragonborn.mp3: a red fire, a starry night, a dragon crossing the moon). When one ends
-// the next one comes; the song chosen is remembered.
+// mix (epic/two-steps-from-hell-mix.mp3: blue arcane fire, blue motes) and Dragonborn, the theme of
+// Skyrim (epic/dragonborn.mp3: a red fire, a starry night, a dragon crossing the moon). When one
+// ends the next one comes; the song chosen is remembered.
 // Playing, he strums at the song's pace, nodding, his left hand moving along the neck; paused, he
 // dozes, chin down, and the fire burns lower. A song change is a little show (bardNext): he stops
 // and looks up at the fire, strums a flourish (a chord plucked with Web Audio), the fire is drawn

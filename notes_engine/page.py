@@ -221,8 +221,7 @@ def build_index():
     dist = config.P.dist
     dist.mkdir(exist_ok=True)
     # Images (site/img/) and sound effects (site/audio/) are the only files of the engine the page
-    # loads besides itself: too heavy to inline. The music is not copied: the page plays it from
-    # the notes-musics repository (the "music" setting)
+    # loads besides itself: too heavy to inline. The music stays in notes-musics ("music" setting)
     for folder in ("img", "audio"):
         if (SITE / folder).is_dir():
             shutil.copytree(SITE / folder, dist / folder, dirs_exist_ok=True)

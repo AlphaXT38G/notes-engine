@@ -22,6 +22,9 @@ jobs:
           sudo apt-get install -y --no-install-recommends latexmk lmodern \
             texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended \
             texlive-fonts-extra texlive-science texlive-lang-french poppler-utils
+      # the list of the music files only (no contents): the tests check every track the page names
+      - name: Clone notes-musics next to the engine
+        run: git clone --quiet --depth 1 --filter=blob:none --no-checkout https://github.com/${{ github.repository_owner }}/notes-musics ../notes-musics
       - name: Tests (builds the example notes repository)
         run: python -m unittest discover -s tests -v
       - name: The package installs and ships the page

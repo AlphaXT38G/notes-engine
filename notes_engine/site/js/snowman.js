@@ -317,7 +317,7 @@ const smMeltedFlat = async () => {  // a puddle, then he builds himself up again
 
 // ── His buttons: a xylophone (G E D C from the top), and the lowest one plays Megalovania, one note
 // a click (in chiptune), his eye glowing blue while it lasts. Spammed on to the 22nd note, the real
-// song starts (snowman/megalovania.mp3 of notes-musics, loaded ahead from the 10th): it plays to its end, unless the
+// song starts (snowman/megalovania.mp3, loaded ahead from the 10th): it plays to its end, unless the
 // button is clicked again, which stops it.
 const SM_NOTES = [784, 659.3, 587.3, 523.3], SM_BTN_AT = [[178, 240], [181, 268], [179, 297], [184, 392], [187, 436]];
 const SM_MEGA = (() => {  // D D D' A G# G F D F G, then the same on C, B and B flat

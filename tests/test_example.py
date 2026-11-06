@@ -66,17 +66,22 @@ class MusicTest(unittest.TestCase):
                 found.setdefault(m[1], js.name)
         return found
 
-    def test_no_music_left_in_the_engine(self):
+    def test_engine_audio_is_sound_effects_only(self):
+        # the engine's audio/ holds short sound effects (the howl: 0.2 MB); music goes to notes-musics
         audio = HERE / "notes_engine" / "site" / "audio"
-        self.assertEqual(sorted(p.name for p in audio.iterdir()), ["wolf.mp3"])
+        big = [p.name for p in audio.iterdir() if p.stat().st_size > 1024 * 1024]
+        self.assertEqual(big, [], "music belongs in notes-musics")
 
     def test_players_name_tracks(self):
         self.assertIn("jazz/just-one-more-drink.mp3", self.tracks())
 
-    @unittest.skipUnless(MUSICS.is_dir(), "notes-musics is not next to the engine")
-    def test_every_track_exists_in_notes_musics(self):
-        missing = [f"{path} (in {js})" for path, js in self.tracks().items() if not (MUSICS / path).is_file()]
-        self.assertEqual(missing, [], "missing from notes-musics")
+    @unittest.skipUnless((MUSICS / ".git").exists(), "notes-musics is not cloned next to the engine")
+    def test_every_track_is_committed_in_notes_musics(self):
+        # its committed files, what GitHub Pages serves (CI clones it without the files' contents)
+        committed = set(subprocess.run(["git", "-C", str(MUSICS), "ls-tree", "-r", "--name-only", "HEAD"],
+                                       capture_output=True, text=True, check=True).stdout.split())
+        missing = [f"{path} (in {js})" for path, js in self.tracks().items() if path not in committed]
+        self.assertEqual(missing, [], "not committed in notes-musics")
 
 
 @unittest.skipUnless(shutil.which("latexmk"), "latexmk is not installed")

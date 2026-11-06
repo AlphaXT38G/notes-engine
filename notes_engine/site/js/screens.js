@@ -99,12 +99,12 @@ const applyScreen = () => {
   setTimeout(done, 2500);  // never leave data-vt behind
 };
 
-// Screen music: the audio files of the notes-musics repository, played from its GitHub Pages (the
-// "music" setting of the build, in <html data-music>; a file is named by its path there,
-// "jazz/just-one-more-drink.mp3"), each played by an <audio> that is never shown nor put in the page. Browsers only allow sound after a user
-// gesture, but they let a muted track autoplay: the screens start it muted when the page has had
-// no gesture yet, and unmute it on the first click or key press. The long tracks (jazz, epic,
-// night) only download what is played: the browser streams them by ranges.
+// Screen music: the audio files of the notes-musics repository, each named by its path there
+// ("jazz/just-one-more-drink.mp3") and asked for at the address of <html data-music> (the build's
+// "music" setting), each played by an <audio> that is never shown nor put in the page. Browsers
+// only allow sound after a user gesture, but they let a muted track autoplay: the screens start it
+// muted when the page has had no gesture yet, and unmute it on the first click or key press. The
+// long tracks (jazz, epic, night) only download what is played: the browser streams them by ranges.
 //   screenTrack(file, { loop, muted, start })   a new track, playing. start: seconds into it, or a
 //                                               function of the track's duration giving them
 //   preloadTrack(file, { loop })                a new track, loading but paused: it starts at once
@@ -113,9 +113,8 @@ const applyScreen = () => {
 //   screenGesture()                             whether the page has had a click or key press yet
 const screenGesture = () => navigator.userActivation ? navigator.userActivation.hasBeenActive : false;
 const MUSIC = document.documentElement.dataset.music || "";
-const musicUrl = file => MUSIC + file;
 const preloadTrack = (file, { loop = true } = {}) => {
-  const track = new Audio(musicUrl(file));
+  const track = new Audio(MUSIC + file);
   track.loop = loop;
   track.preload = "auto";
   return track;

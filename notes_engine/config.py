@@ -35,9 +35,8 @@ DEFAULTS = {
     # One accent per subject (in subjects.json order), override with "color" per subject
     "palette": ["#3b6fd8", "#d9622b", "#2f9e6b", "#b4459a", "#c99a1c", "#7a55d1", "#1f9bb0", "#d04452"],
     "week_folders": ["week", "notes"], # folders whose PDFs are weekly notes
-    # Where the music is: the address of the notes-musics repository on GitHub Pages, which the
-    # players ask for <music><folder>/<file> ("jazz/just-one-more-drink.mp3"). The NOTES_MUSIC
-    # environment variable overrides it for a build (a local server of notes-musics, say).
+    # Address of the notes-musics repository (the music files) on GitHub Pages; the NOTES_MUSIC
+    # environment variable overrides it for a build
     "music": "https://alphaxt38g.github.io/notes-musics/",
 }
 
@@ -62,9 +61,8 @@ class Project:
                 raise SystemExit(f"{site_json}: unknown setting(s) {', '.join(sorted(unknown))}")
             settings.update(custom)
         self.settings = settings
-        # the music's base address, always ending with "/" so that a file's path can follow it
-        music = os.environ.get("NOTES_MUSIC") or settings["music"]
-        self.music = music.rstrip("/") + "/" if music else ""
+        # ends with "/": the players put a file's path right after it
+        self.music = (os.environ.get("NOTES_MUSIC") or settings["music"]).rstrip("/") + "/"
         self.kinds = settings["kinds"]
         self.order = list(self.kinds)  # course first, then cheatsheet, then anything else
         self.pdftoppm = shutil.which("pdftoppm")    # makes the previews; optional
