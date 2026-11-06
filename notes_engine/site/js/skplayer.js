@@ -11,7 +11,7 @@
 // flower's tooltip. The play / pause (.skplay, hidden) is in musicButtons: the space bar clicks it.
 // Nothing plays by itself; the track chosen is remembered (sk-track). The tracks are YouTube
 // videos, played through youtube.js (hidden players, muted during their ads, made ahead by
-// ytall.js), or mp3 files of site/audio/ (screenTrack, screens.js): add one to SK_TRACKS ({ id } or
+// ytall.js), or audio files of notes-musics (screenTrack, screens.js): add one to SK_TRACKS ({ id } or
 // { file }, its name, short: its cassette's label, bpm: its tempo, for the strikes, and color: its
 // flower's) to add a flower. They are also the cassette deck's "Sakura" band (tapes.js).
 const SK_TRACKS = [

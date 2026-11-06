@@ -317,7 +317,7 @@ const smMeltedFlat = async () => {  // a puddle, then he builds himself up again
 
 // ── His buttons: a xylophone (G E D C from the top), and the lowest one plays Megalovania, one note
 // a click (in chiptune), his eye glowing blue while it lasts. Spammed on to the 22nd note, the real
-// song starts (audio/megalovania.mp3, loaded ahead from the 10th): it plays to its end, unless the
+// song starts (snowman/megalovania.mp3, loaded ahead from the 10th): it plays to its end, unless the
 // button is clicked again, which stops it.
 const SM_NOTES = [784, 659.3, 587.3, 523.3], SM_BTN_AT = [[178, 240], [181, 268], [179, 297], [184, 392], [187, 436]];
 const SM_MEGA = (() => {  // D D D' A G# G F D F G, then the same on C, B and B flat
@@ -359,7 +359,7 @@ const smMegalovania = () => {
   }
   smMegaAt = now;
   smMegaI++;
-  if (smMegaI === 10 && !smMegaTrack) smMegaTrack = preloadTrack("megalovania.mp3", { loop: false });
+  if (smMegaI === 10 && !smMegaTrack) smMegaTrack = preloadTrack("snowman/megalovania.mp3", { loop: false });
   if (smMegaI >= 4) snowman.classList.add("badtime");
   if (smMegaI === 18) smSays("You're gonna have a bad time.", 2600);
   clearTimeout(smMegaEnd);
@@ -370,7 +370,7 @@ const smMegalovania = () => {
   }
   // the song, whole, his eye glowing all along
   smMegaSong = true;
-  const track = smMegaTrack || (smMegaTrack = preloadTrack("megalovania.mp3", { loop: false }));
+  const track = smMegaTrack || (smMegaTrack = preloadTrack("snowman/megalovania.mp3", { loop: false }));
   track.addEventListener("ended", () => { if (smMegaTrack === track) smMegaStop(); });
   track.play().catch(() => { if (smMegaTrack === track) smMegaStop(); });
   smHush(true);

@@ -7,9 +7,9 @@
 // old parchment standing behind the painting, its name inked in pixels on the part that peeks out
 // above the frame: clicking it changes the song. Clicking the knight plays / pauses.
 // The finale has two songs (BARD_SONGS), each with its mood in the scene: the Two Steps From Hell
-// mix (audio/epic.mp3: blue arcane fire, blue motes) and Dragonborn, the theme of Skyrim
-// (audio/dragonborn.mp3: a red fire, a starry night, a dragon crossing the moon). When one ends
-// the next one comes; the song chosen is remembered.
+// mix (epic/two-steps-from-hell-mix.mp3: blue arcane fire, blue motes) and Dragonborn, the theme of
+// Skyrim (epic/dragonborn.mp3: a red fire, a starry night, a dragon crossing the moon). When one
+// ends the next one comes; the song chosen is remembered.
 // Playing, he strums at the song's pace, nodding, his left hand moving along the neck; paused, he
 // dozes, chin down, and the fire burns lower. A song change is a little show (bardNext): he stops
 // and looks up at the fire, strums a flourish (a chord plucked with Web Audio), the fire is drawn
@@ -19,9 +19,9 @@
 // As the other screens' music, the song autoplays muted when the page has had no gesture yet, and
 // the sound comes on at the first click or key press anywhere.
 const BARD_SONGS = [
-  { file: "epic.mp3", name: "Two Steps From Hell", mood: 0, tempo: 1.25,
+  { file: "epic/two-steps-from-hell-mix.mp3", name: "Two Steps From Hell", mood: 0, tempo: 1.25,
     chord: [110, 164.81, 220, 261.63, 329.63] },  // A minor
-  { file: "dragonborn.mp3", name: "Dragonborn", mood: 1, tempo: 1.55,
+  { file: "epic/dragonborn.mp3", name: "Dragonborn", mood: 1, tempo: 1.55,
     chord: [73.42, 146.83, 220, 293.66, 349.23] },  // D minor
 ];
 let bardSong = (() => {

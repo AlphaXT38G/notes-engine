@@ -3,9 +3,9 @@
 // enamelled cast-iron pot on a wooden board, drawn in hwcocotte.js): while the music plays its lid
 // lifts and bobs as if simmering, and steam escapes.
 // The tracks are HW_TRACKS: a YouTube video (id, played through youtube.js, its ads muted) or an
-// mp3 of site/audio (file, screenTrack); its colour is the soup's while it plays. The day's
-// cassette deck plays them too (tapes.js: icon, live, and tape, its label's colour, dark enough
-// for white letters). As the
+// audio file of notes-musics (file: its path there, screenTrack); its colour is the soup's while
+// it plays. The day's cassette deck plays them too (tapes.js: icon, live, and tape, its label's
+// colour, dark enough for white letters). As the
 // Christmas turntable: a click on the player plays / pauses; the choice and the pause are
 // remembered; without a user gesture yet it starts muted and the sound comes at the first click
 // or key press.

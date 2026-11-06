@@ -35,8 +35,8 @@ notes_engine/site/    the index page (HTML, CSS, JS inlined into one dist/index.
   template.html         the HTML skeleton, with {{placeholders}}
   manifest.json         which CSS / JS files go in the page, IN ORDER
   css/  js/             one file per theme / screen / feature
-  img/  audio/          images and music, copied as files to dist/img/ and dist/audio/ (too heavy to
-                        inline); img/bartender/ holds the closing bartender's layers (the Gigachad
+  img/  audio/          images and sound effects, copied as files to dist/img/ and dist/audio/
+                        (too heavy to inline; the music is in notes-musics, see "The music" below); img/bartender/ holds the closing bartender's layers (the Gigachad
                         meme photo, dressed as a bartender by an image generator, used as an
                         illustration in this non-commercial project); frost.png is the frost the
                         snowman's snowball leaves on the window; screamer.webp is Halloween's zombie,
@@ -74,6 +74,12 @@ In the rest of this guide, `site/` and `shared/` are `notes_engine/site/` and `n
   `repo`, no link.
 - **Page texts**: `{{title}}`, `{{subtitle}}` and `{{short}}` in `template.html` come from
   `site.json`; scripts read the short name from `<html data-short>` (the amp's logo, `metal.js`).
+- **The music**: the audio files live in the `notes-musics` repository (one folder per screen),
+  served by GitHub Pages; nothing is copied into `dist/`. A player names a track by its path
+  there (`"jazz/just-one-more-drink.mp3"`), and `preloadTrack()` (`screens.js`) prefixes it with
+  the `music` setting, written in `<html data-music>`. Add the file to notes-musics first (see its
+  README), then name it here: the tests check that notes-musics has every path committed (CI
+  clones it next to the engine).
 - **Versioning**: a notes repository pins a tag of the engine (`pip install` of that tag and
   `uses: .../pages.yml@tag`, both). Change the contract (a new setting, a
   renamed file) in a new tag, never silently.
@@ -88,6 +94,10 @@ python -m http.server 8765 --directory dist   # then open http://localhost:8765/
 ```
 
 - **Windows**: prefix the build with `PYTHONIOENCODING=utf-8`, or the console cannot print ✔ / →.
+- **Music not yet pushed to notes-musics**: serve it and build with `NOTES_MUSIC`, which overrides
+  the `music` setting: `python -m http.server 8766 --directory ../notes-musics`, then
+  `NOTES_MUSIC=http://localhost:8766/ python -m notes_engine --root ../notes_ba5 --index-only`
+  (that server cannot seek in a track; GitHub Pages can).
 - **Optional tools**: `pdftoppm` and `pdftotext` (poppler) make the thumbnails; without them the
   page shows names only. `pdftotext` also extracts the text of every PDF (cached next to it,
   `<name>.pdf.txt`) into `dist/search.json`, so the search field finds words inside the
@@ -140,7 +150,7 @@ The third tease (hat, nose, melting him flat) makes him bend down, scoop snow fr
 a snowball and throw it in our face: it grows until it fills the window and splashes, then lumps
 of snow, blinks, frost and a slow pointer (about 15 s). His fifth, lowest button plays
 Megalovania, one note per click (his eye glows blue); the 22nd click plays the whole song
-(`audio/megalovania.mp3`) and starts a fight in the style of the old pixel RPG duels: the page
+(`snowman/megalovania.mp3`) and starts a fight in the style of the old pixel RPG duels: the page
 goes black around him and the fight lands with a quake (a run of jolts and thuds, another when the
 attacks begin); he rises, bigger, floating, his bottom out of the window, before a column of blue
 fire, and a blue flame rises from his glowing eye; the battle box takes the place of the courses
@@ -234,9 +244,10 @@ of the moment (e.g. on a normal day, `boo`, the saxophonist, then `armstrong` sh
   before the first paint.
 
 The result is a single self-contained `dist/index.html`: no request for CSS or JS. Only images
-(`site/img/`, e.g. the bartender's head) are separate files, copied to `dist/img/`, with the music
-(`dist/audio/`) and `dist/search.json`, the text of the PDFs (`notes_engine/search.py`), fetched by
-`search.js` the first time the search field is used.
+(`site/img/`, e.g. the bartender's head) are separate files, copied to `dist/img/`, with the sound
+effects (`dist/audio/`) and `dist/search.json`, the text of the PDFs (`notes_engine/search.py`),
+fetched by `search.js` the first time the search field is used. The music comes from notes-musics
+(see "The music" above).
 
 In the Previews view, a document alone in its list (the course notes, the only document of a
 section: `li.solo`, set by `page.py`) or with extracts found inside it (`li.found`) takes a whole
@@ -286,12 +297,12 @@ The search field finds subjects and documents by name (`ui.js`) and by what the 
 | `konami.js` | Konami code: black hole (CSS drawing as a fallback without WebGL) swallowing the page letter by letter, then its boxes and the music player (the Christmas garland, jar, sax and guitar fade out, `konami.css`; they stay hidden during the party theme), until it overheats, implodes and explodes in a supernova; confetti, party theme |
 | `screens.js` | **the screen engine**: `SCREENS`, `SCHEDULE`, `OVERRIDES`, `everySecond`, `applyScreen()`; `screenTrack()` / `preloadTrack()` / `dropTrack()` for the screens' music; `musicButtons`, the play / pause buttons the space bar clicks |
 | `youtube.js` | the YouTube players of the music (the day's cassettes, the Christmas radio): `ytPlay()` / `ytPause()` / `ytSound()` / `ytSeek()` / `ytWarm()`. One hidden `<iframe>` per video, kept once made (coming back to a video plays on, with no new ad), muted while YouTube plays an ad (the video's own time stands still), and made ahead by `ytWarm()` to go through its ads muted (all of them, by `ytall.js`) |
-| `jazz.js` | jazz bar screens (`evening`, `closing`): smoke, notes, turntable playing `audio/jazz.mp3`, neon sign going out |
+| `jazz.js` | jazz bar screens (`evening`, `closing`): smoke, notes, turntable playing `jazz/just-one-more-drink.mp3`, neon sign going out |
 | `closing.js` | closing time: the life-size bartender behind his bar (photo layers from `img/bartender/`: head nodding, forearm tapping the desk bell, chest breathing), swinging lamp, desk bell "ding" (Web Audio), typed speech, chalkboard with countdown, "Good night" |
 | `fx.js` | the effects canvas of every screen: `fxLayers` (by `<body>` class), `blob()`, the animation loop |
 | `christmas.js` | Christmas screens: date override and `yeti` code, garland, winter scene (mountains and chalets, moon, tree and gifts drawn in volume with a shared `bow3d` and `giftTag`, snowman), night lights canvases (tree, garland halos), snow, sleigh, music (Jingle Bell Rock or the YouTube Christmas radio, swapped with the sleeve behind the turntable, or paused), hidden sax (the `armstrong` code) and guitar (the guitar draws the gifts in front of it again over itself, to stand behind them while staying clickable), firefly jar swinging under the garland (the `peace` code; a pendulum pushed by the wind, the mouse and scrolling, asleep once settled) |
 | `stuckpointer.js` | `stuckPointer()`: after something in the face (the snowman's snowball, the spider's web), a stuck pointer drags slowly behind the real one for a while, and a sheet passes the clicks to what is under it |
-| `snowman.js` | the Christmas snowman's games (drawn in `christmas.js`, with his hat, nose, eyes, buttons, brows, steam, sweat, puddle, belly hollow, blue eye and two halves bending at the waist as parts of their own): eyes following the pointer, hat knocked off, nose dragged away and put back by him (by hand, or with a fishing rod drawn over the page: back cast, line and float, ripple, reel), tickling, melting, the buttons' xylophone and dances, the fifth button's Megalovania (Web Audio notes, then `audio/megalovania.mp3` at the 22nd click, with the fight of `sansfight.js` for as long as it plays, the Christmas turntable hushed meanwhile), his temper, the snowball scooped from his belly (his top half bends at the waist), packed and thrown at our eyes (canvas bitmaps growing to fill the window), the splash and its spray, lumps of snow, blinks, the blurred view, the frost (`img/frost.png`) and the frozen, slow pointer (`stuckPointer()`, an icy one); its Web Audio sounds (`smTone()`, `smNoise()`, also used by the fight); all reset when Christmas ends |
+| `snowman.js` | the Christmas snowman's games (drawn in `christmas.js`, with his hat, nose, eyes, buttons, brows, steam, sweat, puddle, belly hollow, blue eye and two halves bending at the waist as parts of their own): eyes following the pointer, hat knocked off, nose dragged away and put back by him (by hand, or with a fishing rod drawn over the page: back cast, line and float, ripple, reel), tickling, melting, the buttons' xylophone and dances, the fifth button's Megalovania (Web Audio notes, then `snowman/megalovania.mp3` at the 22nd click, with the fight of `sansfight.js` for as long as it plays, the Christmas turntable hushed meanwhile), his temper, the snowball scooped from his belly (his top half bends at the waist), packed and thrown at our eyes (canvas bitmaps growing to fill the window), the splash and its spray, lumps of snow, blinks, the blurred view, the frost (`img/frost.png`) and the frozen, slow pointer (`stuckPointer()`, an icy one); its Web Audio sounds (`smTone()`, `smNoise()`, also used by the fight); all reset when Christmas ends |
 | `sansscenes.js` | the fight's backgrounds: dioramas (`SF_SCENES`: snowy forest, golden hall, ice cavern, aurora), layers of cut paper drawn once on canvases (shadow, lit edge), slid by the heart's place (parallax), with a few living things (snow, light shafts, sparks, the aurora); `sfSceneDraw()` |
 | `sansfight.js` | the fight that comes with the snowman's Megalovania (`sfStart()` / `sfEnd()`, called by `snowman.js`): the scene over the page and black around him (`#xdark`), the battle box and stats (`#xfight`), one opening line then attacks without end (bones, blue bones, bone waves, bone rain, sine waves of bones, a turning propeller of bones, bouncing bone snowflakes, eruptions after red warnings, closing rings, skull blasters, crossing blasters, on a full-window canvas; bones turn, are outlined, glow when blue, leave trails; faster and more overlapping as it goes), the dioramas behind it (`sansscenes.js`, one every 22 s), the quakes it lands with (`SF_QUAKE_IN` as the dark falls, `SF_QUAKE_GO` when the attacks begin: jolts of the box, the diorama and him, with low thuds), the snowman rising (`sfRise()`: grown from high on him so his bottom leaves the window, floating) before a column of blue fire (`sfAura`, a WebGL fire shader on a canvas inside him, behind his drawing, flaring with the quakes; glowing sprites without WebGL; `sfShader()` sets up both shaders, this one and the eye's), hits (a crunch, the screen shaking, the box flashing red), the pixel heart exactly at the pointer (or moved by the arrow keys, then left there until the mouse moves), the flame rising from his eye (WebGL, a volume of noise ray-marched, following his gaze); reduced motion: no fight |
 | `halloween.js` | Halloween screens: date override and `boo` code, the two layers (`#hwscene` behind the page, `#hwfront` above it), the parts registry (`hwPart()`: each file below adds `{on, off, night}`), lightning, the shared Web Audio sounds (`hwAudioCtx()`, `hwNoise()`), `hwSay()` speech bubbles |
@@ -321,7 +332,7 @@ The search field finds subjects and documents by name (`ui.js`) and by what the 
 | `skpetals.js` | the petals (two canvases, behind and in front of the courses, sharp), the pointer's swirl, `skPetalBurst()`, `skSlash()` (the cut, the petals cut in two), the petals caught, the storm of petals blown at us (`skPetalStorm()`), the fireflies at night |
 | `skfurin.js` | the wind chime: swinging in the wind, ringing (a click, or the wind when it swings hard), a little light in its glass at night |
 | `sklantern.js` | the silk lantern of the night, hanging on a short chain from the top of the left margin, beside the courses: lit or put out by a click, swinging in the wind (a pendulum) |
-| `skplayer.js` | the music: the shamisen in the bottom left corner (its bachi plays and pauses, strikes down then up through the strings on the beat of the track, its strings twang when plucked) and the sakura flowers in an arc around it, one of its own colour per track, from the bottom up, an arc full and the next starts a wider one (`SK_TRACKS`: YouTube videos played through `youtube.js`, or mp3 files of `site/audio/`, their `short` (cassette label), `bpm` and flower `color`; also the cassette deck's Sakura band); its hidden play button in `musicButtons` |
+| `skplayer.js` | the music: the shamisen in the bottom left corner (its bachi plays and pauses, strikes down then up through the strings on the beat of the track, its strings twang when plucked) and the sakura flowers in an arc around it, one of its own colour per track, from the bottom up, an arc full and the next starts a wider one (`SK_TRACKS`: YouTube videos played through `youtube.js`, or audio files of notes-musics, their `short` (cassette label), `bpm` and flower `color`; also the cassette deck's Sakura band); its hidden play button in `musicButtons` |
 | `skdragon.js` | the dragon: the Lake Dragon of Konami's games (sprites ripped by Badbatman3, used with permission; `img/sakura/dragon.png`, cut from `tools/sakura/src/lake-dragon.png`), in pixel art: its head, big and small armoured balls and tail following one another (follow the leader), the balls' two frames alternating, its jaws opening, tinted by the hour |
 | `skpassages.js` | the hidden ways to the other screens: the sake set on the knoll (it pours: the jazz bar), the shamisen plucked ten times in five seconds (`skShred()`: the metal show), the dragon clicked (it roars: the epic finale); the fireflies flying off when clicked |
 | `skvisitors.js` | what crosses the sky: cranes, sky lanterns, shooting stars (far, on a canvas behind the land), the dragon (near, over it) (`?skvisit=`) |
@@ -329,10 +340,10 @@ The search field finds subjects and documents by name (`ui.js`) and by what the 
 | `metal.js` | metal show: lightning, chains, fire, silhouettes, guitar amp and song (played 3 times) |
 | `epic.js` | epic finale: blue fire, motes, rune circle, the "More epicness ?" medallion and the summoning before the finale (overlay, flash timed to the end of the show, Web Audio whoosh and boom), `leaveEpic()`, `leaveShows()` (a code typed during a show ends it), the `kamelot` code (the finale at any time) |
 | `bardscene.js` | `createBardScene()`: the epic finale's bard, a pixel art painting ray-marched in WebGL (distance fields): a knight in armour and a blue surcoat playing the lute against a mossy boulder (gauntlets with fingers, sabatons), a campfire lighting him (traced soft shadows), mirror steel (a second ray), ambient occlusion, flames and sparks, a sky with the moon and firs; two moods (`uMood`: blue arcane fire, or Dragonborn's red fire, starry night and Milky Way, and dragon); `bardProject()` says where a point of the scene shows in the painting; posterised with Bayer dithering at a low resolution; compiled in the background (`ready()`), every ray in one loop so the scene is written out once |
-| `bard.js` | the epic finale's music player (`BARD_SONGS`: the Two Steps From Hell mix `audio/epic.mp3`, then Dragonborn `audio/dragonborn.mp3`, the next when one ends, the choice remembered): the painting of `bardscene.js` in a frame, the title lettered over it in a hand-drawn pixel font (bottom right), the next song's name (a larger 5 x 7 pixel font, solid ink) on an aged parchment drawn in pixels, standing behind the painting's top right corner like the next tape's case behind the cassette deck (a click on it changes the song); a click on the knight plays / pauses (he strums at the song's pace, nods, dozes when paused), on the fire changes the song with a show (he looks at the fire, a flourish plucked in Web Audio, the fire drawn in then bursting in the new colour with a shock wave, the title dissolving pixel by pixel); `preloadEpic()` for the "More epicness ?" click |
-| `calm.js` | calm night after the metal show: moon of tonight, hills, mist, dawn, stars, shooting stars, fireflies, night forest sounds (`audio/calm.mp3`, quieter), dawn birds made with Web Audio, firefly jar; the `peace` code (the last override: the calm night at any time; `startPeace()`; the Christmas and Halloween jars call it) |
+| `bard.js` | the epic finale's music player (`BARD_SONGS`: the Two Steps From Hell mix `epic/two-steps-from-hell-mix.mp3`, then Dragonborn `epic/dragonborn.mp3`, the next when one ends, the choice remembered): the painting of `bardscene.js` in a frame, the title lettered over it in a hand-drawn pixel font (bottom right), the next song's name (a larger 5 x 7 pixel font, solid ink) on an aged parchment drawn in pixels, standing behind the painting's top right corner like the next tape's case behind the cassette deck (a click on it changes the song); a click on the knight plays / pauses (he strums at the song's pace, nods, dozes when paused), on the fire changes the song with a show (he looks at the fire, a flourish plucked in Web Audio, the fire drawn in then bursting in the new colour with a shock wave, the title dissolving pixel by pixel); `preloadEpic()` for the "More epicness ?" click |
+| `calm.js` | calm night after the metal show: moon of tonight, hills, mist, dawn, stars, shooting stars, fireflies, night forest sounds (`night/mystical-forest.mp3`, quieter), dawn birds made with Web Audio, firefly jar; the `peace` code (the last override: the calm night at any time; `startPeace()`; the Christmas and Halloween jars call it) |
 | `normal.js` | `normal` code: the day at any time, over every screen (the very last override, after `calm.js`); typed again, back to the clock's screen |
-| `tapes.js` | the day's cassette deck (no screen only): an early-80s hi-fi deck (VU meters, LED counter, piano keys ⏏ ◀◀ ▶❚❚ ▶▶ and the station key) whose music comes in bands (`TAPE_BANDS`): Lofi Girl mixes, then the screens' music (jazz, late night, metal, epic, Christmas, Halloween: `HW_TRACKS` of `hwmusic.js`, sakura: `SK_TRACKS` of `skplayer.js`, both loaded before), then Radio Impuls and Hit Radio Maroc live. A tape is a YouTube video (a `youtube.js` player; every YouTube tape is warmed up, ads included, by `ytall.js`), an mp3 of `site/audio/` or a live stream (`<audio>`). The station key goes to the next band, ⏏ or the next tape's case behind the deck to the next tape of the band (door opens, tape out, new one in, door closes); never plays by itself, the tape is remembered |
+| `tapes.js` | the day's cassette deck (no screen only): an early-80s hi-fi deck (VU meters, LED counter, piano keys ⏏ ◀◀ ▶❚❚ ▶▶ and the station key) whose music comes in bands (`TAPE_BANDS`): Lofi Girl mixes, then the screens' music (jazz, late night, metal, epic, Christmas, Halloween: `HW_TRACKS` of `hwmusic.js`, sakura: `SK_TRACKS` of `skplayer.js`, both loaded before), then Radio Impuls and Hit Radio Maroc live. A tape is a YouTube video (a `youtube.js` player; every YouTube tape is warmed up, ads included, by `ytall.js`), an audio file of notes-musics or a live stream (`<audio>`). The station key goes to the next band, ⏏ or the next tape's case behind the deck to the next tape of the band (door opens, tape out, new one in, door closes); never plays by itself, the tape is remembered |
 | `ytall.js` | every YouTube video of the site (the tapes of `TAPE_BANDS`: sakura, Halloween, Christmas radio...) made ahead through its ads, muted, one every 1.5 s, at the first sign of life of the visitor (pointer, tap, key, scroll), those of the screen on show first, so that a long ad is long over when any music is asked for (`ytWarmSite()`) |
 | `start.js` | **last**: first `applyScreen()`, then the every-second clock check |
 
@@ -472,9 +483,9 @@ Example: a calm "dawn" screen from 06:00 to 07:00.
 - **localStorage can throw** (private mode): always `try { ... } catch (e) {}`.
 - **Sound needs a user gesture**: players start muted when there was none, and unmute on the
   first click (see `jazz.js`, `metal.js`); a Web Audio context waits suspended and is resumed
-  on the first click (see the dawn birds in `calm.js`). Music is an mp3 in `site/audio/`,
-  played with `screenTrack()` (`screens.js`, or loaded ahead with `preloadTrack()` when a show
-  is coming), never put in the page, and stopped with `dropTrack()` when its screen ends (the
+  on the first click (see the dawn birds in `calm.js`). Music is an audio file of notes-musics
+  (see "The music"), played with `screenTrack()` (`screens.js`, or loaded ahead with
+  `preloadTrack()` when a show is coming), never put in the page, and stopped with `dropTrack()` when its screen ends (the
   day's cassette deck also plays a radio's live stream, `tapes.js`, the same way). The
   YouTube players left (the Christmas radio, the day's cassettes in `tapes.js`) go through
   `youtube.js`: hidden `<iframe>`s driven by `postMessage` commands, never removed, muted during

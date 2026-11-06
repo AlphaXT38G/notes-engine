@@ -213,14 +213,15 @@ def build_index():
         "generated": f"{datetime.now():%Y-%m-%d %H:%M}",
         "title": html.escape(config.P.settings["title"]),
         "short": html.escape(config.P.settings["short"]),
+        "music": html.escape(config.P.music),     # read by screens.js: where the music files are
         "subtitle": html.escape(config.P.settings["subtitle"]),
         "js": site_scripts(),                    # site/js/*, at the end of <body>, once every element exists
     }.items():
         page = page.replace("{{" + key + "}}", value)
     dist = config.P.dist
     dist.mkdir(exist_ok=True)
-    # Images (site/img/) and the screens' music (site/audio/) are the only files the page loads
-    # besides itself: too heavy to inline
+    # Images (site/img/) and sound effects (site/audio/) are the only files of the engine the page
+    # loads besides itself: too heavy to inline. The music stays in notes-musics ("music" setting)
     for folder in ("img", "audio"):
         if (SITE / folder).is_dir():
             shutil.copytree(SITE / folder, dist / folder, dirs_exist_ok=True)
