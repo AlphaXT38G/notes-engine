@@ -52,20 +52,22 @@ document.addEventListener("night", e => setAir(e.detail));
 
 // Night music: JAZZ_TRACKS, one after the other, back to the first after the last: "Just One More
 // Drink" (jazz noir), "Whispers & Jazz" (1940s noir) and two electro swing mixes. The track playing
-// is remembered (jazz-track): the next night goes on with it. It starts by itself when the night begins. Browsers only allow sound after a user gesture, so if the page
-// has not had one yet it autoplays muted and the sound comes on at the first click or key press
-// anywhere. The vinyl button then plays / pauses it. Pausing is remembered: no autoplay on the next
-// visits until it is played again.
+// is remembered (jazz-track): the next night goes on with it. It starts by itself when the night
+// begins. Browsers only allow sound after a user gesture, so if the page has not had one yet it
+// autoplays muted and the sound comes on at the first click or key press anywhere. The vinyl
+// button then plays / pauses it. Pausing is remembered: no autoplay on the next visits until it is
+// played again. JAZZ_TRACKS are also the cassette deck's Jazz band (tapes.js: icon, short, the
+// tape's label, name and color).
 const JAZZ_TRACKS = [
-  "jazz/just-one-more-drink.mp3",
-  "jazz/whispers-and-jazz.mp3",
-  "jazz/bunny-chic-swing-time.mp3",
-  "jazz/electro-swing-queen.mp3",
+  { file: "jazz/just-one-more-drink.mp3", icon: "🎷", short: "Jazz", name: "Just One More Drink", color: "#9a4a1c" },
+  { file: "jazz/whispers-and-jazz.mp3", icon: "🕯️", short: "Noir", name: "Whispers & Jazz", color: "#5c3a2e" },
+  { file: "jazz/bunny-chic-swing-time.mp3", icon: "🐰", short: "Swing", name: "Bunny Chic Swing Time", color: "#c2417a" },
+  { file: "jazz/electro-swing-queen.mp3", icon: "🎤", short: "Queen", name: "Electro Swing Queen", color: "#8a6a12" },
 ];
 let jazzAt = (() => { try { return (+localStorage.getItem("jazz-track") || 0) % JAZZ_TRACKS.length; } catch (e) { return 0; } })();
 let jazz = null, playing = false, jazzSoundAt = 0;
 const jazzStart = muted => {  // the track jazzAt, playing; at its end the next one
-  jazz = screenTrack(JAZZ_TRACKS[jazzAt], { loop: false, muted });
+  jazz = screenTrack(JAZZ_TRACKS[jazzAt].file, { loop: false, muted });
   jazz.addEventListener("ended", () => {
     const wasMuted = jazz.muted;
     dropTrack(jazz);
