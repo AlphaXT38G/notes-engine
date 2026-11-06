@@ -1,4 +1,4 @@
-// ── YouTube players (the day's cassettes, the Christmas radio) ──
+// ── YouTube players (the day's cassettes, the Christmas mix) ──
 // The music still played from YouTube: hidden <iframe>s driven by postMessage commands, as the
 // YouTube iframe API does, without loading its script. Two things the plain embed did badly:
 // - Ads. A video may open with an ad (and a long mix or a live may break for more), played at
@@ -12,7 +12,7 @@
 //   ahead, muted, lets them go through their ads, then pauses them at the start of the music:
 //   picking one later plays the music at once. ytall.js makes every video of the site ahead.
 // One player per video, shared by its users (the cassette deck and the Christmas turntable may
-// both play the Christmas radio): the last to play it owns it, and only the owner pauses it.
+// both play the Christmas mix): the last to play it owns it, and only the owner pauses it.
 //   ytWarm(id)                      makes the player ahead: muted, its ad played, then paused
 //   ytPlay(id, owner, sound)        plays it; owner: an object, with optional onTime(t) / onEnd()
 //   ytPause(id, owner)              pauses it, if owner still has it

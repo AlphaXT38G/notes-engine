@@ -13,8 +13,8 @@ const ytSiteIds = () => {
   const onShow = cls.contains("sakura") ? SK_TRACKS : cls.contains("halloween") ? HW_TRACKS : [];
   const ids = [];
   onShow.concat(...TAPE_BANDS.map(band => band.tapes)).forEach(t => { if (t.id && ids.indexOf(t.id) < 0) ids.push(t.id); });
-  // Christmas' turntable plays the Christmas radio, a tape too: first on the Christmas screens
-  return cls.contains("christmas") ? [XMAS_LIVE].concat(ids.filter(id => id !== XMAS_LIVE)) : ids;
+  // Christmas' turntable plays the Christmas mix, a tape too: first on the Christmas screens
+  return cls.contains("christmas") ? [XMAS_YT].concat(ids.filter(id => id !== XMAS_YT)) : ids;
 };
 const ytWarmSite = () => {
   YT_WARM_EVENTS.forEach(type => window.removeEventListener(type, ytWarmSite));

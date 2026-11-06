@@ -213,7 +213,7 @@ body[data-phase=christmas-night] #xsnowman .k4{stop-color:#566b90}
 
 /* Christmas turntable (bottom left): red lacquer and gold plinth with snow on the lid, a record
    with a red label and a white star, a candy-cane tonearm, holly on the corner. The YouTube
-   player of the radio is kept invisible. The radio's record has a green label. */
+   player of the mix is kept invisible. The mix's record has a green label. */
 #xmusic{position:fixed;left:1.1rem;bottom:1.1rem;z-index:40;display:flex;align-items:center;gap:.6rem;padding:0;color:var(--fg);font:600 .78rem system-ui,sans-serif;background:none;border:0;cursor:pointer}
 #xmusic .deck{position:relative;width:4.8rem;height:3.8rem;border-radius:.45rem;background:linear-gradient(135deg,#d42a40,#9b0d22 60%,#6e0716);box-shadow:0 6px 18px rgba(0,0,0,.35),inset 0 0 0 2px #e3b341,inset 0 1px 0 rgba(255,255,255,.3)}
 #xmusic .lid{position:absolute;left:-2px;right:-2px;top:-5px;height:9px;border-radius:5px 5px 3px 3px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)}

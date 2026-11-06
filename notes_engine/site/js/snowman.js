@@ -327,16 +327,16 @@ const SM_MEGA = (() => {  // D D D' A G# G F D F G, then the same on C, B and B 
 const SM_MEGA_SONG = 22;  // the click that starts the song
 let smMegaI = 0, smMegaAt = 0, smMegaEnd = null, smMegaTrack = null, smMegaSong = false;
 const smChip = freq => smTone(freq, 160, { vol: .07, hold: .09, lowpass: 3200 });  // a square wave, short, like an old console
-// The Christmas turntable is hushed while the song plays (christmas.js), then plays on
+// The Christmas turntable is hushed while the song plays (xmusic.js), then plays on
 let smHushed = false;
 const smHush = on => {
   if (on && carolsPlaying && !smHushed) {
     smHushed = true;
-    if (carolsRock) carolsRock.pause(); else if (carolsRadio) ytPause(XMAS_LIVE, CAROLS_YT);
+    if (carolsRock) carolsRock.pause(); else if (carolsRadio) ytPause(XMAS_YT, CAROLS_YT);
   } else if (!on && smHushed) {
     smHushed = false;
     if (!carolsPlaying) return;  // stopped meanwhile
-    if (carolsRock) carolsRock.play().catch(() => {}); else if (carolsRadio) ytPlay(XMAS_LIVE, CAROLS_YT, !carolsMuted);
+    if (carolsRock) carolsRock.play().catch(() => {}); else if (carolsRadio) ytPlay(XMAS_YT, CAROLS_YT, !carolsMuted);
   }
 };
 const smMegaStop = () => {  // the song, its fight and the glow end, the count starts again

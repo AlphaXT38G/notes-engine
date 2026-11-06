@@ -1,10 +1,10 @@
 // ── Cassette deck (the day, no screen) ──
 // Music for the usual look of the page: an early-80s hi-fi cassette deck in the bottom left corner
 // (brushed aluminium, smoked cassette door, two backlit VU meters, a red tape counter and a row of
-// piano keys). The music comes in bands, the deck's "stations": the Lofi Girl mixes from YouTube,
+// piano keys). The music comes in bands, the deck's "stations": the lofi mixes (mostly YouTube),
 // then the music of the screens (jazz bar, late night, metal show, epic finale, Christmas,
 // Halloween, sakura), then Radio Impuls and Hit Radio live. A tape is a YouTube video (`id`, a hidden <iframe> driven by
-// postMessage commands, like the Christmas radio: youtube.js, muted during ads), an audio file of
+// postMessage commands, like the Christmas mix: youtube.js, muted during ads), an audio file of
 // notes-musics (`file`, its path there) or a live stream (`stream`), both played by an <audio>.
 // The keys: ⏏ puts in the next tape of the band, ◀◀ / ▶▶ wind 30 s back / forward, ▶❚❚ plays or
 // pauses, and the station key goes to the next band (its name shows on the counter a moment).
@@ -19,12 +19,13 @@ const TAPE_BANDS = [
   { name: "Lofi", short: "LOFI", tapes: [
     { id: "_jH2oTNRe7g", icon: "🍂", short: "Autumn", name: "Cozy autumn lofi", color: "#d9622b" },
     { id: "XVFUtEh9zrY", icon: "☀️", short: "Summer", name: "Summer lofi", color: "#e8a92a" },
-    { id: "lTRiuFIWV54", icon: "📚", short: "1 A.M.", name: "1 A.M. study session", color: "#5a5fc4" },
+    { file: "lofi/1-am-study-session.mp3", icon: "📚", short: "1 A.M.", name: "1 A.M. study session", color: "#5a5fc4" },
+    { id: "FJs41oeAnHU", icon: "🌃", short: "Tokyo", name: "Tokyo lofi hip hop night", color: "#2a8fa8" },
+    { id: "09K79_bD6w0", icon: "📼", short: "Silence", name: "Japanese lofi night", color: "#7a4fb0" },
     { id: "rFZHOHl-L8A", icon: "📻", short: "Radio", name: "Lofi hip hop radio", color: "#c43d6a", live: true },
   ] },
-  { name: "Jazz bar", short: "JAZZ", tapes: [
-    { file: "jazz/just-one-more-drink.mp3", icon: "🎷", short: "Jazz", name: "Just One More Drink", color: "#9a4a1c" },
-  ] },
+  // the jazz bar's tracks (jazz.js, loaded before)
+  { name: "Jazz bar", short: "JAZZ", tapes: JAZZ_TRACKS },
   { name: "Late night", short: "NIGHT", tapes: [
     { file: "night/mystical-forest.mp3", icon: "🌙", short: "Night", name: "Mystical Forest", color: "#2f5d8a" },
   ] },
@@ -35,9 +36,10 @@ const TAPE_BANDS = [
     { file: "epic/two-steps-from-hell-mix.mp3", icon: "🔥", short: "Epic", name: "Epic finale", color: "#2a62d4" },
     { file: "epic/dragonborn.mp3", icon: "🐉", short: "Dragon", name: "Dragonborn", color: "#8a5a1c" },
   ] },
+  // the Christmas turntable's two records (xmusic.js, loaded before: XMAS_YT)
   { name: "Christmas", short: "XMAS", tapes: [
     { file: "christmas/jingle-bell-rock.mp3", icon: "🔔", short: "Rock", name: "Jingle Bell Rock", color: "#c8102e" },
-    { id: "XSXEaikz0Bc", icon: "🎄", short: "Xmas", name: "Christmas radio", color: "#1f7a3e", live: true },
+    { id: XMAS_YT, icon: "🎄", short: "Xmas", name: "Lofi Girl - Christmas 2025", color: "#1f7a3e" },
   ] },
   // the Halloween screens' tracks (hwmusic.js), the label in their tape colour
   { name: "Halloween", short: "SPOOKY", tapes: HW_TRACKS.map(t => Object.assign({}, t, { color: t.tape })) },
