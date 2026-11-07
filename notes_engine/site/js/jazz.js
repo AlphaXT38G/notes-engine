@@ -50,14 +50,17 @@ const setAir = on => {
 setAir(document.body.classList.contains("night"));
 document.addEventListener("night", e => setAir(e.detail));
 
-// Night music: JAZZ_TRACKS, one after the other, back to the first after the last: "Just One More
-// Drink" (jazz noir), "Whispers & Jazz" (1940s noir) and two electro swing mixes. The track playing
-// is remembered (jazz-track): the next night goes on with it. It starts by itself when the night
-// begins. Browsers only allow sound after a user gesture, so if the page has not had one yet it
-// autoplays muted and the sound comes on at the first click or key press anywhere. The vinyl
-// button then plays / pauses it. Pausing is remembered: no autoplay on the next visits until it is
-// played again. JAZZ_TRACKS are also the cassette deck's Jazz band (tapes.js: icon, short, the
-// tape's label, name and color).
+// Night music: JAZZ_TRACKS, records on a turntable in the bottom left corner: "Just One More
+// Drink" (jazz noir), "Whispers & Jazz" (1940s noir) and two electro swing mixes, one after the
+// other, back to the first after the last. The next record waits in its sleeve, leaning behind the
+// turntable (as on the Christmas one, xmusic.js): clicking the sleeve puts it on, and the sleeve
+// then holds the one after. The record's label takes the colour of its track, the sleeve's cover
+// that of the next. The record on is remembered (jazz-track): the next night goes on with it. It
+// starts by itself when the night begins. Browsers only allow sound after a user gesture, so if
+// the page has not had one yet it autoplays muted and the sound comes on at the first click or key
+// press anywhere. The turntable then plays / pauses it. Pausing is remembered: no autoplay on the
+// next visits until it is played again. JAZZ_TRACKS are also the cassette deck's Jazz band
+// (tapes.js: icon, short, the cover's and the tape's label, name and color).
 const JAZZ_TRACKS = [
   { file: "jazz/just-one-more-drink.mp3", icon: "🎷", short: "Jazz", name: "Just One More Drink", color: "#9a4a1c" },
   { file: "jazz/whispers-and-jazz.mp3", icon: "🕯️", short: "Noir", name: "Whispers & Jazz", color: "#5c3a2e" },
@@ -65,28 +68,41 @@ const JAZZ_TRACKS = [
   { file: "jazz/electro-swing-queen.mp3", icon: "🎤", short: "Queen", name: "Electro Swing Queen", color: "#8a6a12" },
 ];
 let jazzAt = (() => { try { return (+localStorage.getItem("jazz-track") || 0) % JAZZ_TRACKS.length; } catch (e) { return 0; } })();
-let jazz = null, playing = false, jazzSoundAt = 0;
-const jazzStart = muted => {  // the track jazzAt, playing; at its end the next one
+let jazz = null, playing = false, jazzSoundAt = 0, jazzSwapEnd = null;
+const jazzNextAt = () => (jazzAt + 1) % JAZZ_TRACKS.length;
+const jazzStart = muted => {  // the record jazzAt, playing; at its end the next one
   jazz = screenTrack(JAZZ_TRACKS[jazzAt].file, { loop: false, muted });
-  jazz.addEventListener("ended", () => {
-    const wasMuted = jazz.muted;
-    dropTrack(jazz);
-    jazzAt = (jazzAt + 1) % JAZZ_TRACKS.length;
-    try { localStorage.setItem("jazz-track", jazzAt); } catch (e) {}
-    jazzStart(wasMuted);
-  });
+  jazz.addEventListener("ended", () => jazzPut(jazzNextAt(), jazz.muted));
+};
+const jazzPut = (i, muted) => {  // record i on the turntable, playing
+  dropTrack(jazz);
+  jazzAt = i;
+  try { localStorage.setItem("jazz-track", i); } catch (e) {}
+  jazzStart(muted);
+  paintVinyl();
 };
 const vinyl = document.createElement("button");
 vinyl.id = "vinyl";
 vinyl.type = "button";
 vinyl.innerHTML = '<span class="deck"><span class="disc"></span><span class="arm"></span></span><span class="label"></span>';
+const jazzSleeve = document.createElement("button");
+jazzSleeve.id = "jsleeve";
+jazzSleeve.type = "button";
+jazzSleeve.innerHTML = '<span class="rec"></span><span class="cover"><i></i><b></b></span>';
 const jazzOff = () => { try { return localStorage.getItem("jazz") === "off"; } catch (e) { return false; } };
 const jazzMuted = () => !!jazz && jazz.muted;
 const paintVinyl = () => {
+  const now = JAZZ_TRACKS[jazzAt], next = JAZZ_TRACKS[jazzNextAt()];
   vinyl.classList.toggle("playing", playing);
+  vinyl.style.setProperty("--rec", now.color);
   vinyl.querySelector(".label").textContent = !playing ? "♪ Click to play some jazz"
-    : jazzMuted() ? "🔇 Click anywhere for sound" : "♪ Jazz on — click to pause";
+    : jazzMuted() ? "🔇 Click anywhere for sound" : `♪ ${now.name} — click to pause`;
   vinyl.title = !playing ? "Play the music" : jazzMuted() ? "Turn the sound on" : "Pause the music";
+  jazzSleeve.style.setProperty("--rec", next.color);
+  jazzSleeve.querySelector("i").textContent = next.icon;
+  jazzSleeve.querySelector("b").textContent = next.short;
+  jazzSleeve.title = `Put on ${next.name}`;
+  jazzSleeve.setAttribute("aria-label", jazzSleeve.title);
 };
 const play = (muted = false) => {
   if (!jazz) jazzStart(muted);  // first time: muted when there was no gesture yet
@@ -114,11 +130,22 @@ vinyl.addEventListener("click", e => {
   if (jazzMuted()) jazzSound();
   else playing ? pause() : play();
 });
+jazzSleeve.addEventListener("click", e => {  // the next record goes on (a click: with sound), the sleeve takes the one after
+  e.stopPropagation();
+  playing = true;
+  try { localStorage.removeItem("jazz"); } catch (e) {}
+  jazzPut(jazzNextAt(), false);
+  // the swap, seen: the record lands on the turntable, the sleeve dips (class removed, reflow, put
+  // back); once over, the record may spin again
+  for (const el of [vinyl, jazzSleeve]) { el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); }
+  clearTimeout(jazzSwapEnd);
+  jazzSwapEnd = setTimeout(() => { vinyl.classList.remove("swap"); jazzSleeve.classList.remove("swap"); }, 600);
+});
 const setMusic = on => {
   document.removeEventListener("pointerdown", jazzSound);
   document.removeEventListener("keydown", jazzSound);
-  if (!on) { dropTrack(jazz); jazz = null; playing = false; vinyl.remove(); return; }  // the next night starts it again
-  document.body.append(vinyl);
+  if (!on) { dropTrack(jazz); jazz = null; playing = false; vinyl.remove(); jazzSleeve.remove(); return; }  // the next night starts it again
+  document.body.append(jazzSleeve, vinyl);
   if (!jazz && !jazzOff()) {
     const canSound = screenGesture();
     play(!canSound);
@@ -131,4 +158,3 @@ const setMusic = on => {
 };
 setMusic(document.body.classList.contains("night"));
 document.addEventListener("night", e => setMusic(e.detail));
-
