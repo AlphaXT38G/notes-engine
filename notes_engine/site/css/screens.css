@@ -39,6 +39,7 @@
 @media(max-width:640px){
   body.metal .wrap,body.calm .wrap{padding-bottom:7rem}
   body.epic .wrap{padding-bottom:9.5rem}
-  body.christmas .wrap,body.night .wrap{padding-bottom:9.5rem}
+  body.christmas .wrap{padding-bottom:9.5rem}
+  body.night .wrap{padding-bottom:10.5rem}
   #vinyl .label,#amp .label,#jar .label,#xmusic .label{font-size:.7rem;max-width:11rem}
 }

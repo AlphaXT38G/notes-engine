@@ -96,9 +96,13 @@ const jazzSleeves = JAZZ_TRACKS.map((t, i) => {
   const b = document.createElement("button");
   b.type = "button";
   b.className = "jsleeve";
-  b.innerHTML = '<span class="rec"></span><span class="cover"><i></i><b></b></span>';
-  b.querySelector("i").textContent = t.icon;
-  b.querySelector("b").textContent = t.short;
+  // a record cover of the 1940s: the bar's name on top, the track's emblem in a gold medallion,
+  // its title in a high-contrast serif between ornaments, the speed at the bottom (jazz.css)
+  b.innerHTML = '<span class="rec"></span><span class="cover"><small class="brand">Jazz Bar</small>' +
+    '<i class="medal"></i><b class="title"></b><span class="rule"></span><small class="rpm">33⅓ rpm</small>' +
+    '<span class="gloss"></span></span>';
+  b.querySelector(".medal").textContent = t.icon;
+  b.querySelector(".title").textContent = t.short;
   b.title = `Put on ${t.name}`;
   b.setAttribute("aria-label", b.title);
   b.style.setProperty("--rec", t.color);
@@ -117,13 +121,14 @@ const paintVinyl = () => {
     : jazzMuted() ? "🔇 Click anywhere for sound" : `♪ ${now.name} — click to pause`;
   vinyl.title = !playing ? "Play the music" : jazzMuted() ? "Turn the sound on" : "Pause the music";
   // the fan, like a hand of cards: k = 0 for the next record (in front, on the left), then each
-  // one further right and more turned, behind the one before, its right side showing
+  // one further right and more turned, a little behind the one before (its centre, where the
+  // cover's design is, stays in sight)
   jazzSleeves.forEach((b, i) => {
     const k = (i - jazzAt - 1 + n) % n;
     b.classList.toggle("on", i === jazzAt);
-    b.style.setProperty("--x", `${k * 2.15}rem`);
-    b.style.setProperty("--y", `${-k * .1}rem`);
-    b.style.setProperty("--r", `${-10 + k * 10}deg`);
+    b.style.setProperty("--x", `${k * 3.05}rem`);
+    b.style.setProperty("--y", `${-k * .12}rem`);
+    b.style.setProperty("--r", `${-8 + k * 8}deg`);
     b.style.zIndex = n - k;
   });
 };
