@@ -37,13 +37,14 @@ setInterval(paintVideoPill, 2000);
 paintVideoPill();
 
 // The player of the tape's video, and whether it has a picture to show: ready, past its ad, and its
-// time moving while the tape plays (youtube.js tells an ad by a time standing still). Paused, the
-// embed draws its own panels over the video (more videos, its title): the tube says PAUSE instead.
+// time moving while the tape plays (youtube.js tells an ad by a time standing still), or buffering
+// (state 3: after a wind, the time stands still too, but no ad plays); paused, the still picture
 const videoPlayer = () => {
   const id = tapeVideoId(tapeNow());
   return id ? ytPlayer(id) : null;
 };
-const videoShowable = p => p.ready && p.music && !p.ad && tapePlaying && performance.now() - p.movedAt < YT_STILL_MS();
+const videoShowable = p => p.ready && p.music && !p.ad &&
+  (!tapePlaying || p.state === 3 || performance.now() - p.movedAt < YT_STILL_MS());
 // An audio file's video plays and pauses with the tape, muted, and goes back to its time when it
 // drifts away from it; the one followed before is paused
 const followTape = () => {

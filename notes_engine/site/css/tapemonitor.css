@@ -54,7 +54,7 @@
 #tapedeck .tube .tubemsg{position:absolute;left:50%;top:50%;z-index:2;padding:.2rem .4rem;border-radius:2px;background:#140907;color:#ff4a2a;font:700 .7rem/1 ui-monospace,Consolas,monospace;letter-spacing:.12em;text-shadow:0 0 4px rgba(255,74,42,.75);transform:translate(-50%,-50%);opacity:0}
 #tapedeck .monitor.waiting .tube .noise,#tapedeck .monitor.waiting .tube .tubemsg{opacity:1}
 #tapedeck .tube .tubemsg::after{content:"NO SIGNAL"}
-/* paused: no snow, the tube dark with PAUSE (the embed would draw its own panels over a paused video) */
+/* paused before any picture: no snow, the tube dark with PAUSE (once there, the still picture shows) */
 #tapedeck.paused .monitor.waiting .tube .noise{opacity:0;animation:none}
 #tapedeck.paused .tube .tubemsg::after{content:"❚❚ PAUSE"}
 /* Full screen (#tapedeck.full): the tube fills the window, black around the CRT's rounded corners,
