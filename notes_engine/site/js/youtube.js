@@ -1,4 +1,4 @@
-// ── YouTube players (the day's cassettes, the Christmas mix) ──
+// ── YouTube players (the day's cassettes, the Christmas mix, the jazz bar's videos) ──
 // The music still played from YouTube: hidden <iframe>s driven by postMessage commands, as the
 // YouTube iframe API does, without loading its script. Two things the plain embed did badly:
 // - Ads. A video may open with an ad (and a long mix or a live may break for more), played at
@@ -19,6 +19,8 @@
 //   ytSound(id, owner, on)          sound on / off (it stays muted during ads anyway)
 //   ytSeek(id, owner, t)            goes to t seconds
 //   ytPlayer(id)                    the player: { ready, time, state, warm, ... }
+//   ytTrack(id, { muted })          the video as a screen's track, like an <audio> (see below)
+//   musicTrack(track, { muted })    a track of a list, video (id) or file of notes-musics (file)
 const YT_PLAYERS = {};
 const YT_STILL_MS = () => document.hidden ? 3000 : 1200;  // time standing still for this long: an ad
 let ytTicker = null;

@@ -73,8 +73,8 @@ const JAZZ_TRACKS = [
 let jazzAt = (() => { try { return (+localStorage.getItem("jazz-track") || 0) % JAZZ_TRACKS.length; } catch (e) { return 0; } })();
 let jazz = null, playing = false, jazzSoundAt = 0, jazzSwapEnd = null;
 const jazzNextAt = () => (jazzAt + 1) % JAZZ_TRACKS.length;
-const jazzStart = muted => {  // the record jazzAt, playing; at its end the next one
-  jazz = screenTrack(JAZZ_TRACKS[jazzAt].file, { loop: false, muted });
+const jazzStart = muted => {  // the record jazzAt, playing (a file or a video); at its end the next one
+  jazz = musicTrack(JAZZ_TRACKS[jazzAt], { loop: false, muted });
   jazz.addEventListener("ended", () => jazzPut(jazzNextAt(), jazz.muted));
 };
 const jazzPut = (i, muted) => {  // record i on the turntable, playing
