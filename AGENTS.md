@@ -44,7 +44,7 @@ notes_engine/site/    the index page (HTML, CSS, JS inlined into one dist/index.
 notes_engine/shared/  course.sty and cheatsheet.sty, the LaTeX styles of every course / cheat sheet
 example/              the smallest notes repository (subjects.json, site.json, one course): the tests build it
 tests/                smoke tests (python -m unittest discover -s tests): settings, and a real build of example/
-.github/workflows/    ci.yml (tests), pages.yml (REUSABLE workflow that notes repositories call to publish)
+.github/workflows/    pages.yml (REUSABLE workflow that notes repositories call to publish); no CI: run the tests locally
 tools/                scripts that remake the images: bartender/ (open it through a local server),
                       werewolf/cut.py and gargoyle/cut.py (Pillow), sakura/cut.py (Pillow, about a
                       minute: the sakura screen's painted layers of sakura/src/, painted by an image
@@ -78,8 +78,8 @@ In the rest of this guide, `site/` and `shared/` are `notes_engine/site/` and `n
   served by GitHub Pages; nothing is copied into `dist/`. A player names a track by its path
   there (`"jazz/just-one-more-drink.mp3"`), and `preloadTrack()` (`screens.js`) prefixes it with
   the `music` setting, written in `<html data-music>`. Add the file to notes-musics first (see its
-  README), then name it here: the tests check that notes-musics has every path committed (CI
-  clones it next to the engine).
+  README), then name it here: the tests check that notes-musics has every path committed (they
+  read it next to the engine, ../notes-musics).
 - **Versioning**: a notes repository pins a tag of the engine (`pip install` of that tag and
   `uses: .../pages.yml@tag`, both). Change the contract (a new setting, a
   renamed file) in a new tag, never silently.
