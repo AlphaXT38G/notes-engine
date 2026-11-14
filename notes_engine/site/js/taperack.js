@@ -97,3 +97,9 @@ document.addEventListener("keydown", e => {
   rackKey.focus();
 });
 document.addEventListener("click", e => { if (!tapeDeck.contains(e.target)) closeRack(); });
+// A screen takes the deck away: the rack goes with it at once, and the day brings the deck back with
+// the rack put away
+document.addEventListener("phase", () => {
+  tapeDeck.classList.remove("racked", "unrack");
+  setRackKey(false);
+});
