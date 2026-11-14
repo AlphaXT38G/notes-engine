@@ -12,7 +12,10 @@ const ytSiteIds = () => {
   const cls = document.body.classList;
   const onShow = cls.contains("sakura") ? SK_TRACKS : cls.contains("halloween") ? HW_TRACKS : [];
   const ids = [];
-  onShow.concat(...TAPE_BANDS.map(band => band.tapes)).forEach(t => { if (t.id && ids.indexOf(t.id) < 0) ids.push(t.id); });
+  const tapes = onShow.concat(...TAPE_BANDS.map(band => band.tapes));
+  tapes.forEach(t => { if (t.id && ids.indexOf(t.id) < 0) ids.push(t.id); });
+  // then the videos of audio files (`video`), only watched on the deck's monitor: their ads gone too
+  tapes.forEach(t => { if (typeof t.video === "string" && ids.indexOf(t.video) < 0) ids.push(t.video); });
   // Christmas' turntable plays the Christmas mix, a tape too: first on the Christmas screens
   return cls.contains("christmas") ? [XMAS_YT].concat(ids.filter(id => id !== XMAS_YT)) : ids;
 };
