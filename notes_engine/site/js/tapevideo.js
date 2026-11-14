@@ -43,3 +43,18 @@ const followTape = () => {
   if (p.owner !== TAPE_VIDEO || p.want !== "play") ytPlay(id, TAPE_VIDEO, false);
   if (p.ready && p.music && Math.abs(p.time - tapeTime) > 1.5) ytSeek(id, TAPE_VIDEO, tapeTime);
 };
+// The player shown, laid exactly over the monitor's tube (none: the tube shows its snow)
+const putFrame = frame => {
+  if (videoFrame && videoFrame !== frame) {
+    videoFrame.classList.remove("onscreen");
+    videoFrame.style.cssText = "";
+  }
+  videoFrame = frame;
+  tapeMonitor.classList.toggle("showing", !!frame);
+  tapeMonitor.classList.toggle("waiting", videoLit && !frame);
+  if (!frame) return;
+  const tube = monitorTube.getBoundingClientRect();
+  frame.style.cssText = `left:${tube.left}px;top:${tube.top}px;width:${tube.width}px;height:${tube.height}px`;
+  frame.classList.add("onscreen");
+};
+tapeDeck.addEventListener("monitormove", () => { if (videoFrame) putFrame(videoFrame); });
