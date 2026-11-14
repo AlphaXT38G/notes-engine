@@ -20,6 +20,13 @@ rackCursor.className = "rackcursor";
 rackCursor.setAttribute("aria-hidden", "true");
 rackCursor.innerHTML = '<svg viewBox="0 0 16 22"><path d="M1 1v17.5l4.4-4.2 2.9 6.6 3-1.3-2.9-6.5h6.1z"/></svg>';
 tapeDeck.append(tapeRack, rackCursor);
+// A cursor's show, from its start (taperackfx.css: .go), or stopped
+const dragCursor = (cursor, on) => {
+  cursor.classList.remove("go");
+  if (!on) return;
+  void cursor.offsetWidth;
+  cursor.classList.add("go");
+};
 const rackPart = selector => tapeRack.querySelector(selector);
 const rackStations = rackPart(".stations"), rackTracks = rackPart(".tracks");
 
@@ -68,9 +75,8 @@ tapeDeck.addEventListener("tapechange", markRack);
 // Out and back in. The stations are drawn anew each time, so that they light up again on the screen
 // coming on. Back in, taperackfx.css switches the screen off and pushes the rack in (rack-push),
 // then .unrack goes; with reduced motion, or closeRack(true), it goes at once.
-const rackKey = tapeKey("band");
 const rackIsOut = () => tapeDeck.classList.contains("racked");
-const setRackKey = out => rackKey.setAttribute("aria-expanded", String(out));
+const setRackKey = out => tapeDeck.querySelectorAll(".key.band").forEach(key => key.setAttribute("aria-expanded", String(out)));
 const openRack = () => {
   tapeDeck.style.setProperty("--deck-h", `${tapeDeck.querySelector(".deck").offsetHeight}px`);
   rackStations.innerHTML = TAPE_BANDS.map(stationRow).join("");
@@ -78,12 +84,14 @@ const openRack = () => {
   markRack();
   tapeDeck.classList.remove("unrack");
   tapeDeck.classList.add("racked");
+  dragCursor(rackCursor, !tapeDeck.classList.contains("tv"));  // on the monitor's tube, no drag
   setRackKey(true);
 };
 const closeRack = atOnce => {
   if (rackIsOut()) tapeDeck.classList.add("unrack");
   if (atOnce === true || matchMedia("(prefers-reduced-motion: reduce)").matches) tapeDeck.classList.remove("unrack");
   tapeDeck.classList.remove("racked");
+  dragCursor(rackCursor, false);
   setRackKey(false);
 };
 tapeRack.addEventListener("animationend", e => {
@@ -91,15 +99,18 @@ tapeRack.addEventListener("animationend", e => {
 });
 // The station key pulls the rack out and puts it back (tapes.js's own action, the next station,
 // is what it does without this file)
-rackKey.title = "Stations";
-rackKey.setAttribute("aria-label", rackKey.title);
+TAPE_KEYS.find(key => key[0] === "band")[2] = "Stations";  // for the copies made from now on
+tapeDeck.querySelectorAll(".key.band").forEach(key => {
+  key.title = "Stations";
+  key.setAttribute("aria-label", key.title);
+});
 setRackKey(false);
 TAPE_ACTIONS.band = () => (rackIsOut() ? closeRack() : openRack());
 // Escape or a click elsewhere on the page puts it back too
 document.addEventListener("keydown", e => {
   if (e.key !== "Escape" || !rackIsOut()) return;
   closeRack();
-  rackKey.focus();
+  tapeDeck.querySelector(tapeDeck.classList.contains("tv") ? ".monitor .key.band" : ".deck .key.band").focus();
 });
 document.addEventListener("click", e => { if (!tapeDeck.contains(e.target)) closeRack(); });
 // A screen takes the deck away: the rack goes with it at once, and the day brings the deck back with

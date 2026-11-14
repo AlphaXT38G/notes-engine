@@ -1,0 +1,27 @@
+/* Watching a tape's video (js/tapevideo.js): the deck's VIDEO pill, the deck waiting for the video
+   (#tapedeck.vloading), and the YouTube player laid under the monitor's tube (.ytplayer.onscreen).
+   --tv-noise is a tube's snow, here and on the monitor (tapemonitor.css). */
+#tapedeck{--tv-noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.6 -.45'/%3E%3C/filter%3E%3Crect width='120' height='80' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* The pill: like the badges beside it, raised, with an amber lamp and a small television; it takes
+   AUTO REVERSE's place while the tape has a video (#tapedeck.hasvideo), the only badge it fits for */
+#tapedeck .vpill{display:none;align-items:center;gap:.12rem;padding:.04rem .14rem;border:1px solid #6b6f76;border-radius:1px;background:linear-gradient(#f4f5f7,#cfd3d8);color:#34373c;font:700 .38rem/1 system-ui,sans-serif;letter-spacing:.05em;box-shadow:0 1px 0 rgba(0,0,0,.35)}
+#tapedeck .vpill svg{width:.5rem;height:.4rem}
+#tapedeck .vpill rect,#tapedeck .vpill path{fill:none;stroke:currentColor;stroke-width:2}
+#tapedeck .vpill .lamp{width:.22rem;height:.22rem;border-radius:50%;background:#f5a623;box-shadow:0 0 3px #f5a623}
+#tapedeck .vpill:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+#tapedeck.hasvideo .vpill{display:inline-flex}
+#tapedeck.hasvideo .badges span:first-of-type{display:none}
+/* Waiting for the video (#tapedeck.vloading): the pill's lamp blinks, the counter reads LOAD, snow fills
+   the cassette's window, and the label says so */
+#tapedeck.vloading .vpill .lamp{animation:video-blink .5s steps(1) infinite}
+@keyframes video-blink{50%{opacity:.2}}
+#tapedeck.vloading .deck .counter{font-size:0;color:#ff4a2a;text-shadow:0 0 4px rgba(255,74,42,.75)}
+#tapedeck.vloading .deck .counter::after{content:"LOAD";font-size:.68rem}
+#tapedeck .well::after{content:"";position:absolute;left:0;top:0;right:0;bottom:0;border-radius:2px;background:var(--tv-noise) 0 0/60px 40px,rgba(16,16,20,.85);opacity:0;pointer-events:none}
+#tapedeck.vloading .well::after{opacity:1;animation:video-snow .16s steps(1) infinite}
+@keyframes video-snow{50%{opacity:.7}}
+#tapedeck.vloading .label{opacity:1;transform:none;font-size:0}
+#tapedeck.vloading .label::after{content:"Loading the video…";font-size:.78rem}
+/* The player shown, laid under the monitor's tube (its place and size set by tapevideo.js), under the deck
+   (z-index 40) and over the page */
+.ytplayer.onscreen{bottom:auto;opacity:1;z-index:39}

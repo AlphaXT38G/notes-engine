@@ -51,8 +51,9 @@ setAir(document.body.classList.contains("night"));
 document.addEventListener("night", e => setAir(e.detail));
 
 // Night music: JAZZ_TRACKS, records on a turntable in the bottom left corner: "Just One More
-// Drink" (jazz noir), "Whispers & Jazz" (1940s noir) and two electro swing mixes, one after the
-// other, back to the first after the last. The other records wait in their sleeves behind the
+// Drink" (jazz noir), "Whispers & Jazz" (1940s noir) and four electro swing mixes (files of
+// notes-musics, the last two YouTube videos: musicTrack, youtube.js), one after the other, back to
+// the first after the last. The other records wait in their sleeves behind the
 // turntable (as on the Christmas one, xmusic.js), fanned out and overlapping, the next one in
 // front: a click on a sleeve puts its record on, and the sleeves slide to their new places (the
 // record taken off goes back to the end of the fan). Each record has a label colour of its own
@@ -65,16 +66,19 @@ document.addEventListener("night", e => setAir(e.detail));
 // (tapebands.js: icon, short, the cover's and the tape's label, name and color, dark enough for white
 // letters on the tape).
 const JAZZ_TRACKS = [
-  { file: "jazz/just-one-more-drink.mp3", icon: "🎷", short: "Jazz", name: "Just One More Drink", color: "#9a4a1c", disc: "#f5b041" },
-  { file: "jazz/whispers-and-jazz.mp3", icon: "🕯️", short: "Noir", name: "Whispers & Jazz", color: "#5c3a2e", disc: "#e8d7b0" },
-  { file: "jazz/bunny-chic-swing-time.mp3", icon: "🐰", short: "Swing", name: "Bunny Chic Swing Time", color: "#c2417a", disc: "#ff8fbf" },
-  { file: "jazz/electro-swing-queen.mp3", icon: "🎤", short: "Queen", name: "Electro Swing Queen", color: "#8a6a12", disc: "#ffd23a" },
+  { file: "jazz/just-one-more-drink.mp3", video: "7gtIh5dF9Xk", icon: "🎷", short: "Jazz", name: "Just One More Drink", color: "#9a4a1c", disc: "#f5b041" },
+  { file: "jazz/whispers-and-jazz.mp3", video: "Ln9WaL0HXHc", icon: "🕯️", short: "Noir", name: "Whispers & Jazz", color: "#5c3a2e", disc: "#e8d7b0" },
+  { file: "jazz/bunny-chic-swing-time.mp3", video: "WYjmZ3RT574", icon: "🐰", short: "Swing", name: "Bunny Chic Swing Time", color: "#c2417a", disc: "#ff8fbf" },
+  { file: "jazz/electro-swing-queen.mp3", video: "hxaEDvTWexM", icon: "🎤", short: "Queen", name: "Electro Swing Queen", color: "#8a6a12", disc: "#ffd23a" },
+  // two more electro swing mixes, from YouTube (youtube.js; the deck shows their videos)
+  { id: "t7VQ7_diGKQ", icon: "🎙️", short: "Vocals", name: "Electro swing with vocals", color: "#3d6b8a", disc: "#7fd4ff" },
+  { id: "kY914EllIMs", icon: "🎺", short: "Vintage", name: "Electro swing vocals, vintage jazz", color: "#8a3d5c", disc: "#ff9ec4" },
 ];
 let jazzAt = (() => { try { return (+localStorage.getItem("jazz-track") || 0) % JAZZ_TRACKS.length; } catch (e) { return 0; } })();
 let jazz = null, playing = false, jazzSoundAt = 0, jazzSwapEnd = null;
 const jazzNextAt = () => (jazzAt + 1) % JAZZ_TRACKS.length;
-const jazzStart = muted => {  // the record jazzAt, playing; at its end the next one
-  jazz = screenTrack(JAZZ_TRACKS[jazzAt].file, { loop: false, muted });
+const jazzStart = muted => {  // the record jazzAt, playing (a file or a video); at its end the next one
+  jazz = musicTrack(JAZZ_TRACKS[jazzAt], { loop: false, muted });
   jazz.addEventListener("ended", () => jazzPut(jazzNextAt(), jazz.muted));
 };
 const jazzPut = (i, muted) => {  // record i on the turntable, playing

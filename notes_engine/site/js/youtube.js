@@ -1,4 +1,4 @@
-// ── YouTube players (the day's cassettes, the Christmas mix) ──
+// ── YouTube players (the day's cassettes, the Christmas mix, the jazz bar's videos) ──
 // The music still played from YouTube: hidden <iframe>s driven by postMessage commands, as the
 // YouTube iframe API does, without loading its script. Two things the plain embed did badly:
 // - Ads. A video may open with an ad (and a long mix or a live may break for more), played at
@@ -19,6 +19,8 @@
 //   ytSound(id, owner, on)          sound on / off (it stays muted during ads anyway)
 //   ytSeek(id, owner, t)            goes to t seconds
 //   ytPlayer(id)                    the player: { ready, time, state, warm, ... }
+//   ytTrack(id, { muted })          the video as a screen's track, like an <audio> (see below)
+//   musicTrack(track, { muted })    a track of a list, video (id) or file of notes-musics (file)
 const YT_PLAYERS = {};
 const YT_STILL_MS = () => document.hidden ? 3000 : 1200;  // time standing still for this long: an ad
 let ytTicker = null;
@@ -160,3 +162,25 @@ const ytSeek = (id, owner, t) => {
   ytCommand(p, "seekTo", [t, true]);
   p.time = t;
 };
+
+// A YouTube video played as a screen's track: the little a player uses of an <audio> (play(),
+// pause(), muted, an "ended" listener; dropTrack() pauses it), so that a player of notes-musics'
+// files plays videos the same way. musicTrack() makes either from a track of a list: `id`, a video;
+// `file`, an audio file (screenTrack, screens.js).
+const ytTrack = (id, { muted = false } = {}) => {
+  const ended = [];
+  const owner = { onEnd: () => ended.forEach(fn => fn()) };
+  let sound = !muted;
+  const track = {
+    get muted() { return !sound; },
+    set muted(on) { sound = !on; ytSound(id, owner, sound); },
+    play() { ytPlay(id, owner, sound); return Promise.resolve(); },
+    pause() { ytPause(id, owner); },
+    addEventListener(type, fn) { if (type === "ended") ended.push(fn); },
+    drop() { ytPause(id, owner); },
+  };
+  const p = ytPlay(id, owner, sound);
+  if (p.ready && p.state === 0) ytSeek(id, owner, 0);  // played to its end before: from the start
+  return track;
+};
+const musicTrack = (track, options) => (track.id ? ytTrack(track.id, options) : screenTrack(track.file, options));

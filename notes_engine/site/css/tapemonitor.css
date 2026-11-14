@@ -1,0 +1,92 @@
+/* Video monitor of the cassette deck (js/tapemonitor.js): a 16:9 tube in a thin aluminium bezel,
+   --mon-w wide (the free margin left of the notes, set by tapemonitor.js), anchored at the deck's
+   bottom left; shown while #tapedeck.tv (and .untv, going back). Over the picture, as in full screen,
+   a small plate in the top left corner and a bar of keys at the bottom, gone while the pointer rests
+   (.rest). The video is a YouTube <iframe> that cannot move into it (it would load again, ad
+   included): it lies UNDER the deck at the tube's place, and the tube is a hole in the monitor, whose
+   bezel is the tube's huge spread shadow. Laid in layers as the station rack, to be dragged out of
+   the deck (.mslide, the outline, comes out while .mbody stands still: tapemonitorfx.css). */
+#tapedeck{--mon-w:24rem;--mon-h:14rem;--alu:#c3c7cd}
+#tapedeck .monitor{position:absolute;left:0;bottom:0;z-index:2;width:var(--mon-w);display:none}
+#tapedeck.tv .monitor,#tapedeck.untv .monitor{display:block}
+#tapedeck.tv > .deck,#tapedeck.tv > .case,#tapedeck.tv > .label{visibility:hidden;transition:visibility 0s .3s}
+#tapedeck .mslide{position:relative;overflow:hidden;border-radius:3px;box-shadow:0 10px 28px rgba(0,0,0,.4)}
+#tapedeck .mbody{position:relative;padding:.42rem .32rem .32rem}
+/* the deck's black trim on top */
+#tapedeck .mbody::before{content:"";position:absolute;left:0;right:0;top:0;z-index:1;height:.2rem;background:linear-gradient(#3a3d43,#1c1e22)}
+/* The tube: a hole whose spread shadow paints the bezel, black while no picture shows; the CRT look
+   rounds its corners */
+#tapedeck .monitor .tube{position:relative;padding-top:56.25%;border-radius:4px;background:#050505;box-shadow:0 0 0 .1rem #1c1e22,0 0 0 60rem var(--alu)}
+#tapedeck .monitor.showing .tube{background:transparent}
+#tapedeck.crt .monitor .tube{border-radius:14px/18px}
+/* The plate, a small aluminium tag in the top left corner of the picture: a red lamp, the model, the
+   tape playing, the counter */
+#tapedeck .mplate{position:absolute;left:.75rem;top:.8rem;z-index:5;display:flex;align-items:center;gap:.3rem;max-width:calc(100% - 1.5rem);margin:0;padding:.3rem .4rem .24rem;border-radius:2px;font:700 .34rem/1 system-ui,sans-serif;letter-spacing:.1em;color:#34373c;white-space:nowrap;overflow:hidden;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 1px,rgba(0,0,0,.035) 1px 2px),linear-gradient(#e6e8eb,var(--alu));box-shadow:0 3px 10px rgba(0,0,0,.45),inset 0 1px 0 #fff}
+#tapedeck .mplate::before{content:"";position:absolute;left:0;right:0;top:0;height:.12rem;background:linear-gradient(#3a3d43,#1c1e22)}
+#tapedeck .mplate b{font-style:italic;font-weight:800;color:#c0392b;letter-spacing:.04em}
+#tapedeck .mplate .rec{flex:none;width:.26rem;height:.26rem;border-radius:50%;background:#ff3b30;box-shadow:0 0 4px #ff3b30}
+#tapedeck .mplate .now{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;color:#55595f;font-weight:600;letter-spacing:.04em}
+#tapedeck .mplate .counter{flex:none;padding:.07rem .18rem;border-radius:1px;background:#140907;color:#5a1d14;font:700 .4rem/1 ui-monospace,Consolas,monospace;letter-spacing:.08em;box-shadow:none}
+#tapedeck.playing .mplate .counter,#tapedeck.paused .mplate .counter{color:#ff4a2a;text-shadow:0 0 4px rgba(255,74,42,.75)}
+/* The keys, on the deck's black bed in a floating aluminium bar at the bottom of the picture: the
+   deck's four, a gap, then stations, CRT, full screen and back to the cassette */
+#tapedeck .mkeys{position:absolute;left:50%;bottom:.75rem;z-index:5;display:grid;grid-auto-flow:column;grid-template-columns:repeat(4,1.45rem) .2rem repeat(4,1.45rem);gap:.12rem;padding:.12rem;border:.2rem solid transparent;border-radius:3px;transform:translateX(-50%);
+  background:#1d1f23 padding-box,linear-gradient(#e6e8eb,var(--alu) 55%,#a6abb2) border-box;box-shadow:0 4px 14px rgba(0,0,0,.5)}
+#tapedeck .mkeys .key{height:1.05rem;font-size:.5rem}
+#tapedeck .mkeys .key svg{width:.8rem;height:.55rem}
+#tapedeck .mkeys .key.crt{font:800 .34rem/1 ui-monospace,Consolas,monospace;letter-spacing:.04em}
+#tapedeck .mkeys .key.full svg path{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+/* they come with the picture, and go away while the pointer rests (the keyboard's focus keeps them) */
+#tapedeck .mplate,#tapedeck .mkeys{transition:opacity .4s}
+#tapedeck .monitor:not(.lit) .mplate,#tapedeck .monitor:not(.lit) .mkeys,#tapedeck .monitor.rest:not(:focus-within) .mplate,#tapedeck .monitor.rest:not(:focus-within) .mkeys{opacity:0}
+#tapedeck .monitor.rest:not(:focus-within){cursor:none}
+/* The CRT look (#tapedeck.crt), over the video: scan lines, the red / green / blue stripes of a
+   tube's mask, a dark vignette and a glare; its key stays down with an amber bar */
+#tapedeck .tube .crt,#tapedeck .tube .glare{position:absolute;left:0;top:0;right:0;bottom:0;z-index:3;pointer-events:none;opacity:0;border-radius:inherit}
+#tapedeck .tube .crt{background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(255,0,0,.06) 0 1px,rgba(0,255,0,.05) 1px 2px,rgba(0,80,255,.06) 2px 3px),radial-gradient(120% 120% at 50% 50%,transparent 55%,rgba(0,0,0,.65));box-shadow:inset 0 0 30px rgba(0,0,0,.7)}
+#tapedeck .tube .glare{background:linear-gradient(160deg,rgba(255,255,255,.14),transparent 35%)}
+#tapedeck.crt .tube .crt,#tapedeck.crt .tube .glare{opacity:1}
+#tapedeck.crt .mkeys .key.crt{transform:translateY(2px);background:linear-gradient(#e4e6e9,#c4c7cc);box-shadow:inset 0 -1px 0 rgba(0,0,0,.2)}
+#tapedeck.crt .mkeys .key.crt::after{background:#f5a623;box-shadow:0 0 4px #f5a623}
+/* What the tube says when it has no picture: snow and NO SIGNAL (or PAUSE) in the counter's LED type */
+#tapedeck .tube .noise{position:absolute;left:0;top:0;right:0;bottom:0;z-index:1;opacity:0;border-radius:inherit;background:var(--tv-noise) 0 0/90px 60px,#101014}
+#tapedeck .tube .tubemsg{position:absolute;left:50%;top:50%;z-index:2;padding:.2rem .4rem;border-radius:2px;background:#140907;color:#ff4a2a;font:700 .7rem/1 ui-monospace,Consolas,monospace;letter-spacing:.12em;text-shadow:0 0 4px rgba(255,74,42,.75);transform:translate(-50%,-50%);opacity:0}
+#tapedeck .monitor.waiting .tube .noise,#tapedeck .monitor.waiting .tube .tubemsg{opacity:1}
+#tapedeck .tube .tubemsg::after{content:"NO SIGNAL"}
+/* paused before any picture: no snow, the tube dark with PAUSE (once there, the still picture shows) */
+#tapedeck.paused .monitor.waiting .tube .noise{opacity:0;animation:none}
+#tapedeck.paused .tube .tubemsg::after{content:"❚❚ PAUSE"}
+/* Full screen (#tapedeck.full): the tube fills the window, black around the CRT's rounded corners,
+   the plate and the keys larger; the page does not scroll under it (no scroll bar on its right) */
+#tapedeck.full .monitor{position:fixed;left:0;top:0;right:0;bottom:0;width:auto}
+#tapedeck.full .mslide,#tapedeck.full .mbody{height:100%;padding:0;border-radius:0;box-shadow:none}
+#tapedeck.full .mbody::before{display:none}
+#tapedeck.full .monitor .tube{height:100%;padding:0;border-radius:0;box-shadow:0 0 0 60rem #000}
+#tapedeck.full.crt .monitor .tube{border-radius:28px/36px}
+/* the CRT look a little lighter on so large a picture (the keys and the plate stay clear of it) */
+#tapedeck.full.crt .tube .crt{opacity:.75}
+#tapedeck.full.crt .tube .glare{opacity:.8}
+#tapedeck.full .mplate{left:1rem;top:1rem;padding:.45rem .6rem .35rem;font-size:.5rem}
+#tapedeck.full .mplate .counter{font-size:.55rem}
+#tapedeck.full .mkeys{bottom:1.2rem;grid-template-columns:repeat(4,2.6rem) .4rem repeat(4,2.6rem);gap:.15rem;padding:.15rem;border-width:.3rem}
+#tapedeck.full .mkeys .key{height:1.6rem;font-size:.7rem}
+#tapedeck.full .mkeys .key svg{width:1rem;height:.7rem}
+#tapedeck.full .mkeys .key.crt{font-size:.45rem}
+html.tapefull{overflow:hidden}
+/* The station rack while the monitor is out: on its tube, as a television's menu over the picture
+   (--osd-*, the tube's place, set by tapemonitor.js); no chassis, no cursor, no sliding, only the
+   screen coming on */
+#tapedeck.tv{--rack-hide:none;--rack-unhide:none}
+#tapedeck.tv .rack{left:var(--osd-l);bottom:var(--osd-b);z-index:3;width:var(--osd-w);height:var(--osd-h);clip-path:none}
+#tapedeck.tv .rack .slide{border-radius:3px;box-shadow:none}
+#tapedeck.tv .chassis{padding:.3rem;background:rgba(8,5,4,.45);box-shadow:none}
+#tapedeck.tv .chassis::before,#tapedeck.tv .chassis::after,#tapedeck.tv .plate .grip{display:none}
+#tapedeck.tv .plate{color:#ff8a6a;text-shadow:0 0 4px rgba(255,74,42,.6)}
+#tapedeck.tv .plate .count{color:#c4492f}
+#tapedeck.tv .rack .screen{background:rgba(12,6,5,.72);box-shadow:inset 0 0 0 1px rgba(255,74,42,.25)}
+/* Touch screens: the keys a finger high, as the deck's */
+@media(pointer:coarse){#tapedeck .mkeys .key,#tapedeck.full .mkeys .key{height:2.75rem;font-size:.75rem}#tapedeck .mkeys{grid-template-columns:repeat(4,1.9rem) .2rem repeat(4,1.9rem)}}
+/* laid out unseen, to be measured before it comes out (tapemonitor.js) */
+#tapedeck.measure .monitor{display:block;visibility:hidden}
+#tapedeck.measure .monitor *{animation:none!important}

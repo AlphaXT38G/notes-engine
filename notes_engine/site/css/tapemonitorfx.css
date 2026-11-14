@@ -1,0 +1,40 @@
+/* The video monitor's moves (js/tapemonitor.js, js/tapevideo.js). As the station rack, a cursor
+   comes, grabs the deck's corner and drags the monitor out of it, the deck first turning into the
+   monitor's dark screen (the rack's timings and cursor, taperackfx.css); back to the cassette, it is
+   pushed into the deck. Then the tube comes on as an old television: a dot of light in the middle
+   draws out into a line, opens into a white flash that dies down, a bright band rolls down the
+   picture once. Only transforms and opacity move. */
+/* where it comes from: the deck's box, in its bottom left corner; .mslide (the outline) comes out of
+   it while .mbody goes the other way, standing still */
+#tapedeck{--mon-hide:translate(calc(var(--deck-w) - 100%),calc(100% - var(--deck-h)));--mon-unhide:translate(calc(100% - var(--deck-w)),calc(var(--deck-h) - 100%))}
+#tapedeck.tv .monitor{animation:mon-in .2s ease-out .1s both}
+#tapedeck.tv .mslide{animation:mon-pull var(--rack-drag) var(--rack-ease) var(--rack-grab) both}
+#tapedeck.tv .mbody{animation:mon-pull-body var(--rack-drag) var(--rack-ease) var(--rack-grab) both}
+@keyframes mon-in{from{opacity:0}}
+@keyframes mon-pull{from{transform:var(--mon-hide)}}
+@keyframes mon-pull-body{from{transform:var(--mon-unhide)}}
+/* its cursor, the rack's twin, dragged by the monitor's top right corner */
+#tapedeck .mcursor{--drag-x:calc(var(--mon-w) - var(--deck-w));--drag-y:calc(var(--deck-h) - var(--mon-h))}
+/* back in, faster, fading into the deck at the end (tapemonitor.js waits for mon-push) */
+#tapedeck.untv .mslide{animation:mon-push .35s cubic-bezier(.5,0,.8,.4) both}
+#tapedeck.untv .mbody{animation:mon-push-body .35s cubic-bezier(.5,0,.8,.4) both}
+#tapedeck.untv .monitor{animation:mon-out .1s ease-in .27s both}
+@keyframes mon-push{to{transform:var(--mon-hide)}}
+@keyframes mon-push-body{to{transform:var(--mon-unhide)}}
+@keyframes mon-out{to{opacity:0}}
+/* The tube comes on: a dot, a line, a flash that dies down... */
+#tapedeck .tube .beam{position:absolute;left:0;top:0;right:0;bottom:0;z-index:4;pointer-events:none;opacity:0;border-radius:inherit;background:radial-gradient(70% 130% at 50% 50%,#fff,#fff4ee 45%,#ffd2c0 80%,#e9a58f)}
+#tapedeck .monitor.lit .beam{animation:tube-on .75s linear both}
+@keyframes tube-on{0%{opacity:1;transform:scale(.012,.02)}14%{opacity:1;transform:scale(.05,.012)}32%{transform:scale(1,.012)}48%{opacity:1;transform:none}60%{opacity:.35}68%{opacity:.8}100%{opacity:0;transform:none}}
+/* ...a bright band rolls down the picture once... */
+#tapedeck .tube .roll{position:absolute;left:0;right:0;top:0;z-index:4;height:22%;pointer-events:none;opacity:0;background:linear-gradient(transparent,rgba(255,255,255,.16) 40%,rgba(255,255,255,.3) 50%,rgba(255,255,255,.16) 60%,transparent)}
+#tapedeck .monitor.lit .roll{animation:tube-roll .9s ease-in .6s both}
+@keyframes tube-roll{0%{opacity:1;transform:translateY(-100%)}95%{opacity:.7}100%{opacity:0;transform:translateY(460%)}}
+/* ...and the picture flickers in (each time it comes back too, after an ad): a black veil over the
+   video flickers away, the video itself staying opaque so that the page never shows through */
+#tapedeck .monitor.showing .tube::before{content:"";position:absolute;left:0;top:0;right:0;bottom:0;border-radius:inherit;background:#000;pointer-events:none;animation:tube-picture .5s linear .3s both}
+@keyframes tube-picture{0%{opacity:1}20%{opacity:.2}30%{opacity:.8}45%{opacity:.1}60%{opacity:.6}80%,100%{opacity:0}}
+/* the snow flickers */
+#tapedeck .monitor.waiting .tube .noise{animation:video-snow .16s steps(1) infinite}
+/* Reduced motion: the monitor is simply there, the picture simply on (and no cursor, taperackfx.css) */
+@media(prefers-reduced-motion:reduce){#tapedeck .monitor,#tapedeck .monitor *,#tapedeck .monitor .tube::before,#tapedeck .well::after{animation:none!important;transition:none!important}#tapedeck .monitor.showing .tube::before{opacity:0}}

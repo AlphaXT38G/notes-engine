@@ -39,6 +39,11 @@ const TAPE_KEYS = [
   ["play", "▶︎<small>❚❚</small>", "Play"], ["ff", "▶︎▶︎", "Fast forward 30 s"],
   ["band", '<svg viewBox="0 0 24 16" aria-hidden="true"><circle cx="12" cy="8" r="2.2"/><path d="M8.2 4.2a5.4 5.4 0 0 0 0 7.6M15.8 4.2a5.4 5.4 0 0 1 0 7.6M5.2 1.4a9.6 9.6 0 0 0 0 13.2M18.8 1.4a9.6 9.6 0 0 1 0 13.2"/></svg>', "Next station"],
 ];
+// A key of the deck, by its name in TAPE_KEYS: the video monitor (tapemonitor.js) has copies of them
+const tapeKeyButton = k => {
+  const key = TAPE_KEYS.find(entry => entry[0] === k);
+  return `<button type="button" class="key ${k}" data-key="${k}" title="${key[2]}" aria-label="${key[2]}">${key[1]}</button>`;
+};
 const tapeDeck = document.createElement("div");
 tapeDeck.id = "tapedeck";
 tapeDeck.innerHTML = '<button type="button" class="case"></button><div class="deck">' +
@@ -47,18 +52,18 @@ tapeDeck.innerHTML = '<button type="button" class="case"></button><div class="de
   '<div class="meters"><span class="vu"><i></i><small>L</small></span><span class="vu"><i></i><small>R</small></span>' +
   '<span class="counter">0:00</span></div>' +
   '<p class="badges"><i class="power"></i>POWER<span>AUTO REVERSE</span><span>CrO₂</span></p></div>' +
-  '<div class="keys">' + TAPE_KEYS.map(([k, sym, name]) =>
-    `<button type="button" class="key ${k}" title="${name}" aria-label="${name}">${sym}</button>`).join("") +
+  '<div class="keys">' + TAPE_KEYS.map(([k]) => tapeKeyButton(k)).join("") +
   '</div></div><span class="label" aria-live="polite"></span>';
 const tapeBay = tapeDeck.querySelector(".bay"), tapeCase = tapeDeck.querySelector(".case");
-const tapeCounter = tapeDeck.querySelector(".counter");
 const tapeKey = k => tapeDeck.querySelector(`.key.${k}`);
 
-// The counter: the tape's time, LIVE for a live, or the band's name a moment after a change
+// The counter: the tape's time, LIVE for a live, or the band's name a moment after a change; on
+// every counter of the deck (the video monitor has one too, tapemonitor.js)
 const paintCounter = () => {
   const t = Math.floor(tapeTime);
-  tapeCounter.textContent = performance.now() < tapeFlashUntil ? TAPE_BANDS[tapeBand].short
+  const text = performance.now() < tapeFlashUntil ? TAPE_BANDS[tapeBand].short
     : tapeNow().live && tapeSrc ? "LIVE" : `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
+  tapeDeck.querySelectorAll(".counter").forEach(c => { c.textContent = text; });
 };
 const paintTapes = () => {
   const band = TAPE_BANDS[tapeBand], tape = tapeNow(), next = band.tapes[tapeNext()];
@@ -66,10 +71,12 @@ const paintTapes = () => {
   tapeDeck.classList.toggle("paused", !tapePlaying && !!tapeSrc);
   tapeDeck.querySelector(".label").textContent = (tapeSwapping ? "⏏ " : tapePlaying ? "♪ " : tapeSrc ? "❚❚ " : "▶ ")
     + `${band.name} · ${tape.name}`;
-  const play = tapeKey("play");
-  play.title = tapePlaying ? "Pause" : "Play";
-  play.setAttribute("aria-label", play.title);
-  for (const k of ["restart", "rew", "ff"]) tapeKey(k).disabled = !!tape.live;  // a live has no tape to wind
+  tapeDeck.querySelectorAll(".key.play").forEach(play => {
+    play.title = tapePlaying ? "Pause" : "Play";
+    play.setAttribute("aria-label", play.title);
+  });
+  // a live has no tape to wind (on every copy of those keys)
+  tapeDeck.querySelectorAll(".key.restart, .key.rew, .key.ff").forEach(key => { key.disabled = !!tape.live; });
   // The case behind the deck: the next tape of the band, its label showing (none in a band of one)
   tapeDeck.classList.toggle("single", band.tapes.length < 2);
   tapeCase.innerHTML = cassette(next);
@@ -181,11 +188,14 @@ const TAPE_ACTIONS = {
   band: () => swapTape((tapeBand + 1) % TAPE_BANDS.length, 0),
 };
 musicButtons.push(tapeKey("play"));  // the space bar too (screens.js)
-TAPE_KEYS.forEach(([k]) => tapeKey(k).addEventListener("click", () => {
-  if (tapeSwapping) return;
-  TAPE_ACTIONS[k]();
+// Every key of the deck, its copies included, does what TAPE_ACTIONS says for its name (data-key);
+// other files add actions there for keys of their own
+tapeDeck.addEventListener("click", e => {
+  const key = e.target.closest("[data-key]");
+  if (!key || key.disabled || tapeSwapping || !TAPE_ACTIONS[key.dataset.key]) return;
+  TAPE_ACTIONS[key.dataset.key]();
   tellTape();
-}));
+});
 tapeCase.addEventListener("click", () => { if (!tapeSwapping) swapTape(tapeBand, tapeNext()); });
 const setTapes = on => {
   if (!on) {

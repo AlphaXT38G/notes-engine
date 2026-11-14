@@ -21,6 +21,9 @@
     "css/taperack.css",
     "css/taperows.css",
     "css/taperackfx.css",
+    "css/tapevideo.css",
+    "css/tapemonitor.css",
+    "css/tapemonitorfx.css",
     "css/screens.css",
     "css/konami.css"
   ],
@@ -85,6 +88,8 @@
     "js/tapes.js",
     "js/taperows.js",
     "js/taperack.js",
+    "js/tapemonitor.js",
+    "js/tapevideo.js",
     "js/ytall.js",
     "js/start.js"
   ]

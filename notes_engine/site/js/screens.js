@@ -131,6 +131,7 @@ const screenTrack = (file, { loop = true, muted = false, start = 0 } = {}) => {
 };
 const dropTrack = track => {
   if (!track) return;
+  if (track.drop) { track.drop(); return; }  // a YouTube video played as a track (ytTrack, youtube.js)
   track.pause();
   track.removeAttribute("src");
   track.load();
