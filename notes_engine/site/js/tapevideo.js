@@ -97,6 +97,7 @@ const videoTick = () => {
 const lightTube = () => {
   videoLit = true;
   tapeMonitor.classList.add("lit");
+  restMonitor(false);  // the plate and the keys show a moment
   videoTick();
 };
 

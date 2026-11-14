@@ -1,10 +1,12 @@
 // ── Video monitor of the cassette deck ──
 // What the day's cassette deck becomes to show a tape's video (tapevideo.js decides when, and puts
-// the video on it): a monitor of the same aluminium, its plate (the tape playing, the counter),
-// a 16:9 tube, and the deck's keys under it (copies made by tapeKeyButton, which do the same
-// thing), plus three of its own: CRT (an old tube's look, remembered), full screen, and ⏏ back to
-// the cassette. It fills the free margin on the left of the notes, so that it never covers them.
-// The look is tapemonitor.css, its growing out of the deck and its tube coming on tapemonitorfx.css.
+// the video on it): a 16:9 tube in a thin aluminium bezel, with, over the picture as in full screen,
+// a plate (the tape playing, the counter) and a bar of the deck's keys (copies made by
+// tapeKeyButton, which do the same thing) plus three of its own: CRT (an old tube's look,
+// remembered), full screen, and ⏏ back to the cassette; both go away while the pointer rests. It
+// fills the free margin on the left of the notes, so that it never covers them. A cursor drags it
+// out of the deck's corner, as the station rack. The look is tapemonitor.css, its moves
+// tapemonitorfx.css; it is laid in layers as the rack (.mslide, .mbody) to be dragged out.
 TAPE_KEYS.push(
   ["crt", "CRT", "Cathode ray look"],
   ["full", '<svg viewBox="0 0 24 16" aria-hidden="true"><path d="M5 6.5V3h4M15 3h4v3.5M19 9.5V13h-4M9 13H5V9.5"/></svg>', "Full screen"],
@@ -12,11 +14,15 @@ TAPE_KEYS.push(
 );
 const tapeMonitor = document.createElement("div");
 tapeMonitor.className = "monitor";
-tapeMonitor.innerHTML = '<p class="mplate"><i class="rec"></i>VIDEO MONITOR <b>TD-82</b><span class="now"></span><span class="counter">0:00</span></p>' +
-  '<div class="tube"><i class="noise"></i><span class="tubemsg"></span><i class="crt"></i><i class="glare"></i><i class="beam"></i></div>' +
+tapeMonitor.innerHTML = '<div class="mslide"><div class="mbody">' +
+  '<div class="tube"><i class="noise"></i><span class="tubemsg"></span><i class="crt"></i><i class="glare"></i><i class="beam"></i><i class="roll"></i></div>' +
+  '<p class="mplate"><i class="rec"></i>VIDEO MONITOR <b>TD-82</b><span class="now"></span><span class="counter">0:00</span></p>' +
   '<div class="mkeys">' + ["restart", "rew", "play", "ff"].map(tapeKeyButton).join("") + '<i class="gap"></i>' +
-  ["band", "crt", "full", "eject"].map(tapeKeyButton).join("") + "</div>";
-tapeDeck.append(tapeMonitor);
+  ["band", "crt", "full", "eject"].map(tapeKeyButton).join("") + "</div></div></div>";
+// its cursor, the station rack's twin (taperack.js), dragged by the monitor's corner
+const monitorCursor = rackCursor.cloneNode(true);
+monitorCursor.classList.add("mcursor");
+tapeDeck.append(tapeMonitor, monitorCursor);
 const monitorTube = tapeMonitor.querySelector(".tube");
 
 // The plate names the tape playing
@@ -43,8 +49,11 @@ const fitMonitor = () => {
 // monitor's scale while it grows): the monitor is placed in the deck, or in the window in full screen
 const tubeBox = () => {
   const full = tapeDeck.classList.contains("full"), deck = tapeDeck.getBoundingClientRect();
-  const left = (full ? 0 : deck.left + tapeMonitor.offsetLeft) + monitorTube.offsetLeft;
-  const top = (full ? 0 : deck.top + tapeMonitor.offsetTop) + monitorTube.offsetTop;
+  let left = full ? 0 : deck.left, top = full ? 0 : deck.top;
+  for (let el = monitorTube; el && el !== tapeDeck; el = el.offsetParent) {
+    left += el.offsetLeft;
+    top += el.offsetTop;
+  }
   const width = monitorTube.offsetWidth, height = monitorTube.offsetHeight;
   return { left, top, width, height, bottom: top + height };
 };
@@ -63,10 +72,10 @@ addEventListener("resize", () => {
   placeOnTube();
 });
 
-// Out and back in. The monitor grows out of the deck (mon-grow, from the deck's size: --mon-sx and
-// --mon-sy, measured on a monitor laid out unseen first), then `ready` runs (tapevideo.js puts the
-// video on); back in, it shrinks into the deck (mon-shrink), then .untv goes. Reduced motion, or
-// hideMonitor(true): at once. The station rack is put away, its place changing. A timer stands in
+// Out and back in. A cursor grabs the deck's corner and drags the monitor out of it (mon-pull, from the
+// deck's size; --mon-h measured on a monitor laid out unseen first), then `ready` runs (tapevideo.js
+// puts the video on); back in, it is pushed into the deck (mon-push), then .untv goes. Reduced
+// motion, or hideMonitor(true): at once. The station rack is put away, its place changing. A timer stands in
 // for an animation's end that would not come (a tab in the background draws nothing).
 const monitorStill = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 let monitorReady = null, monitorTimer = null;
@@ -81,16 +90,19 @@ const monitorGrown = () => {
 const showMonitor = ready => {
   closeRack(true);
   fitMonitor();
+  tapeDeck.style.setProperty("--deck-h", `${tapeDeck.querySelector(".deck").offsetHeight}px`);
   tapeDeck.classList.add("measure");
-  const deck = tapeDeck.querySelector(".deck").getBoundingClientRect(), mon = tapeMonitor.getBoundingClientRect();
+  tapeDeck.style.setProperty("--mon-h", `${tapeMonitor.offsetHeight}px`);
   tapeDeck.classList.remove("measure", "untv");
-  tapeDeck.style.setProperty("--mon-sx", deck.width / mon.width);
-  tapeDeck.style.setProperty("--mon-sy", deck.height / mon.height);
   monitorReady = ready;
   tapeDeck.classList.add("tv");
+  restMonitor(false);
   clearTimeout(monitorTimer);
   if (monitorStill()) monitorGrown();
-  else monitorTimer = setTimeout(monitorGrown, 800);
+  else {
+    dragCursor(monitorCursor, true);
+    monitorTimer = setTimeout(monitorGrown, 1000);
+  }
 };
 const monitorShrunk = () => {
   clearTimeout(monitorTimer);
@@ -102,15 +114,16 @@ const hideMonitor = atOnce => {
   setFull(false);
   monitorReady = null;
   tapeDeck.classList.remove("tv");
+  tapeMonitor.classList.remove("lit");
+  dragCursor(monitorCursor, false);
   clearTimeout(monitorTimer);
   if (atOnce === true || monitorStill()) return;
   tapeDeck.classList.add("untv");
   monitorTimer = setTimeout(monitorShrunk, 600);
 };
 tapeMonitor.addEventListener("animationend", e => {
-  if (e.target !== tapeMonitor) return;
-  if (e.animationName === "mon-grow") monitorGrown();
-  if (e.animationName === "mon-shrink") monitorShrunk();
+  if (e.animationName === "mon-pull") monitorGrown();
+  if (e.animationName === "mon-push") monitorShrunk();
 });
 
 // The CRT key: an old tube's look on the video, or not; remembered
@@ -143,10 +156,13 @@ const setFull = on => {
   else placeOnTube();
 }));
 TAPE_ACTIONS.full = () => setFull(!tapeDeck.classList.contains("full"));
-// In full screen the plate and the keys go away while the pointer rests, and come back as it moves
+// The plate and the keys go away while the pointer rests or is elsewhere, and come back as it moves
+// over the picture, a finger touches it, or the keyboard comes in (.rest; the focus keeps them)
 let monitorRest = null;
-tapeMonitor.addEventListener("mousemove", () => {
-  tapeDeck.classList.remove("still");
+const restMonitor = rest => {
   clearTimeout(monitorRest);
-  if (tapeDeck.classList.contains("full")) monitorRest = setTimeout(() => tapeDeck.classList.add("still"), 2500);
-});
+  tapeMonitor.classList.toggle("rest", rest);
+  if (!rest) monitorRest = setTimeout(() => tapeMonitor.classList.add("rest"), 2500);
+};
+["mousemove", "touchstart", "focusin"].forEach(name => tapeMonitor.addEventListener(name, () => restMonitor(false)));
+tapeMonitor.addEventListener("mouseleave", () => restMonitor(true));
