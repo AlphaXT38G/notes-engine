@@ -37,3 +37,5 @@
 @keyframes rack-eq{from{transform:scaleY(.2)}to{transform:scaleY(1)}}
 /* The keyboard's focus: the page's accent around the row */
 #tapedeck .rack .station:focus-visible,#tapedeck .rack .track:focus-visible{box-shadow:inset 0 0 0 1px var(--acc)}
+/* Touch screens: rows a finger high */
+@media(pointer:coarse){#tapedeck .rack .station,#tapedeck .rack .track{height:2.75rem;margin-bottom:.2rem;font-size:.8rem}#tapedeck .rack .signal{width:2.2rem;padding-bottom:.85rem}#tapedeck .rack .track .icon{width:1.3rem;height:1.3rem;font-size:.8rem}#tapedeck .rack .station .count,#tapedeck .rack .track .live{font-size:.55rem}}
