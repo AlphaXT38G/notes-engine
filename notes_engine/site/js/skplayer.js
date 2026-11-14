@@ -13,7 +13,7 @@
 // videos, played through youtube.js (hidden players, muted during their ads, made ahead by
 // ytall.js), or audio files of notes-musics (screenTrack, screens.js): add one to SK_TRACKS ({ id } or
 // { file }, its name, short: its cassette's label, bpm: its tempo, for the strikes, and color: its
-// flower's) to add a flower. They are also the cassette deck's "Sakura" band (tapes.js).
+// flower's) to add a flower. They are also the cassette deck's "Sakura" band (tapebands.js).
 const SK_TRACKS = [
   { file: "sakura/wafu-rock.mp3", name: "Wafū rock: shamisen and heavy bass", short: "Wafū", bpm: 140, color: "#6cd46a" },
   { id: "AK51LblcEOw", name: "Sakura, traditional koto music", short: "Koto", bpm: 72, color: "#5aa8ff" },
