@@ -1,57 +1,18 @@
 // ── Cassette deck (the day, no screen) ──
 // Music for the usual look of the page: an early-80s hi-fi cassette deck in the bottom left corner
 // (brushed aluminium, smoked cassette door, two backlit VU meters, a red tape counter and a row of
-// piano keys). The music comes in bands, the deck's "stations": the lofi mixes (mostly YouTube),
-// then the music of the screens (jazz bar, late night, metal show, epic finale, Christmas,
-// Halloween, sakura), then Radio Impuls and Hit Radio live. A tape is a YouTube video (`id`, a hidden <iframe> driven by
-// postMessage commands, like the Christmas mix: youtube.js, muted during ads), an audio file of
-// notes-musics (`file`, its path there) or a live stream (`stream`), both played by an <audio>.
+// piano keys). The music comes in bands, the deck's "stations" (TAPE_BANDS, tapebands.js). A YouTube
+// tape plays in a hidden <iframe> driven by postMessage commands, like the Christmas mix (youtube.js,
+// muted during ads); an audio file of notes-musics or a live stream plays in an <audio>.
 // The keys: ⏏ puts in the next tape of the band, ◀◀ / ▶▶ wind 30 s back / forward, ▶❚❚ plays or
 // pauses, and the station key goes to the next band (its name shows on the counter a moment).
 // As the Christmas turntable's sleeve, the next tape of the band waits in its case leaning behind
 // the deck: clicking it puts it in too. A change of tape is done as on the real thing: the door
 // opens, the tape comes out, the next one goes in, the door closes, it plays. When a tape ends the
-// next one goes in the same way. More music: add tapes or bands to TAPE_BANDS.
+// next one goes in the same way.
 // Unlike the screens' music, nothing plays by itself: someone reading notes at noon did not ask for
 // music. The chosen tape is remembered; a screen (jazz bar, Christmas...) takes the deck away, and
 // it comes back stopped with the day.
-const TAPE_BANDS = [
-  { name: "Lofi", short: "LOFI", tapes: [
-    { id: "_jH2oTNRe7g", icon: "🍂", short: "Autumn", name: "Cozy autumn lofi", color: "#d9622b" },
-    { id: "XVFUtEh9zrY", icon: "☀️", short: "Summer", name: "Summer lofi", color: "#e8a92a" },
-    { file: "lofi/1-am-study-session.mp3", icon: "📚", short: "1 A.M.", name: "1 A.M. study session", color: "#5a5fc4" },
-    { id: "FJs41oeAnHU", icon: "🌃", short: "Tokyo", name: "Tokyo lofi hip hop night", color: "#2a8fa8" },
-    { id: "09K79_bD6w0", icon: "📼", short: "Silence", name: "Japanese lofi night", color: "#7a4fb0" },
-    { id: "rFZHOHl-L8A", icon: "📻", short: "Radio", name: "Lofi hip hop radio", color: "#c43d6a", live: true },
-  ] },
-  // the jazz bar's tracks (jazz.js, loaded before)
-  { name: "Jazz bar", short: "JAZZ", tapes: JAZZ_TRACKS },
-  { name: "Late night", short: "NIGHT", tapes: [
-    { file: "night/mystical-forest.mp3", icon: "🌙", short: "Night", name: "Mystical Forest", color: "#2f5d8a" },
-  ] },
-  { name: "Metal show", short: "METAL", tapes: [
-    { file: "metal/master-of-puppets-solo.mp3", icon: "🤘", short: "Metal", name: "Master of Puppets solo", color: "#b3121f" },
-  ] },
-  { name: "Epic finale", short: "EPIC", tapes: [
-    { file: "epic/two-steps-from-hell-mix.mp3", icon: "🔥", short: "Epic", name: "Epic finale", color: "#2a62d4" },
-    { file: "epic/dragonborn.mp3", icon: "🐉", short: "Dragon", name: "Dragonborn", color: "#8a5a1c" },
-  ] },
-  // the Christmas turntable's two records (xmusic.js, loaded before: XMAS_YT)
-  { name: "Christmas", short: "XMAS", tapes: [
-    { file: "christmas/jingle-bell-rock.mp3", icon: "🔔", short: "Rock", name: "Jingle Bell Rock", color: "#c8102e" },
-    { id: XMAS_YT, icon: "🎄", short: "Xmas", name: "Lofi Girl - Christmas 2025", color: "#1f7a3e" },
-  ] },
-  // the Halloween screens' tracks (hwmusic.js), the label in their tape colour
-  { name: "Halloween", short: "SPOOKY", tapes: HW_TRACKS.map(t => Object.assign({}, t, { color: t.tape })) },
-  // the sakura screens' tracks (skplayer.js), the label in their flower's colour
-  { name: "Sakura", short: "SAKURA", tapes: SK_TRACKS.map(t => Object.assign({}, t, { icon: "🌸" })) },
-  { name: "Radio Impuls", short: "IMPULS", tapes: [
-    { stream: "https://stream.sepia.sk:8000/impuls128.mp3", icon: "📡", short: "Impuls", name: "Radio Impuls (live)", color: "#e30613", live: true },
-  ] },
-  { name: "Hit Radio", short: "HIT", tapes: [
-    { stream: "https://hitradio-maroc.ice.infomaniak.ch/hitradio-maroc-128.mp3", icon: "🎧", short: "Hit", name: "Hit Radio Maroc (live)", color: "#c1272d", live: true },
-  ] },
-];
 // The tape in the deck: band and tape in it, remembered as "band:tape"
 let [tapeBand, tapeAt] = (() => {
   try {
