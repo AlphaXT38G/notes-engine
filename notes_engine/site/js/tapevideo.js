@@ -78,3 +78,30 @@ const lightTube = () => {
   tapeMonitor.classList.add("lit");
   videoTick();
 };
+
+// On and off: the tape plays if it did not; off, the monitor goes back into the deck (at once when
+// a screen takes the deck)
+const openVideo = () => {
+  if (!tapeVideoId(tapeNow())) return;
+  videoOn = true;
+  if (!tapePlaying) tapePlay();
+  tapeDeck.classList.add("vloading");
+  clearInterval(videoTicker);
+  videoTicker = setInterval(videoTick, 250);
+  videoTick();
+};
+const closeVideo = atOnce => {
+  videoOn = false;
+  videoLit = false;
+  clearInterval(videoTicker);
+  followTape();
+  putFrame(null);
+  tapeMonitor.classList.remove("lit", "waiting");
+  tapeDeck.classList.remove("vloading");
+  hideMonitor(atOnce);
+};
+TAPE_ACTIONS.video = () => (videoOn ? closeVideo() : openVideo());
+TAPE_ACTIONS.eject = closeVideo;
+document.addEventListener("phase", () => closeVideo(true));
+// A tape without a video put in while it shows (the rack, a tape ending): back to the cassette
+tapeDeck.addEventListener("tapechange", () => { if (videoOn && !tapeVideoId(tapeNow())) closeVideo(); });
