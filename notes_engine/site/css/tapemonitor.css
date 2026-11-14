@@ -29,3 +29,11 @@
 #tapedeck .mkeys .key{height:1.3rem}
 #tapedeck .mkeys .key.crt{font:800 .42rem/1 ui-monospace,Consolas,monospace;letter-spacing:.05em}
 #tapedeck .mkeys .key.full svg path{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+/* The CRT look (#tapedeck.crt), over the video: scan lines, the red / green / blue stripes of a
+   tube's mask, a dark vignette and a glare; its key stays down with an amber bar */
+#tapedeck .tube .crt,#tapedeck .tube .glare{position:absolute;left:0;top:0;right:0;bottom:0;z-index:3;pointer-events:none;opacity:0;border-radius:inherit}
+#tapedeck .tube .crt{background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(255,0,0,.06) 0 1px,rgba(0,255,0,.05) 1px 2px,rgba(0,80,255,.06) 2px 3px),radial-gradient(120% 120% at 50% 50%,transparent 55%,rgba(0,0,0,.65));box-shadow:inset 0 0 30px rgba(0,0,0,.7)}
+#tapedeck .tube .glare{background:linear-gradient(160deg,rgba(255,255,255,.14),transparent 35%)}
+#tapedeck.crt .tube .crt,#tapedeck.crt .tube .glare{opacity:1}
+#tapedeck.crt .mkeys .key.crt{transform:translateY(2px);background:linear-gradient(#e4e6e9,#c4c7cc);box-shadow:inset 0 -1px 0 rgba(0,0,0,.2)}
+#tapedeck.crt .mkeys .key.crt::after{background:#f5a623;box-shadow:0 0 4px #f5a623}
