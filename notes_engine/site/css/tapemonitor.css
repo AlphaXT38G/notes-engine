@@ -1,0 +1,11 @@
+/* Video monitor of the cassette deck (js/tapemonitor.js): the deck grown into a monitor of the same
+   aluminium, --mon-w wide (the free margin left of the notes, set by tapemonitor.js), anchored at the
+   deck's bottom left; shown while #tapedeck.tv (and .untv, going back). The video is a YouTube
+   <iframe> that cannot move into it (it would load again, ad included): it lies UNDER the deck, at
+   the tube's place, and the tube is a hole in the monitor. So the monitor paints no background of
+   its own: the tube's huge spread shadow paints the aluminium around it, and the plate and keys
+   are bars on top. Its growing and its tube coming on are tapemonitorfx.css. */
+#tapedeck{--mon-w:24rem;--alu:#c3c7cd}
+#tapedeck .monitor{position:absolute;left:0;bottom:0;z-index:2;width:var(--mon-w);display:none;flex-direction:column;overflow:hidden;border-radius:3px;box-shadow:0 10px 28px rgba(0,0,0,.4);transform-origin:0 100%}
+#tapedeck.tv .monitor,#tapedeck.untv .monitor{display:flex}
+#tapedeck.tv > .deck,#tapedeck.tv > .case,#tapedeck.tv > .label{visibility:hidden}
