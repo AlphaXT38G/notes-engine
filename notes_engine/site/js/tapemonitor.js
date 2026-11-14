@@ -57,10 +57,13 @@ addEventListener("resize", () => {
 // Out and back in. The monitor grows out of the deck (mon-grow, from the deck's size: --mon-sx and
 // --mon-sy, measured on a monitor laid out unseen first), then `ready` runs (tapevideo.js puts the
 // video on); back in, it shrinks into the deck (mon-shrink), then .untv goes. Reduced motion, or
-// hideMonitor(true): at once. The station rack is put away, its place changing.
+// hideMonitor(true): at once. The station rack is put away, its place changing. A timer stands in
+// for an animation's end that would not come (a tab in the background draws nothing).
 const monitorStill = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
-let monitorReady = null;
+let monitorReady = null, monitorTimer = null;
 const monitorGrown = () => {
+  clearTimeout(monitorTimer);
+  if (!tapeDeck.classList.contains("tv")) return;
   placeOnTube();
   const ready = monitorReady;
   monitorReady = null;
@@ -76,7 +79,13 @@ const showMonitor = ready => {
   tapeDeck.style.setProperty("--mon-sy", deck.height / mon.height);
   monitorReady = ready;
   tapeDeck.classList.add("tv");
+  clearTimeout(monitorTimer);
   if (monitorStill()) monitorGrown();
+  else monitorTimer = setTimeout(monitorGrown, 800);
+};
+const monitorShrunk = () => {
+  clearTimeout(monitorTimer);
+  tapeDeck.classList.remove("untv");
 };
 const hideMonitor = atOnce => {
   if (!tapeDeck.classList.contains("tv")) return;
@@ -84,12 +93,15 @@ const hideMonitor = atOnce => {
   setFull(false);
   monitorReady = null;
   tapeDeck.classList.remove("tv");
-  if (atOnce !== true && !monitorStill()) tapeDeck.classList.add("untv");
+  clearTimeout(monitorTimer);
+  if (atOnce === true || monitorStill()) return;
+  tapeDeck.classList.add("untv");
+  monitorTimer = setTimeout(monitorShrunk, 600);
 };
 tapeMonitor.addEventListener("animationend", e => {
   if (e.target !== tapeMonitor) return;
   if (e.animationName === "mon-grow") monitorGrown();
-  if (e.animationName === "mon-shrink") tapeDeck.classList.remove("untv");
+  if (e.animationName === "mon-shrink") monitorShrunk();
 });
 
 // The CRT key: an old tube's look on the video, or not; remembered
