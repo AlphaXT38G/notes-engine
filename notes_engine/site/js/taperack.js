@@ -14,7 +14,12 @@ tapeRack.innerHTML = '<div class="slide"><div class="chassis" role="dialog" aria
   '<span class="title"></span><span class="count"></span><i class="grip"></i></p>' +
   '<div class="screen"><div class="pages"><div class="page stations"></div><div class="page tracks"></div></div>' +
   '<i class="beam"></i><i class="snow"></i></div></div></div>';
-tapeDeck.append(tapeRack);
+// The cursor of the opening, which grabs the deck's corner and drags the rack out (taperackfx.css)
+const rackCursor = document.createElement("i");
+rackCursor.className = "rackcursor";
+rackCursor.setAttribute("aria-hidden", "true");
+rackCursor.innerHTML = '<svg viewBox="0 0 16 22"><path d="M1 1v17.5l4.4-4.2 2.9 6.6 3-1.3-2.9-6.5h6.1z"/></svg>';
+tapeDeck.append(tapeRack, rackCursor);
 const rackPart = selector => tapeRack.querySelector(selector);
 const rackStations = rackPart(".stations"), rackTracks = rackPart(".tracks");
 
