@@ -44,3 +44,6 @@
 #tapedeck.racked .rack .snow{animation:rack-snow .5s steps(1) calc(var(--rack-crt) + .23s) both,rack-shake .12s steps(3) calc(var(--rack-crt) + .23s) 5}
 @keyframes rack-snow{0%{opacity:0}20%{opacity:.55}45%{opacity:.25}60%{opacity:.5}80%{opacity:.1}100%{opacity:0}}
 @keyframes rack-shake{33%{transform:translate(3%,-2%)}66%{transform:translate(-2%,3%)}}
+/* the picture flickers in, jumping sideways once, before it holds */
+#tapedeck.racked .rack .pages{animation:rack-picture .7s linear calc(var(--rack-crt) + .13s) both}
+@keyframes rack-picture{0%,30%{opacity:0}38%{opacity:.8}46%{opacity:.2}54%{opacity:.9}60%{opacity:.35;transform:translateX(1.5%) skewX(-4deg)}68%{opacity:1;transform:none}76%{opacity:.6}84%,100%{opacity:1}}
