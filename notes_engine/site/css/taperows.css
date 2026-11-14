@@ -1,0 +1,8 @@
+/* The rows of the station rack's screen (drawn by js/taperows.js): a station is a dark cell like a
+   cassette's shell, with its signal meter; a tape is a cell lit like the deck's counter, red LED type
+   with its label's colour as a stripe. Their colour is --tc. */
+#tapedeck .rack .station,#tapedeck .rack .track{display:flex;align-items:center;width:100%;height:.92rem;margin-bottom:.1rem;border-radius:1px;text-align:left;white-space:nowrap}
+#tapedeck .rack .name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+/* A station */
+#tapedeck .rack .station{gap:.3rem;padding:0 .28rem 0 0;background:linear-gradient(#34343b,#1b1b20);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);color:#dcdde0;font:600 .52rem/1 system-ui,sans-serif;transition:transform .15s}
+#tapedeck .rack .station:hover,#tapedeck .rack .station:focus-visible{transform:translateX(.2rem);background:linear-gradient(#45454d,#26262c);outline:0}
