@@ -17,3 +17,8 @@
 #tapedeck .rack .lamp{flex:none;width:.26rem;height:.26rem;border-radius:50%;background:#2a2c30}
 #tapedeck .rack .station.on{box-shadow:inset 0 0 0 1px rgba(46,204,113,.55)}
 #tapedeck .rack .station.on .lamp{background:#2ecc71;box-shadow:0 0 4px #2ecc71}
+/* A tape: a cell lit from inside in red, its label's colour as a stripe on the left, its name in the LED
+   type of the deck's counter */
+#tapedeck .rack .track{gap:.28rem;padding:0 .3rem 0 0;background:linear-gradient(90deg,rgba(255,74,42,.09),rgba(255,74,42,.03));box-shadow:inset 0 0 0 1px rgba(255,74,42,.16);border-left:.18rem solid var(--tc);color:#c4492f;font:700 .46rem/1 ui-monospace,Consolas,monospace;letter-spacing:.04em}
+#tapedeck .rack .track .name{text-transform:uppercase}
+#tapedeck .rack .track:hover,#tapedeck .rack .track:focus-visible{color:#ff8a6a;background:rgba(255,74,42,.16);outline:0}
