@@ -101,7 +101,7 @@ TAPE_ACTIONS.band = () => (rackIsOut() ? closeRack() : openRack());
 document.addEventListener("keydown", e => {
   if (e.key !== "Escape" || !rackIsOut()) return;
   closeRack();
-  tapeKey("band").focus();
+  tapeDeck.querySelector(tapeDeck.classList.contains("tv") ? ".monitor .key.band" : ".deck .key.band").focus();
 });
 document.addEventListener("click", e => { if (!tapeDeck.contains(e.target)) closeRack(); });
 // A screen takes the deck away: the rack goes with it at once, and the day brings the deck back with
