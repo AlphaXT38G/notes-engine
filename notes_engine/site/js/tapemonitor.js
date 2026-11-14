@@ -91,3 +91,11 @@ tapeMonitor.addEventListener("animationend", e => {
   if (e.animationName === "mon-grow") monitorGrown();
   if (e.animationName === "mon-shrink") tapeDeck.classList.remove("untv");
 });
+
+// The CRT key: an old tube's look on the video, or not; remembered
+const setCrt = on => {
+  tapeDeck.classList.toggle("crt", on);
+  try { localStorage.setItem("tape-crt", on ? "1" : "0"); } catch (e) {}
+};
+try { tapeDeck.classList.toggle("crt", localStorage.getItem("tape-crt") === "1"); } catch (e) {}
+TAPE_ACTIONS.crt = () => setCrt(!tapeDeck.classList.contains("crt"));
