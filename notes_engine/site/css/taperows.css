@@ -26,11 +26,12 @@
 #tapedeck .rack .track .no{flex:none;margin-left:.18rem;color:#6e2416}
 #tapedeck .rack .track .icon{flex:none;width:.7rem;height:.7rem;display:grid;place-items:center;border-radius:1px;background:var(--tc);font-size:.42rem;box-shadow:0 0 0 1px rgba(0,0,0,.5)}
 #tapedeck .rack .track .live{flex:none;color:#ff4a2a;font-size:.36rem}
-/* the tape in the deck glows, its level meter dancing (scaled, not resized) */
+/* the tape in the deck glows, its level meter dancing while it plays (scaled, not resized) */
 #tapedeck .rack .track.on{color:#ff4a2a;text-shadow:0 0 4px rgba(255,74,42,.75);box-shadow:inset 0 0 0 1px rgba(255,74,42,.5)}
 #tapedeck .rack .track .eq{display:none;gap:1px;align-items:flex-end;height:.38rem}
 #tapedeck .rack .track.on .eq{display:flex}
-#tapedeck .rack .track .eq i{width:2px;height:100%;background:#ff4a2a;box-shadow:0 0 3px #ff4a2a;transform-origin:50% 100%;animation:rack-eq .6s ease-in-out infinite alternate}
+#tapedeck .rack .track .eq i{width:2px;height:100%;background:#ff4a2a;box-shadow:0 0 3px #ff4a2a;transform-origin:50% 100%;transform:scaleY(.35);animation:rack-eq .6s ease-in-out infinite alternate paused}
+#tapedeck.playing .rack .track .eq i{animation-play-state:running}
 #tapedeck .rack .track .eq i:nth-child(2){animation-duration:.45s}
 #tapedeck .rack .track .eq i:nth-child(3){animation-duration:.7s}
 @keyframes rack-eq{from{transform:scaleY(.2)}to{transform:scaleY(1)}}
