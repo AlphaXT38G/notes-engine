@@ -11,3 +11,6 @@
 #tapedeck .rack .signal i{width:.11rem;border-radius:1px;background:#3a3c42}
 #tapedeck .rack .signal i:nth-child(1){height:.14rem}#tapedeck .rack .signal i:nth-child(2){height:.22rem}#tapedeck .rack .signal i:nth-child(3){height:.3rem}#tapedeck .rack .signal i:nth-child(4){height:.38rem}#tapedeck .rack .signal i:nth-child(5){height:.46rem}
 #tapedeck .rack .signal i.lit{background:var(--tc);box-shadow:0 0 3px var(--tc)}
+/* its count of tapes on a small red LED, and the lamp lit green while it plays */
+#tapedeck .rack .count{flex:none}
+#tapedeck .rack .station .count{padding:.08rem .16rem;border-radius:1px;background:#140907;color:#ff4a2a;font:700 .36rem/1 ui-monospace,Consolas,monospace;letter-spacing:.06em;text-shadow:0 0 3px rgba(255,74,42,.7)}
