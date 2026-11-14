@@ -80,6 +80,7 @@
     "js/normal.js",
     "js/tapebands.js",
     "js/tapes.js",
+    "js/taperows.js",
     "js/ytall.js",
     "js/start.js"
   ]
