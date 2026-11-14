@@ -39,7 +39,7 @@ const TAPE_BANDS = [
   { name: "Sakura", short: "SAKURA", tapes: SK_TRACKS.map(t => Object.assign({}, t, { icon: "🌸" })) },
   // the radios live, together
   { name: "Radio", short: "RADIO", tapes: [
-    { stream: "https://stream.sepia.sk:8000/impuls128.mp3", icon: "📡", short: "Impuls", name: "Radio Impuls (live)", color: "#e30613", live: true },
-    { stream: "https://hitradio-maroc.ice.infomaniak.ch/hitradio-maroc-128.mp3", icon: "🎧", short: "Hit", name: "Hit Radio Maroc (live)", color: "#c1272d", live: true },
+    { stream: "https://stream.sepia.sk:8000/impuls128.mp3", icon: "📡", short: "Impuls", name: "Radio Impuls", color: "#e30613", live: true },
+    { stream: "https://hitradio-maroc.ice.infomaniak.ch/hitradio-maroc-128.mp3", icon: "🎧", short: "Hit", name: "Hit Radio Maroc", color: "#c1272d", live: true },
   ] },
 ];
