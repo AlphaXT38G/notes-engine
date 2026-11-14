@@ -51,3 +51,34 @@ const markRack = () => {
   rackTracks.querySelectorAll(".track").forEach((row, i) => row.classList.toggle("on", rackBand === tapeBand && i === tapeAt));
 };
 tapeDeck.addEventListener("tapechange", markRack);
+
+// Out and back in. The stations are drawn anew each time, so that they light up again on the screen
+// coming on. Back in, taperackfx.css switches the screen off and pushes the rack in (rack-push),
+// then .unrack goes; with reduced motion it goes at once.
+const rackKey = tapeKey("band");
+const rackIsOut = () => tapeDeck.classList.contains("racked");
+const setRackKey = out => rackKey.setAttribute("aria-expanded", String(out));
+const openRack = () => {
+  tapeDeck.style.setProperty("--deck-h", `${tapeDeck.querySelector(".deck").offsetHeight}px`);
+  rackStations.innerHTML = TAPE_BANDS.map(stationRow).join("");
+  showStations();
+  markRack();
+  tapeDeck.classList.remove("unrack");
+  tapeDeck.classList.add("racked");
+  setRackKey(true);
+};
+const closeRack = () => {
+  if (!rackIsOut()) return;
+  tapeDeck.classList.remove("racked");
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) tapeDeck.classList.add("unrack");
+  setRackKey(false);
+};
+tapeRack.addEventListener("animationend", e => {
+  if (e.animationName === "rack-push") tapeDeck.classList.remove("unrack");
+});
+// The station key pulls the rack out and puts it back (tapes.js's own action, the next station,
+// is what it does without this file)
+rackKey.title = "Stations";
+rackKey.setAttribute("aria-label", rackKey.title);
+setRackKey(false);
+TAPE_ACTIONS.band = () => (rackIsOut() ? closeRack() : openRack());
