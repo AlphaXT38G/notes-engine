@@ -19,7 +19,7 @@ const SK_TRACKS = [
   { id: "AK51LblcEOw", name: "Sakura, traditional koto music", short: "Koto", bpm: 72, color: "#5aa8ff" },
   { id: "oxlaAdCY4jA", name: "Cherry blossom zen music", short: "Zen", bpm: 64, color: "#e8323c" },
   { file: "sakura/sengoshin.mp3", name: "Sengoshin, gods of the war drums", short: "Drums", bpm: 120, color: "#a066e0" },
-  { file: "sakura/tao.m4a", name: "Tao, on the path of the samurai", short: "Tao", bpm: 64, color: "#2a2230" },
+  { file: "sakura/tao.m4a", video: "S-h8z0zgX_U", name: "Tao, on the path of the samurai", short: "Tao", bpm: 64, color: "#2a2230" },
   { id: "KBgRUHG6pHU", name: "Epic shamisen, heavy Japanese rock", short: "Epic", bpm: 140, color: "#ffd23a", video: false },
 ];
 let skTrackAt = (() => { try { return (+localStorage.getItem("sk-track") || 0) % SK_TRACKS.length; } catch (e) { return 0; } })();
