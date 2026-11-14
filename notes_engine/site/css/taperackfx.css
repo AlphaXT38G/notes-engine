@@ -52,3 +52,8 @@
 #tapedeck.racked .stations .station{animation:rack-row .3s both;animation-delay:calc(var(--rack-rows) + var(--i) * 45ms)}
 #tapedeck .tracks .track{animation:rack-row .3s both;animation-delay:calc(.14s + var(--i) * 45ms)}
 @keyframes rack-row{0%{opacity:0}40%{opacity:.7}55%{opacity:.15}100%{opacity:1}}
+/* Closing: the picture folds into a bright line, then a dot, as a tube switched off... */
+#tapedeck.unrack .rack .pages{animation:rack-off .2s ease-in both}
+#tapedeck.unrack .rack .beam{animation:rack-off-glow .2s ease-in both}
+@keyframes rack-off{50%{transform:scale(1,.01)}100%{opacity:0;transform:scale(0,.01)}}
+@keyframes rack-off-glow{0%{opacity:0;transform:none}50%{opacity:1;transform:scale(1,.012)}100%{opacity:0;transform:scale(0,.012)}}
