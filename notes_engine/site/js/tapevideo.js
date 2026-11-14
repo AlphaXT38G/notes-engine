@@ -21,8 +21,19 @@ videoPill.setAttribute("aria-label", videoPill.title);
 videoPill.innerHTML = '<i class="lamp"></i><svg viewBox="0 0 20 16" aria-hidden="true"><rect x="2" y="3.5" width="16" height="11" rx="2"/><path d="M7 1l3 2.5 3-2.5"/></svg>VIDEO';
 const videoBadges = tapeDeck.querySelector(".badges");
 videoBadges.insertBefore(videoPill, videoBadges.lastChild);
-const paintVideoPill = () => tapeDeck.classList.toggle("hasvideo", !!tapeVideoId(tapeNow()));
+// Only for a long video, worth watching: a live, or one of VIDEO_LONG s at least, as its player
+// reports it (the players are made ahead by ytall.js; until then, it is checked again every 2 s).
+// An audio file's `video` is taken as long.
+const VIDEO_LONG = 20 * 60;
+const videoLong = tape => {
+  if (!tapeVideoId(tape)) return false;
+  if (!tape.id) return true;
+  const p = YT_PLAYERS[tape.id];
+  return !!p && (p.live || p.duration >= VIDEO_LONG);
+};
+const paintVideoPill = () => tapeDeck.classList.toggle("hasvideo", videoLong(tapeNow()));
 tapeDeck.addEventListener("tapechange", paintVideoPill);
+setInterval(paintVideoPill, 2000);
 paintVideoPill();
 
 // The player of the tape's video, and whether it has a picture to show: ready, past its ad, and its
@@ -89,7 +100,7 @@ const lightTube = () => {
 // On and off: the tape plays if it did not; off, the monitor goes back into the deck (at once when
 // a screen takes the deck)
 const openVideo = () => {
-  if (!tapeVideoId(tapeNow())) return;
+  if (!videoLong(tapeNow())) return;
   videoOn = true;
   if (!tapePlaying) tapePlay();
   tapeDeck.classList.add("vloading");
@@ -110,5 +121,10 @@ const closeVideo = atOnce => {
 TAPE_ACTIONS.video = () => (videoOn ? closeVideo() : openVideo());
 TAPE_ACTIONS.eject = closeVideo;
 document.addEventListener("phase", () => closeVideo(true));
-// A tape without a video put in while it shows (the rack, a tape ending): back to the cassette
-tapeDeck.addEventListener("tapechange", () => { if (videoOn && !tapeVideoId(tapeNow())) closeVideo(); });
+// A tape put in while the video shows (the rack, a tape ending) goes back to the cassette when it has
+// no video or a short one; one whose length is not known yet waits on the tube
+const videoShort = tape => {
+  const p = tape.id && YT_PLAYERS[tape.id];
+  return !tapeVideoId(tape) || (!!p && p.duration > 0 && !videoLong(tape));
+};
+tapeDeck.addEventListener("tapechange", () => { if (videoOn && videoShort(tapeNow())) closeVideo(); });
