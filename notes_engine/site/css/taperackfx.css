@@ -1,0 +1,14 @@
+/* The station rack's opening and closing (js/taperack.js sets #tapedeck.racked, then .unrack): a
+   cursor comes, grabs the deck's corner and drags the rack out; let go, the rack's screen comes on
+   like an old cathode ray tube (a line, a flash, snow, a flickering picture), then its rows light up
+   one after the other. Closing, the picture folds into a line and a dot, and the rack goes back in.
+   Only transforms and opacity move. The steps' times are the variables below. */
+#tapedeck{--rack-grab:.35s;--rack-drag:.55s;--rack-crt:.92s;--rack-rows:1.5s;--rack-ease:cubic-bezier(.45,0,.2,1)}
+/* Where the rack comes from: out of the deck's right side, dragged by its top right corner (on
+   phones, out of the deck's top); the chassis moves the other way to stand still (taperack.css) */
+#tapedeck{--rack-hide:translate(-100%,calc(100% - var(--deck-h)));--rack-unhide:translate(100%,calc(var(--deck-h) - 100%));--rack-drag-x:var(--rack-w);--rack-drag-y:calc(var(--deck-h) - var(--rack-h))}
+@media(max-width:640px){#tapedeck{--rack-hide:translateY(100%);--rack-unhide:translateY(-100%);--rack-drag-x:0px;--rack-drag-y:calc(-1 * var(--rack-h))}}
+#tapedeck.racked .rack .slide{animation:rack-pull var(--rack-drag) var(--rack-ease) var(--rack-grab) both}
+#tapedeck.racked .chassis{animation:rack-pull-chassis var(--rack-drag) var(--rack-ease) var(--rack-grab) both}
+@keyframes rack-pull{from{transform:var(--rack-hide)}}
+@keyframes rack-pull-chassis{from{transform:var(--rack-unhide)}}
