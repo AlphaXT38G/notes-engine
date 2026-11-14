@@ -15,10 +15,11 @@
 #tapedeck .tube .beam{position:absolute;left:0;top:0;right:0;bottom:0;z-index:4;pointer-events:none;opacity:0;border-radius:inherit;background:radial-gradient(60% 120% at 50% 50%,#fff,#ffd9cc 40%,rgba(255,120,90,.35) 75%,transparent);mix-blend-mode:screen}
 #tapedeck .monitor.lit .beam{animation:tube-on .6s linear both}
 @keyframes tube-on{0%{opacity:1;transform:scale(0,.012)}20%{opacity:1;transform:scale(1,.012)}40%{opacity:1;transform:none}55%{opacity:.3}65%{opacity:.7}100%{opacity:0;transform:none}}
-/* ...and the picture flickers in (each time it comes back too, after an ad) */
-.ytplayer.onscreen{animation:tube-picture .5s linear .3s both}
-@keyframes tube-picture{0%{opacity:0}20%{opacity:.8}30%{opacity:.2}45%{opacity:.9}60%{opacity:.4}80%,100%{opacity:1}}
+/* ...and the picture flickers in (each time it comes back too, after an ad): a black veil over the
+   video flickers away, the video itself staying opaque so that the page never shows through */
+#tapedeck .monitor.showing .tube::before{content:"";position:absolute;left:0;top:0;right:0;bottom:0;border-radius:inherit;background:#000;pointer-events:none;animation:tube-picture .5s linear .3s both}
+@keyframes tube-picture{0%{opacity:1}20%{opacity:.2}30%{opacity:.8}45%{opacity:.1}60%{opacity:.6}80%,100%{opacity:0}}
 /* the snow flickers */
 #tapedeck .monitor.waiting .tube .noise{animation:video-snow .16s steps(1) infinite}
 /* Reduced motion: the monitor is simply there, the picture simply on */
-@media(prefers-reduced-motion:reduce){#tapedeck .monitor,#tapedeck .monitor *,.ytplayer.onscreen,#tapedeck .well::after{animation:none!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){#tapedeck .monitor,#tapedeck .monitor *,#tapedeck .monitor .tube::before,#tapedeck .well::after{animation:none!important;transition:none!important}#tapedeck .monitor.showing .tube::before{opacity:0}}
