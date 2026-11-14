@@ -31,3 +31,15 @@ const videoPlayer = () => {
   return id ? ytPlayer(id) : null;
 };
 const videoShowable = p => p.ready && p.music && !p.ad && (!tapePlaying || performance.now() - p.movedAt < YT_STILL_MS());
+// An audio file's video plays and pauses with the tape, muted, and goes back to its time when it
+// drifts away from it; the one followed before is paused
+const followTape = () => {
+  const tape = tapeNow(), id = videoOn && !tape.id ? tapeVideoId(tape) : "";
+  if (videoFollowed && videoFollowed !== id) ytPause(videoFollowed, TAPE_VIDEO);
+  videoFollowed = id;
+  if (!id) return;
+  const p = ytPlayer(id);
+  if (!tapePlaying) { ytPause(id, TAPE_VIDEO); return; }
+  if (p.owner !== TAPE_VIDEO || p.want !== "play") ytPlay(id, TAPE_VIDEO, false);
+  if (p.ready && p.music && Math.abs(p.time - tapeTime) > 1.5) ytSeek(id, TAPE_VIDEO, tapeTime);
+};
