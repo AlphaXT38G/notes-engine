@@ -47,3 +47,8 @@
 /* the picture flickers in, jumping sideways once, before it holds */
 #tapedeck.racked .rack .pages{animation:rack-picture .7s linear calc(var(--rack-crt) + .13s) both}
 @keyframes rack-picture{0%,30%{opacity:0}38%{opacity:.8}46%{opacity:.2}54%{opacity:.9}60%{opacity:.35;transform:translateX(1.5%) skewX(-4deg)}68%{opacity:1;transform:none}76%{opacity:.6}84%,100%{opacity:1}}
+/* the rows light up one after the other, with a flick: the stations once the picture holds, a
+   station's tapes as soon as they slide in */
+#tapedeck.racked .stations .station{animation:rack-row .3s both;animation-delay:calc(var(--rack-rows) + var(--i) * 45ms)}
+#tapedeck .tracks .track{animation:rack-row .3s both;animation-delay:calc(.14s + var(--i) * 45ms)}
+@keyframes rack-row{0%{opacity:0}40%{opacity:.7}55%{opacity:.15}100%{opacity:1}}
