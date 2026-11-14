@@ -62,3 +62,5 @@
 #tapedeck.unrack .chassis{animation:rack-push-chassis .24s cubic-bezier(.5,0,.8,.4) .2s both}
 @keyframes rack-push{to{transform:var(--rack-hide)}}
 @keyframes rack-push-chassis{to{transform:var(--rack-unhide)}}
+/* Reduced motion: the rack is simply there, and simply gone */
+@media(prefers-reduced-motion:reduce){#tapedeck.racked .rackcursor{visibility:hidden}#tapedeck .rack *,#tapedeck .rackcursor,#tapedeck .rackcursor *,#tapedeck .rackcursor::before{animation:none!important}#tapedeck .rack .page{transition:none}}
