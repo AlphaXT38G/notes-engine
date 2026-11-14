@@ -39,3 +39,8 @@
 #tapedeck .rack .beam{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(60% 120% at 50% 50%,#fff,#ffd9cc 40%,rgba(255,120,90,.35) 75%,transparent);mix-blend-mode:screen}
 #tapedeck.racked .rack .beam{animation:rack-beam .62s linear var(--rack-crt) both}
 @keyframes rack-beam{0%{opacity:1;transform:scale(0,.012)}18%{opacity:1;transform:scale(1,.012)}36%{opacity:1;transform:none}48%{opacity:.25}56%{opacity:.7}64%{opacity:.1}74%{opacity:.35}100%{opacity:0;transform:none}}
+/* snow on the tube for half a second, shaking */
+#tapedeck .rack .snow{position:absolute;inset:-20%;z-index:2;pointer-events:none;opacity:0;background:repeating-radial-gradient(circle at 17% 32%,rgba(255,255,255,.5) 0 1px,transparent 1px 3px),repeating-radial-gradient(circle at 73% 61%,rgba(255,200,190,.4) 0 1px,transparent 1px 4px)}
+#tapedeck.racked .rack .snow{animation:rack-snow .5s steps(1) calc(var(--rack-crt) + .23s) both,rack-shake .12s steps(3) calc(var(--rack-crt) + .23s) 5}
+@keyframes rack-snow{0%{opacity:0}20%{opacity:.55}45%{opacity:.25}60%{opacity:.5}80%{opacity:.1}100%{opacity:0}}
+@keyframes rack-shake{33%{transform:translate(3%,-2%)}66%{transform:translate(-2%,3%)}}
