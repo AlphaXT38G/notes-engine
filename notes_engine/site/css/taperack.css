@@ -1,0 +1,17 @@
+/* Station rack of the cassette deck (js/taperack.js): a module of the same brushed aluminium,
+   bolted against the deck's right side, about as tall as two decks: a compact model plate, then a
+   small screen behind glass whose two pages (the stations, a station's tapes) slide sideways. Its
+   rows are taperows.css, its opening and closing taperackfx.css. Its size is --rack-w × --rack-h;
+   --deck-h is the deck's height, measured by taperack.js as it opens (the rack comes out of it). */
+#tapedeck{--rack-w:11rem;--rack-h:11.4rem;--deck-h:5.4rem}
+/* Three layers, so that opening moves transforms only: .rack stands still and cuts what would show
+   over the deck; .slide, the rack's outline and its shadow, comes out of the deck's corner while the
+   chassis inside it goes the other way, so the chassis stands still and shows more of itself */
+#tapedeck .rack{position:absolute;left:var(--deck-w);bottom:0;z-index:1;width:var(--rack-w);height:var(--rack-h);visibility:hidden;clip-path:inset(-2rem -2rem -2rem 0)}
+#tapedeck.racked .rack,#tapedeck.unrack .rack{visibility:visible}
+#tapedeck .rack .slide{height:100%;overflow:hidden;border-radius:0 3px 3px 0;box-shadow:8px 8px 20px -6px rgba(0,0,0,.4)}
+#tapedeck .chassis{position:relative;height:100%;display:flex;flex-direction:column;gap:.25rem;padding:.42rem .35rem .35rem .62rem;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 1px,rgba(0,0,0,.035) 1px 2px),linear-gradient(#e6e8eb,#bec2c8 55%,#a6abb2);
+  box-shadow:inset 0 1px 0 #fff,inset 0 -2px 0 rgba(0,0,0,.25)}
+/* the deck's black trim on top */
+#tapedeck .chassis::before{content:"";position:absolute;left:0;right:0;top:0;height:.2rem;background:linear-gradient(#3a3d43,#1c1e22)}
