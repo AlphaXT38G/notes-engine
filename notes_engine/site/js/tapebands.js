@@ -22,7 +22,7 @@ const TAPE_BANDS = [
   // the jazz bar's tracks (jazz.js, loaded before)
   { name: "Jazz bar", short: "JAZZ", tapes: JAZZ_TRACKS },
   { name: "Late night", short: "NIGHT", tapes: [
-    { file: "night/mystical-forest.mp3", video: "jmLiHVWgbVY", icon: "🌙", short: "Night", name: "Mystical Forest", color: "#2f5d8a" },
+    { file: "night/mystical-forest.mp3", icon: "🌙", short: "Night", name: "Mystical Forest", color: "#2f5d8a" },
   ] },
   { name: "Metal show", short: "METAL", tapes: [
     { file: "metal/master-of-puppets-solo.mp3", icon: "🤘", short: "Metal", name: "Master of Puppets solo", color: "#b3121f" },
