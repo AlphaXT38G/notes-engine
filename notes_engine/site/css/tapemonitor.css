@@ -23,3 +23,9 @@
 #tapedeck .monitor .tube{position:relative;width:calc(100% - .8rem);margin:0 .4rem;padding-top:calc((100% - .8rem) * .5625);border-radius:4px;background:#050505;box-shadow:0 0 0 .1rem #1c1e22,0 0 0 60rem var(--alu)}
 #tapedeck .monitor.showing .tube{background:transparent}
 #tapedeck.crt .monitor .tube{border-radius:14px/18px}
+/* The keys, on the deck's black bed in an aluminium bar: the deck's four, a gap, then stations, CRT,
+   full screen and back to the cassette */
+#tapedeck .mkeys{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr) .3rem repeat(4,1fr);gap:.15rem;margin-top:.3rem;padding:.12rem;border:.4rem solid transparent;border-top:0;background:#1d1f23 padding-box,linear-gradient(var(--alu),#a6abb2) border-box;box-shadow:inset 0 -2px 0 rgba(0,0,0,.25)}
+#tapedeck .mkeys .key{height:1.3rem}
+#tapedeck .mkeys .key.crt{font:800 .42rem/1 ui-monospace,Consolas,monospace;letter-spacing:.05em}
+#tapedeck .mkeys .key.full svg path{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
