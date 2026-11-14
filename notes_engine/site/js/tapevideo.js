@@ -25,12 +25,13 @@ tapeDeck.addEventListener("tapechange", paintVideoPill);
 paintVideoPill();
 
 // The player of the tape's video, and whether it has a picture to show: ready, past its ad, and its
-// time moving while the tape plays (youtube.js tells an ad by a time standing still)
+// time moving while the tape plays (youtube.js tells an ad by a time standing still). Paused, the
+// embed draws its own panels over the video (more videos, its title): the tube says PAUSE instead.
 const videoPlayer = () => {
   const id = tapeVideoId(tapeNow());
   return id ? ytPlayer(id) : null;
 };
-const videoShowable = p => p.ready && p.music && !p.ad && (!tapePlaying || performance.now() - p.movedAt < YT_STILL_MS());
+const videoShowable = p => p.ready && p.music && !p.ad && tapePlaying && performance.now() - p.movedAt < YT_STILL_MS();
 // An audio file's video plays and pauses with the tape, muted, and goes back to its time when it
 // drifts away from it; the one followed before is paused
 const followTape = () => {

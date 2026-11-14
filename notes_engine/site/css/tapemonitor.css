@@ -70,3 +70,6 @@
 /* laid out unseen, to be measured before it grows (tapemonitor.js) */
 #tapedeck.measure .monitor{display:flex;visibility:hidden;animation:none}
 #tapedeck .tube .tubemsg::after{content:"NO SIGNAL"}
+/* paused: no snow, the tube dark with PAUSE (the embed would draw its own panels over a paused video) */
+#tapedeck.paused .monitor.waiting .tube .noise{opacity:0}
+#tapedeck.paused .tube .tubemsg::after{content:"❚❚ PAUSE"}
