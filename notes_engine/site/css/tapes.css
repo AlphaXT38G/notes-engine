@@ -2,14 +2,15 @@
    with a black trim, the cassette behind a smoked door, two backlit VU meters, a red LED counter,
    a row of piano keys on a black bed; the next tape leans behind it in its clear case. Square
    corners on purpose: hardware of the time, not a phone app. The YouTube player is kept invisible. */
-#tapedeck{position:fixed;left:1.1rem;bottom:1.1rem;z-index:40;display:flex;align-items:flex-end;gap:.6rem;isolation:isolate;color:var(--fg);font:600 .78rem system-ui,sans-serif}
+#tapedeck{--deck-w:12rem;position:fixed;left:1.1rem;bottom:1.1rem;z-index:40;display:flex;align-items:flex-end;gap:.6rem;isolation:isolate;color:var(--fg);font:600 .78rem system-ui,sans-serif}
 #tapedeck button{padding:0;font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* What plays: a pill beside the deck, shown a few seconds after a change, then on hover / focus */
 #tapedeck .label{margin-bottom:.4rem;padding:.3rem .65rem;border-radius:999px;background:var(--card);border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.12);white-space:nowrap;pointer-events:none;opacity:0;transform:translateX(-.3rem);transition:opacity .25s,transform .25s}
 #tapedeck:hover .label,#tapedeck:focus-within .label,#tapedeck.tell .label{opacity:1;transform:none}
 
-/* The deck: the well on the left, the panel (meters, counter) on the right, the keys below */
-#tapedeck .deck{position:relative;width:12rem;display:grid;grid-template-columns:4.4rem 1fr;grid-template-rows:2.9rem auto;gap:.3rem .4rem;padding:.5rem .35rem .35rem;border-radius:3px;background:repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 1px,rgba(0,0,0,.035) 1px 2px),linear-gradient(#e6e8eb,#bec2c8 55%,#a6abb2);box-shadow:0 8px 22px rgba(0,0,0,.35),inset 0 1px 0 #fff,inset 0 -2px 0 rgba(0,0,0,.25)}
+/* The deck: the well on the left, the panel (meters, counter) on the right, the keys below. Its width
+   is --deck-w, which the station rack (taperack.css) is bolted against */
+#tapedeck .deck{position:relative;width:var(--deck-w);display:grid;grid-template-columns:4.4rem 1fr;grid-template-rows:2.9rem auto;gap:.3rem .4rem;padding:.5rem .35rem .35rem;border-radius:3px;background:repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 1px,rgba(0,0,0,.035) 1px 2px),linear-gradient(#e6e8eb,#bec2c8 55%,#a6abb2);box-shadow:0 8px 22px rgba(0,0,0,.35),inset 0 1px 0 #fff,inset 0 -2px 0 rgba(0,0,0,.25)}
 #tapedeck .deck::before{content:"";position:absolute;left:0;right:0;top:0;height:.2rem;border-radius:3px 3px 0 0;background:linear-gradient(#3a3d43,#1c1e22)}
 /* The well and its cassette, behind the smoked door hinged at the bottom (it opens towards us) */
 #tapedeck .well{position:relative;border-radius:2px;background:#121317;box-shadow:inset 0 0 0 2px #2a2c31,0 1px 0 rgba(255,255,255,.7)}
