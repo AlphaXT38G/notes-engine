@@ -67,7 +67,7 @@ tapeDeck.addEventListener("tapechange", markRack);
 
 // Out and back in. The stations are drawn anew each time, so that they light up again on the screen
 // coming on. Back in, taperackfx.css switches the screen off and pushes the rack in (rack-push),
-// then .unrack goes; with reduced motion it goes at once.
+// then .unrack goes; with reduced motion, or closeRack(true), it goes at once.
 const rackKey = tapeKey("band");
 const rackIsOut = () => tapeDeck.classList.contains("racked");
 const setRackKey = out => rackKey.setAttribute("aria-expanded", String(out));
@@ -80,10 +80,10 @@ const openRack = () => {
   tapeDeck.classList.add("racked");
   setRackKey(true);
 };
-const closeRack = () => {
-  if (!rackIsOut()) return;
+const closeRack = atOnce => {
+  if (rackIsOut()) tapeDeck.classList.add("unrack");
+  if (atOnce === true || matchMedia("(prefers-reduced-motion: reduce)").matches) tapeDeck.classList.remove("unrack");
   tapeDeck.classList.remove("racked");
-  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) tapeDeck.classList.add("unrack");
   setRackKey(false);
 };
 tapeRack.addEventListener("animationend", e => {
@@ -104,7 +104,4 @@ document.addEventListener("keydown", e => {
 document.addEventListener("click", e => { if (!tapeDeck.contains(e.target)) closeRack(); });
 // A screen takes the deck away: the rack goes with it at once, and the day brings the deck back with
 // the rack put away
-document.addEventListener("phase", () => {
-  tapeDeck.classList.remove("racked", "unrack");
-  setRackKey(false);
-});
+document.addEventListener("phase", () => closeRack(true));
