@@ -37,9 +37,17 @@ const showStation = i => {
   rackTracks.scrollTop = 0;
   tapeRack.classList.add("inband");
   paintRackPlate(TAPE_BANDS[i]);
+  markRack();
 };
 rackStations.addEventListener("click", e => {
   const row = e.target.closest(".station");
   if (row) showStation(+row.dataset.band);
 });
 rackPart(".back").addEventListener("click", showStations);
+
+// What plays is lit: the lamp of its station, the level meter of its tape
+const markRack = () => {
+  rackStations.querySelectorAll(".station").forEach((row, i) => row.classList.toggle("on", i === tapeBand));
+  rackTracks.querySelectorAll(".track").forEach((row, i) => row.classList.toggle("on", rackBand === tapeBand && i === tapeAt));
+};
+tapeDeck.addEventListener("tapechange", markRack);
