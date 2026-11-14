@@ -11,3 +11,14 @@
 #tapedeck .vpill:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
 #tapedeck.hasvideo .vpill{display:inline-flex}
 #tapedeck.hasvideo .badges span:last-of-type{display:none}
+/* Waiting for the video (#tapedeck.vloading): the pill's lamp blinks, the counter reads LOAD, snow fills
+   the cassette's window, and the label says so */
+#tapedeck.vloading .vpill .lamp{animation:video-blink .5s steps(1) infinite}
+@keyframes video-blink{50%{opacity:.2}}
+#tapedeck.vloading .deck .counter{font-size:0;color:#ff4a2a;text-shadow:0 0 4px rgba(255,74,42,.75)}
+#tapedeck.vloading .deck .counter::after{content:"LOAD";font-size:.68rem}
+#tapedeck .well::after{content:"";position:absolute;left:0;top:0;right:0;bottom:0;border-radius:2px;background:var(--tv-noise) 0 0/60px 40px,rgba(16,16,20,.85);opacity:0;pointer-events:none}
+#tapedeck.vloading .well::after{opacity:1;animation:video-snow .12s steps(3) infinite}
+@keyframes video-snow{33%{background-position:7px -5px,0 0}66%{background-position:-4px 6px,0 0}}
+#tapedeck.vloading .label{opacity:1;transform:none;font-size:0}
+#tapedeck.vloading .label::after{content:"Loading the video…";font-size:.78rem}
