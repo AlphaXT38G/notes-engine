@@ -64,9 +64,9 @@
 #tapedeck.full .mbody::before{display:none}
 #tapedeck.full .monitor .tube{height:100%;padding:0;border-radius:0;box-shadow:0 0 0 60rem #000}
 #tapedeck.full.crt .monitor .tube{border-radius:28px/36px}
-/* a lighter CRT look on so large a picture (the keys and the plate stay clear of it, over it) */
-#tapedeck.full.crt .tube .crt{opacity:.45}
-#tapedeck.full.crt .tube .glare{opacity:.6}
+/* the CRT look a little lighter on so large a picture (the keys and the plate stay clear of it) */
+#tapedeck.full.crt .tube .crt{opacity:.75}
+#tapedeck.full.crt .tube .glare{opacity:.8}
 #tapedeck.full .mplate{left:1rem;top:1rem;padding:.45rem .6rem .35rem;font-size:.5rem}
 #tapedeck.full .mplate .counter{font-size:.55rem}
 #tapedeck.full .mkeys{bottom:1.2rem;grid-template-columns:repeat(4,2.6rem) .4rem repeat(4,2.6rem);gap:.15rem;padding:.15rem;border-width:.3rem}
