@@ -130,9 +130,10 @@ const tapePause = () => {
   tapePlaying = false;
   paintTapes();
 };
-const tapeWind = by => {
+// Winding: the tape to a time, in seconds (a live has no tape to wind)
+const tapeSeek = t => {
   if (!tapeSrc || !tapeReady || tapeNow().live) return;
-  tapeTime = Math.max(0, tapeTime + by);
+  tapeTime = Math.max(0, t);
   if (tapeYT()) ytSeek(tapeNow().id, TAPE_YT, tapeTime); else tapeSrc.currentTime = tapeTime;
   paintCounter();
 };
@@ -172,8 +173,8 @@ const swapTape = (band, i) => {
   tapeLater(1750, done);
 };
 const TAPE_ACTIONS = {
-  eject: () => swapTape(tapeBand, tapeNext()), rew: () => tapeWind(-30),
-  play: () => (tapePlaying ? tapePause() : tapePlay()), ff: () => tapeWind(30),
+  eject: () => swapTape(tapeBand, tapeNext()), rew: () => tapeSeek(tapeTime - 30),
+  play: () => (tapePlaying ? tapePause() : tapePlay()), ff: () => tapeSeek(tapeTime + 30),
   band: () => swapTape((tapeBand + 1) % TAPE_BANDS.length, 0),
 };
 musicButtons.push(tapeKey("play"));  // the space bar too (screens.js)
