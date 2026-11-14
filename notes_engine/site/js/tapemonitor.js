@@ -53,3 +53,41 @@ addEventListener("resize", () => {
   fitMonitor();
   placeOnTube();
 });
+
+// Out and back in. The monitor grows out of the deck (mon-grow, from the deck's size: --mon-sx and
+// --mon-sy, measured on a monitor laid out unseen first), then `ready` runs (tapevideo.js puts the
+// video on); back in, it shrinks into the deck (mon-shrink), then .untv goes. Reduced motion, or
+// hideMonitor(true): at once. The station rack is put away, its place changing.
+const monitorStill = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+let monitorReady = null;
+const monitorGrown = () => {
+  placeOnTube();
+  const ready = monitorReady;
+  monitorReady = null;
+  if (ready) ready();
+};
+const showMonitor = ready => {
+  closeRack(true);
+  fitMonitor();
+  tapeDeck.classList.add("measure");
+  const deck = tapeDeck.querySelector(".deck").getBoundingClientRect(), mon = tapeMonitor.getBoundingClientRect();
+  tapeDeck.classList.remove("measure", "untv");
+  tapeDeck.style.setProperty("--mon-sx", deck.width / mon.width);
+  tapeDeck.style.setProperty("--mon-sy", deck.height / mon.height);
+  monitorReady = ready;
+  tapeDeck.classList.add("tv");
+  if (monitorStill()) monitorGrown();
+};
+const hideMonitor = atOnce => {
+  if (!tapeDeck.classList.contains("tv")) return;
+  closeRack(true);
+  setFull(false);
+  monitorReady = null;
+  tapeDeck.classList.remove("tv");
+  if (atOnce !== true && !monitorStill()) tapeDeck.classList.add("untv");
+};
+tapeMonitor.addEventListener("animationend", e => {
+  if (e.target !== tapeMonitor) return;
+  if (e.animationName === "mon-grow") monitorGrown();
+  if (e.animationName === "mon-shrink") tapeDeck.classList.remove("untv");
+});
