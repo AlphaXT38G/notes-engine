@@ -20,3 +20,8 @@
 #tapedeck .chassis::after{content:"";position:absolute;left:0;top:0;bottom:0;width:.34rem;
   background:radial-gradient(circle at 50% .75rem,#e9ebee 0 .07rem,#5d626a .08rem .11rem,transparent .12rem),radial-gradient(circle at 50% calc(100% - .75rem),#e9ebee 0 .07rem,#5d626a .08rem .11rem,transparent .12rem),linear-gradient(90deg,#2a2c31,#4a4e55 45%,#1c1e22)}
 #tapedeck.racked .deck,#tapedeck.unrack .deck{border-radius:3px 0 0 3px}
+/* The model plate, kept low: the back key (only on a station's tapes), the title, the count, and the
+   resize grip in the corner the cursor drags */
+#tapedeck .plate{display:flex;align-items:center;gap:.25rem;height:.55rem;margin:0;font:700 .34rem/1 system-ui,sans-serif;letter-spacing:.1em;color:#34373c;white-space:nowrap}
+#tapedeck .plate i{font-style:italic;font-weight:800;color:#c0392b;letter-spacing:.04em}
+#tapedeck .plate .count{margin-left:auto;color:#6b6f76}
