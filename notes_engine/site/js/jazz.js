@@ -62,7 +62,7 @@ document.addEventListener("night", e => setAir(e.detail));
 // the page has not had one yet it autoplays muted and the sound comes on at the first click or key
 // press anywhere. The turntable then plays / pauses it. Pausing is remembered: no autoplay on the
 // next visits until it is played again. JAZZ_TRACKS are also the cassette deck's Jazz band
-// (tapes.js: icon, short, the cover's and the tape's label, name and color, dark enough for white
+// (tapebands.js: icon, short, the cover's and the tape's label, name and color, dark enough for white
 // letters on the tape).
 const JAZZ_TRACKS = [
   { file: "jazz/just-one-more-drink.mp3", icon: "🎷", short: "Jazz", name: "Just One More Drink", color: "#9a4a1c", disc: "#f5b041" },

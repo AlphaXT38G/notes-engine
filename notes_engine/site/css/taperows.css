@@ -1,0 +1,42 @@
+/* The rows of the station rack's screen (drawn by js/taperows.js): a station is a dark cell like a
+   cassette's shell, with its signal meter; a tape is a cell lit like the deck's counter, red LED type
+   with its label's colour as a stripe. Their colour is --tc. */
+#tapedeck .rack .station,#tapedeck .rack .track{display:flex;align-items:center;width:100%;height:.92rem;margin-bottom:.1rem;border-radius:1px;text-align:left;white-space:nowrap}
+#tapedeck .rack .name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+/* A station */
+#tapedeck .rack .station{gap:.3rem;padding:0 .28rem 0 0;background:linear-gradient(#34343b,#1b1b20);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);color:#dcdde0;font:600 .52rem/1 system-ui,sans-serif;transition:transform .15s}
+#tapedeck .rack .station:hover,#tapedeck .rack .station:focus-visible{transform:translateX(.2rem);background:linear-gradient(#45454d,#26262c);outline:0}
+/* its signal meter: five rising bars on a dark tab, those lit in the station's colour */
+#tapedeck .rack .signal{flex:none;align-self:stretch;width:1.5rem;display:flex;align-items:flex-end;justify-content:center;gap:1.5px;padding-bottom:.2rem;border-radius:1px 0 0 1px;background:linear-gradient(#1a1b1f,#0e0f12);box-shadow:inset -1px 0 0 rgba(255,255,255,.08)}
+#tapedeck .rack .signal i{width:.11rem;border-radius:1px;background:#3a3c42}
+#tapedeck .rack .signal i:nth-child(1){height:.14rem}#tapedeck .rack .signal i:nth-child(2){height:.22rem}#tapedeck .rack .signal i:nth-child(3){height:.3rem}#tapedeck .rack .signal i:nth-child(4){height:.38rem}#tapedeck .rack .signal i:nth-child(5){height:.46rem}
+#tapedeck .rack .signal i.lit{background:var(--tc);box-shadow:0 0 3px var(--tc)}
+/* its count of tapes on a small red LED, and the lamp lit green while it plays */
+#tapedeck .rack .station .count{flex:none;padding:.08rem .16rem;border-radius:1px;background:#140907;color:#ff4a2a;font:700 .36rem/1 ui-monospace,Consolas,monospace;letter-spacing:.06em;text-shadow:0 0 3px rgba(255,74,42,.7)}
+#tapedeck .rack .lamp{flex:none;width:.26rem;height:.26rem;border-radius:50%;background:#2a2c30}
+#tapedeck .rack .station.on{box-shadow:inset 0 0 0 1px rgba(46,204,113,.55)}
+#tapedeck .rack .station.on .lamp{background:#2ecc71;box-shadow:0 0 4px #2ecc71}
+/* A tape: a cell lit from inside in red, its label's colour as a stripe on the left, its name in the LED
+   type of the deck's counter */
+#tapedeck .rack .track{gap:.28rem;padding:0 .3rem 0 0;background:linear-gradient(90deg,rgba(255,74,42,.09),rgba(255,74,42,.03));box-shadow:inset 0 0 0 1px rgba(255,74,42,.16);border-left:.18rem solid var(--tc);color:#c4492f;font:700 .46rem/1 ui-monospace,Consolas,monospace;letter-spacing:.04em}
+#tapedeck .rack .track .name{text-transform:uppercase}
+#tapedeck .rack .track:hover,#tapedeck .rack .track:focus-visible{color:#ff8a6a;background:rgba(255,74,42,.16);outline:0}
+/* its number, its icon on its label's colour, LIVE for a live */
+#tapedeck .rack .track .no{flex:none;margin-left:.18rem;color:#6e2416}
+#tapedeck .rack .track .icon{flex:none;width:.7rem;height:.7rem;display:grid;place-items:center;border-radius:1px;background:var(--tc);font-size:.42rem;box-shadow:0 0 0 1px rgba(0,0,0,.5)}
+#tapedeck .rack .track .live{flex:none;color:#ff4a2a;font-size:.36rem}
+/* the tape in the deck glows, its level meter dancing while it plays (scaled, not resized) */
+#tapedeck .rack .track.on{color:#ff4a2a;text-shadow:0 0 4px rgba(255,74,42,.75);box-shadow:inset 0 0 0 1px rgba(255,74,42,.5)}
+#tapedeck .rack .track .eq{display:none;gap:1px;align-items:flex-end;height:.38rem}
+#tapedeck .rack .track.on .eq{display:flex}
+#tapedeck .rack .track .eq i{width:2px;height:100%;background:#ff4a2a;box-shadow:0 0 3px #ff4a2a;transform-origin:50% 100%;transform:scaleY(.35);animation:rack-eq .6s ease-in-out infinite alternate paused}
+#tapedeck.playing .rack .track .eq i{animation-play-state:running}
+#tapedeck .rack .track .eq i:nth-child(2){animation-duration:.45s}
+#tapedeck .rack .track .eq i:nth-child(3){animation-duration:.7s}
+@keyframes rack-eq{from{transform:scaleY(.2)}to{transform:scaleY(1)}}
+/* The keyboard's focus: the page's accent around the row */
+#tapedeck .rack .station:focus-visible,#tapedeck .rack .track:focus-visible{box-shadow:inset 0 0 0 1px var(--acc)}
+/* Touch screens: rows a finger high */
+@media(pointer:coarse){#tapedeck .rack .station,#tapedeck .rack .track{height:2.75rem;margin-bottom:.2rem;font-size:.8rem}#tapedeck .rack .signal{width:2.2rem;padding-bottom:.85rem}#tapedeck .rack .track .icon{width:1.3rem;height:1.3rem;font-size:.8rem}#tapedeck .rack .station .count,#tapedeck .rack .track .live{font-size:.55rem}}
+/* Reduced motion: the level meter stands still */
+@media(prefers-reduced-motion:reduce){#tapedeck .rack .track .eq i{animation:none}#tapedeck .rack .station{transition:none}}

@@ -4,8 +4,8 @@
 // someone asks for the music, on whatever screen. At the first sign of life of a visitor (pointer,
 // tap, key, scroll) EVERY YouTube video of the site is made ahead (ytWarm), those of the screen on
 // show first, one every 1.5 s so that the page and the network are not swamped at once. Nothing is
-// heard: the players stay muted and paused. The videos are the cassette deck's tapes (TAPE_BANDS
-// holds the sakura, Halloween and Christmas ones too): a new video added to a band is made ahead too.
+// heard: the players stay muted and paused. The videos are the cassette deck's tapes (TAPE_BANDS,
+// tapebands.js, holds the sakura, Halloween and Christmas ones too): a new video added to a band is made ahead too.
 const YT_WARM_GAP = 1500;
 const YT_WARM_EVENTS = ["pointermove", "pointerdown", "touchstart", "keydown", "scroll", "wheel"];
 const ytSiteIds = () => {

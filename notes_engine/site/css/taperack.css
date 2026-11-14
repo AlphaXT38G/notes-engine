@@ -1,0 +1,60 @@
+/* Station rack of the cassette deck (js/taperack.js): a module of the same brushed aluminium,
+   bolted against the deck's right side, about as tall as two decks: a compact model plate, then a
+   small screen behind glass whose two pages (the stations, a station's tapes) slide sideways. Its
+   rows are taperows.css, its opening and closing taperackfx.css. Its size is --rack-w × --rack-h;
+   --deck-h is the deck's height, measured by taperack.js as it opens (the rack comes out of it). */
+#tapedeck{--rack-w:11rem;--rack-h:11.4rem;--deck-h:5.4rem}
+/* Three layers, so that opening moves transforms only: .rack stands still and cuts what would show
+   over the deck; .slide, the rack's outline and its shadow, comes out of the deck's corner while the
+   chassis inside it goes the other way, so the chassis stands still and shows more of itself. The
+   clip also cuts at the deck's bottom, where the outline hangs below the chassis while it moves */
+#tapedeck .rack{position:absolute;left:var(--deck-w);bottom:0;z-index:1;width:var(--rack-w);height:var(--rack-h);visibility:hidden;clip-path:inset(-2rem -2rem 0 0)}
+#tapedeck.racked .rack,#tapedeck.unrack .rack{visibility:visible}
+#tapedeck .rack .slide{height:100%;overflow:hidden;border-radius:0 3px 3px 0;box-shadow:8px 8px 20px -6px rgba(0,0,0,.4)}
+#tapedeck .chassis{position:relative;height:100%;display:flex;flex-direction:column;gap:.25rem;padding:.42rem .35rem .35rem .62rem;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 1px,rgba(0,0,0,.035) 1px 2px),linear-gradient(#e6e8eb,#bec2c8 55%,#a6abb2);
+  box-shadow:inset 0 1px 0 #fff,inset 0 -2px 0 rgba(0,0,0,.25)}
+/* the deck's black trim on top */
+#tapedeck .chassis::before{content:"";position:absolute;left:0;right:0;top:0;height:.2rem;background:linear-gradient(#3a3d43,#1c1e22)}
+/* the mounting rail on the joint, with its two screws: the rack reads as a module bolted to the deck,
+   whose corners on that side turn square while it is out */
+#tapedeck .chassis::after{content:"";position:absolute;left:0;top:0;bottom:0;width:.34rem;
+  background:radial-gradient(circle at 50% .75rem,#e9ebee 0 .07rem,#5d626a .08rem .11rem,transparent .12rem),radial-gradient(circle at 50% calc(100% - .75rem),#e9ebee 0 .07rem,#5d626a .08rem .11rem,transparent .12rem),linear-gradient(90deg,#2a2c31,#4a4e55 45%,#1c1e22)}
+#tapedeck.racked .deck,#tapedeck.unrack .deck{border-radius:3px 0 0 3px}
+/* The model plate, kept low: the back key (only on a station's tapes), the title, the count, and the
+   resize grip in the corner the cursor drags */
+#tapedeck .plate{display:flex;align-items:center;gap:.25rem;height:.55rem;margin:0;font:700 .34rem/1 system-ui,sans-serif;letter-spacing:.1em;color:#34373c;white-space:nowrap}
+#tapedeck .plate i{font-style:italic;font-weight:800;color:#c0392b;letter-spacing:.04em}
+#tapedeck .plate .count{margin-left:auto;color:#6b6f76}
+#tapedeck .plate .back{width:0;height:.55rem;overflow:hidden;border-radius:1px;background:linear-gradient(#fbfbfb,#c9ccd1);box-shadow:inset 0 -1px 0 rgba(0,0,0,.2),0 1px 0 rgba(0,0,0,.5);color:#2a2c30;font:700 .34rem/1 system-ui,sans-serif;visibility:hidden;transition:width .2s,visibility .2s}
+#tapedeck .rack.inband .plate .back{width:.85rem;visibility:visible}
+#tapedeck .plate .grip{flex:none;width:.45rem;height:.45rem;margin-right:-.05rem;background:linear-gradient(45deg,transparent 0 30%,#7d828a 30% 38%,transparent 38% 52%,#7d828a 52% 60%,transparent 60% 74%,#7d828a 74% 82%,transparent 82%)}
+/* The screen: a small dark tube set in the aluminium */
+#tapedeck .rack .screen{position:relative;flex:1;overflow:hidden;border-radius:3px;background:radial-gradient(120% 100% at 50% 50%,#1a0d0a,#0b0605);box-shadow:inset 0 0 0 1px #000,inset 0 0 12px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.7)}
+/* its glass: a reflection, scan lines and a vignette, over everything the screen shows */
+#tapedeck .rack .screen::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(165deg,rgba(255,255,255,.1),transparent 38%),repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px);box-shadow:inset 0 0 18px rgba(0,0,0,.85)}
+/* Two pages side by side: the stations, and a station's tapes waiting on the right; showing a station
+   slides both to the left */
+#tapedeck .rack .pages{position:absolute;inset:0}
+#tapedeck .rack .page{position:absolute;inset:0;overflow-y:auto;padding:.22rem;scrollbar-width:none;transition:transform .32s cubic-bezier(.3,.8,.3,1)}
+#tapedeck .rack .page::-webkit-scrollbar{display:none}
+#tapedeck .rack .tracks{transform:translateX(100%)}
+#tapedeck .rack.inband .stations{transform:translateX(-100%)}
+#tapedeck .rack.inband .tracks{transform:none}
+/* While it is out, the station key stays down with its bar lit red, and the label of what plays
+   (which the rack shows) is hidden */
+#tapedeck.racked .key.band{transform:translateY(2px);background:linear-gradient(#e4e6e9,#c4c7cc);box-shadow:inset 0 -1px 0 rgba(0,0,0,.2)}
+#tapedeck.racked .key.band::after{background:#ff3b30;box-shadow:0 0 4px #ff3b30}
+#tapedeck.racked .label,#tapedeck.unrack .label{opacity:0}
+/* Touch screens: rows a finger high (taperows.css), so a taller rack, whose pages scroll */
+@media(pointer:coarse){#tapedeck{--rack-h:17rem}#tapedeck .plate{height:.9rem;font-size:.45rem}#tapedeck .rack.inband .plate .back{width:1.6rem;height:.9rem;font-size:.5rem}}
+/* Phones: no room beside the deck, so the rack stands on top of it, as wide as it, the rail lying
+   along the joint */
+@media(max-width:640px){
+  #tapedeck{--rack-w:var(--deck-w)}
+  #tapedeck .rack{left:0;bottom:var(--deck-h);clip-path:inset(-2rem -2rem 0 -2rem)}
+  #tapedeck .rack .slide{border-radius:3px 3px 0 0}
+  #tapedeck .chassis{padding:.42rem .35rem .55rem}
+  #tapedeck .chassis::after{top:auto;right:0;width:auto;height:.3rem;background:radial-gradient(circle at .75rem 50%,#e9ebee 0 .07rem,#5d626a .08rem .11rem,transparent .12rem),radial-gradient(circle at calc(100% - .75rem) 50%,#e9ebee 0 .07rem,#5d626a .08rem .11rem,transparent .12rem),linear-gradient(#4a4e55,#1c1e22)}
+  #tapedeck.racked .deck,#tapedeck.unrack .deck{border-radius:0 0 3px 3px}
+}

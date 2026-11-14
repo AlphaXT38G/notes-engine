@@ -18,6 +18,9 @@
     "css/sakura.css",
     "css/calm.css",
     "css/tapes.css",
+    "css/taperack.css",
+    "css/taperows.css",
+    "css/taperackfx.css",
     "css/screens.css",
     "css/konami.css"
   ],
@@ -78,7 +81,10 @@
     "js/bard.js",
     "js/calm.js",
     "js/normal.js",
+    "js/tapebands.js",
     "js/tapes.js",
+    "js/taperows.js",
+    "js/taperack.js",
     "js/ytall.js",
     "js/start.js"
   ]

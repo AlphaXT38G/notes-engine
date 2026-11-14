@@ -1,0 +1,66 @@
+/* The station rack's opening and closing (js/taperack.js sets #tapedeck.racked, then .unrack): a
+   cursor comes, grabs the deck's corner and drags the rack out; let go, the rack's screen comes on
+   like an old cathode ray tube (a line, a flash, snow, a flickering picture), then its rows light up
+   one after the other. Closing, the picture folds into a line and a dot, and the rack goes back in.
+   Only transforms and opacity move. The steps' times are the variables below. */
+#tapedeck{--rack-grab:.35s;--rack-drag:.55s;--rack-crt:.92s;--rack-rows:1.5s;--rack-ease:cubic-bezier(.45,0,.2,1)}
+/* Where the rack comes from: out of the deck's right side, dragged by its top right corner (on
+   phones, out of the deck's top); the chassis moves the other way to stand still (taperack.css) */
+#tapedeck{--rack-hide:translate(-100%,calc(100% - var(--deck-h)));--rack-unhide:translate(100%,calc(var(--deck-h) - 100%));--rack-drag-x:var(--rack-w);--rack-drag-y:calc(var(--deck-h) - var(--rack-h))}
+@media(max-width:640px){#tapedeck{--rack-hide:translateY(100%);--rack-unhide:translateY(-100%);--rack-drag-x:0px;--rack-drag-y:calc(-1 * var(--rack-h))}}
+#tapedeck.racked .rack .slide{animation:rack-pull var(--rack-drag) var(--rack-ease) var(--rack-grab) both}
+#tapedeck.racked .chassis{animation:rack-pull-chassis var(--rack-drag) var(--rack-ease) var(--rack-grab) both}
+@keyframes rack-pull{from{transform:var(--rack-hide)}}
+@keyframes rack-pull-chassis{from{transform:var(--rack-unhide)}}
+/* The cursor: a point at the deck's corner, dragged with the rack's corner (.rackcursor), the arrow
+   drawn from that point (svg) */
+#tapedeck .rackcursor{position:absolute;left:var(--deck-w);bottom:var(--deck-h);z-index:5;width:0;height:0;pointer-events:none;visibility:hidden}
+#tapedeck .rackcursor svg{position:absolute;left:0;top:0;width:.95rem;height:1.3rem;overflow:visible;transform-origin:0 0;opacity:0;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+#tapedeck .rackcursor path{fill:#111;stroke:#fff;stroke-width:1.4;stroke-linejoin:round}
+#tapedeck.racked .rackcursor{visibility:visible;animation:rack-drag var(--rack-drag) var(--rack-ease) var(--rack-grab) both}
+@keyframes rack-drag{to{transform:translate(var(--rack-drag-x),var(--rack-drag-y))}}
+/* the arrow comes from below right, presses on the corner (smaller), holds it through the drag, lets
+   go and goes away; 22.6% and 58% of 1.55 s are the drag's start and end (--rack-grab, then
+   --rack-drag later) */
+#tapedeck.racked .rackcursor svg{animation:rack-hand 1.55s both}
+@keyframes rack-hand{
+  0%{opacity:0;transform:translate(3.5rem,3.8rem)}
+  16%{opacity:1;transform:translate(.15rem,.1rem)}
+  22.6%{transform:none}
+  24%,58%{transform:scale(.86)}
+  64%,70%{opacity:1;transform:none}
+  100%{opacity:0;transform:translate(1.2rem,.8rem)}}
+/* a ring around the point while it presses */
+#tapedeck .rackcursor::before{content:"";position:absolute;left:-.55rem;top:-.55rem;width:1.1rem;height:1.1rem;border-radius:50%;background:rgba(36,87,197,.28);border:1.5px solid rgba(36,87,197,.6);opacity:0}
+#tapedeck.racked .rackcursor::before{animation:rack-press 1.55s both}
+@keyframes rack-press{0%,19%{opacity:0;transform:scale(.3)}24%,58%{opacity:1;transform:none}68%,100%{opacity:0;transform:scale(1.5)}}
+/* The screen comes on: a bright line across the middle, which opens to the whole screen in a white
+   flash and dies away in flickers */
+#tapedeck .rack .beam{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(60% 120% at 50% 50%,#fff,#ffd9cc 40%,rgba(255,120,90,.35) 75%,transparent);mix-blend-mode:screen}
+#tapedeck.racked .rack .beam{animation:rack-beam .62s linear var(--rack-crt) both}
+@keyframes rack-beam{0%{opacity:1;transform:scale(0,.012)}18%{opacity:1;transform:scale(1,.012)}36%{opacity:1;transform:none}48%{opacity:.25}56%{opacity:.7}64%{opacity:.1}74%{opacity:.35}100%{opacity:0;transform:none}}
+/* snow on the tube for half a second, shaking */
+#tapedeck .rack .snow{position:absolute;inset:-20%;z-index:2;pointer-events:none;opacity:0;background:repeating-radial-gradient(circle at 17% 32%,rgba(255,255,255,.5) 0 1px,transparent 1px 3px),repeating-radial-gradient(circle at 73% 61%,rgba(255,200,190,.4) 0 1px,transparent 1px 4px)}
+#tapedeck.racked .rack .snow{animation:rack-snow .5s steps(1) calc(var(--rack-crt) + .23s) both,rack-shake .12s steps(3) calc(var(--rack-crt) + .23s) 5}
+@keyframes rack-snow{0%{opacity:0}20%{opacity:.55}45%{opacity:.25}60%{opacity:.5}80%{opacity:.1}100%{opacity:0}}
+@keyframes rack-shake{33%{transform:translate(3%,-2%)}66%{transform:translate(-2%,3%)}}
+/* the picture flickers in, jumping sideways once, before it holds */
+#tapedeck.racked .rack .pages{animation:rack-picture .7s linear calc(var(--rack-crt) + .13s) both}
+@keyframes rack-picture{0%,30%{opacity:0}38%{opacity:.8}46%{opacity:.2}54%{opacity:.9}60%{opacity:.35;transform:translateX(1.5%) skewX(-4deg)}68%{opacity:1;transform:none}76%{opacity:.6}84%,100%{opacity:1}}
+/* the rows light up one after the other, with a flick: the stations once the picture holds, a
+   station's tapes as soon as they slide in */
+#tapedeck.racked .stations .station{animation:rack-row .3s both;animation-delay:calc(var(--rack-rows) + var(--i) * 45ms)}
+#tapedeck .tracks .track{animation:rack-row .3s both;animation-delay:calc(.14s + var(--i) * 45ms)}
+@keyframes rack-row{0%{opacity:0}40%{opacity:.7}55%{opacity:.15}100%{opacity:1}}
+/* Closing: the picture folds into a bright line, then a dot, as a tube switched off... */
+#tapedeck.unrack .rack .pages{animation:rack-off .2s ease-in both}
+#tapedeck.unrack .rack .beam{animation:rack-off-glow .2s ease-in both}
+@keyframes rack-off{50%{transform:scale(1,.01)}100%{opacity:0;transform:scale(0,.01)}}
+@keyframes rack-off-glow{0%{opacity:0;transform:none}50%{opacity:1;transform:scale(1,.012)}100%{opacity:0;transform:scale(0,.012)}}
+/* ...then the rack goes back into the deck (taperack.js waits for rack-push to end) */
+#tapedeck.unrack .rack .slide{animation:rack-push .24s cubic-bezier(.5,0,.8,.4) .2s both}
+#tapedeck.unrack .chassis{animation:rack-push-chassis .24s cubic-bezier(.5,0,.8,.4) .2s both}
+@keyframes rack-push{to{transform:var(--rack-hide)}}
+@keyframes rack-push-chassis{to{transform:var(--rack-unhide)}}
+/* Reduced motion: the rack is simply there, and simply gone */
+@media(prefers-reduced-motion:reduce){#tapedeck.racked .rackcursor{visibility:hidden}#tapedeck .rack *,#tapedeck .rackcursor,#tapedeck .rackcursor *,#tapedeck .rackcursor::before{animation:none!important}#tapedeck .rack .page{transition:none}}
