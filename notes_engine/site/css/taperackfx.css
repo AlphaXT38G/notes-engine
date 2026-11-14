@@ -12,17 +12,19 @@
 #tapedeck.racked .chassis{animation:rack-pull-chassis var(--rack-drag) var(--rack-ease) var(--rack-grab) both}
 @keyframes rack-pull{from{transform:var(--rack-hide)}}
 @keyframes rack-pull-chassis{from{transform:var(--rack-unhide)}}
-/* The cursor: a point at the deck's corner, dragged with the rack's corner (.rackcursor), the arrow
+/* The cursor: a point at the deck's corner, dragged with the rack's corner by --drag-x / --drag-y while
+   it goes (.rackcursor.go, set by dragCursor(); the video monitor has one too), the arrow
    drawn from that point (svg) */
 #tapedeck .rackcursor{position:absolute;left:var(--deck-w);bottom:var(--deck-h);z-index:5;width:0;height:0;pointer-events:none;visibility:hidden}
 #tapedeck .rackcursor svg{position:absolute;left:0;top:0;width:.95rem;height:1.3rem;overflow:visible;transform-origin:0 0;opacity:0;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
 #tapedeck .rackcursor path{fill:#111;stroke:#fff;stroke-width:1.4;stroke-linejoin:round}
-#tapedeck.racked .rackcursor{visibility:visible;animation:rack-drag var(--rack-drag) var(--rack-ease) var(--rack-grab) both}
-@keyframes rack-drag{to{transform:translate(var(--rack-drag-x),var(--rack-drag-y))}}
+#tapedeck .rackcursor{--drag-x:var(--rack-drag-x);--drag-y:var(--rack-drag-y)}
+#tapedeck .rackcursor.go{visibility:visible;animation:rack-drag var(--rack-drag) var(--rack-ease) var(--rack-grab) both}
+@keyframes rack-drag{to{transform:translate(var(--drag-x),var(--drag-y))}}
 /* the arrow comes from below right, presses on the corner (smaller), holds it through the drag, lets
    go and goes away; 22.6% and 58% of 1.55 s are the drag's start and end (--rack-grab, then
    --rack-drag later) */
-#tapedeck.racked .rackcursor svg{animation:rack-hand 1.55s both}
+#tapedeck .rackcursor.go svg{animation:rack-hand 1.55s both}
 @keyframes rack-hand{
   0%{opacity:0;transform:translate(3.5rem,3.8rem)}
   16%{opacity:1;transform:translate(.15rem,.1rem)}
@@ -32,7 +34,7 @@
   100%{opacity:0;transform:translate(1.2rem,.8rem)}}
 /* a ring around the point while it presses */
 #tapedeck .rackcursor::before{content:"";position:absolute;left:-.55rem;top:-.55rem;width:1.1rem;height:1.1rem;border-radius:50%;background:rgba(36,87,197,.28);border:1.5px solid rgba(36,87,197,.6);opacity:0}
-#tapedeck.racked .rackcursor::before{animation:rack-press 1.55s both}
+#tapedeck .rackcursor.go::before{animation:rack-press 1.55s both}
 @keyframes rack-press{0%,19%{opacity:0;transform:scale(.3)}24%,58%{opacity:1;transform:none}68%,100%{opacity:0;transform:scale(1.5)}}
 /* The screen comes on: a bright line across the middle, which opens to the whole screen in a white
    flash and dies away in flickers */
@@ -63,4 +65,4 @@
 @keyframes rack-push{to{transform:var(--rack-hide)}}
 @keyframes rack-push-chassis{to{transform:var(--rack-unhide)}}
 /* Reduced motion: the rack is simply there, and simply gone */
-@media(prefers-reduced-motion:reduce){#tapedeck.racked .rackcursor{visibility:hidden}#tapedeck .rack *,#tapedeck .rackcursor,#tapedeck .rackcursor *,#tapedeck .rackcursor::before{animation:none!important}#tapedeck .rack .page{transition:none}}
+@media(prefers-reduced-motion:reduce){#tapedeck .rackcursor.go{visibility:hidden}#tapedeck .rack *,#tapedeck .rackcursor,#tapedeck .rackcursor *,#tapedeck .rackcursor::before{animation:none!important}#tapedeck .rack .page{transition:none}}

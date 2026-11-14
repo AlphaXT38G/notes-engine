@@ -20,6 +20,13 @@ rackCursor.className = "rackcursor";
 rackCursor.setAttribute("aria-hidden", "true");
 rackCursor.innerHTML = '<svg viewBox="0 0 16 22"><path d="M1 1v17.5l4.4-4.2 2.9 6.6 3-1.3-2.9-6.5h6.1z"/></svg>';
 tapeDeck.append(tapeRack, rackCursor);
+// A cursor's show, from its start (taperackfx.css: .go), or stopped
+const dragCursor = (cursor, on) => {
+  cursor.classList.remove("go");
+  if (!on) return;
+  void cursor.offsetWidth;
+  cursor.classList.add("go");
+};
 const rackPart = selector => tapeRack.querySelector(selector);
 const rackStations = rackPart(".stations"), rackTracks = rackPart(".tracks");
 
@@ -77,12 +84,14 @@ const openRack = () => {
   markRack();
   tapeDeck.classList.remove("unrack");
   tapeDeck.classList.add("racked");
+  dragCursor(rackCursor, !tapeDeck.classList.contains("tv"));  // on the monitor's tube, no drag
   setRackKey(true);
 };
 const closeRack = atOnce => {
   if (rackIsOut()) tapeDeck.classList.add("unrack");
   if (atOnce === true || matchMedia("(prefers-reduced-motion: reduce)").matches) tapeDeck.classList.remove("unrack");
   tapeDeck.classList.remove("racked");
+  dragCursor(rackCursor, false);
   setRackKey(false);
 };
 tapeRack.addEventListener("animationend", e => {

@@ -61,7 +61,7 @@
 #tapedeck.tv .rack{left:var(--osd-l);bottom:var(--osd-b);z-index:3;width:var(--osd-w);height:var(--osd-h);clip-path:none}
 #tapedeck.tv .rack .slide{border-radius:3px;box-shadow:none}
 #tapedeck.tv .chassis{padding:.3rem;background:rgba(8,5,4,.45);box-shadow:none}
-#tapedeck.tv .chassis::before,#tapedeck.tv .chassis::after,#tapedeck.tv .plate .grip,#tapedeck.tv .rackcursor{display:none}
+#tapedeck.tv .chassis::before,#tapedeck.tv .chassis::after,#tapedeck.tv .plate .grip{display:none}
 #tapedeck.tv .plate{color:#ff8a6a;text-shadow:0 0 4px rgba(255,74,42,.6)}
 #tapedeck.tv .plate .count{color:#c4492f}
 #tapedeck.tv .rack .screen{background:rgba(12,6,5,.72);box-shadow:inset 0 0 0 1px rgba(255,74,42,.25)}
