@@ -75,6 +75,7 @@ const paintTapes = () => {
   tapeCase.title = `Put in ${next.name}`;
   tapeCase.setAttribute("aria-label", tapeCase.title);
   paintCounter();
+  tapeDeck.dispatchEvent(new Event("tapechange"));  // for what else shows the deck's state (taperack.js)
 };
 // The label says what plays for a few seconds after a change, then only on hover / focus
 const tellTape = () => {
