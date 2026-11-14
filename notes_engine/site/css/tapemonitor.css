@@ -73,3 +73,5 @@
 /* paused: no snow, the tube dark with PAUSE (the embed would draw its own panels over a paused video) */
 #tapedeck.paused .monitor.waiting .tube .noise{opacity:0;animation:none}
 #tapedeck.paused .tube .tubemsg::after{content:"❚❚ PAUSE"}
+/* the page does not scroll under a full screen video (no scroll bar on its right) */
+html.tapefull{overflow:hidden}

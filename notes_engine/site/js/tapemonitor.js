@@ -129,6 +129,7 @@ const setFull = on => {
   if (on === tapeDeck.classList.contains("full")) return;
   tapeDeck.classList.toggle("full", on);
   const root = document.documentElement;
+  root.classList.toggle("tapefull", on);  // no page scroll bar beside the picture
   if (on && !fullscreenNow()) {
     const ask = root.requestFullscreen || root.webkitRequestFullscreen;
     const asked = ask && ask.call(root);
