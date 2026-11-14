@@ -1,8 +1,8 @@
 // ── Watching a tape's video ──
-// A tape with a video (tapeVideoId: a YouTube tape's own, or the `video` of an audio file, see
-// tapebands.js) lights a VIDEO pill on the deck. Pressed, the tape plays and the pill blinks while
-// the video's player gets ready and goes through its ad (#tapedeck.vloading); then the deck grows
-// into the video monitor (tapemonitor.js), its tube comes on and shows the video. The sound stays
+// A tape with a long video (tapeVideoId: a YouTube tape's own, or the `video` of an audio file, see
+// tapebands.js; videoLong) lights a VIDEO pill on the deck. Pressed, the tape plays and the pill blinks while
+// the video's player gets ready and goes through its ad (#tapedeck.vloading); then the video monitor
+// comes out of the deck (tapemonitor.js), its tube comes on and shows the video. The sound stays
 // the tape's: a YouTube tape's player is shown as it plays; an audio file's video is a player of its
 // own, muted, following the tape's time. YouTube's <iframe>s never move (they would load again, ad
 // included, youtube.js): the one shown is laid exactly under the monitor's tube (.ytplayer.onscreen).
