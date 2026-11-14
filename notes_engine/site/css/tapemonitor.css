@@ -41,3 +41,15 @@
 #tapedeck .tube .noise{position:absolute;left:0;top:0;right:0;bottom:0;z-index:1;opacity:0;border-radius:inherit;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.6 -.45'/%3E%3C/filter%3E%3Crect width='120' height='80' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/90px 60px,#101014}
 #tapedeck .tube .tubemsg{position:absolute;left:50%;top:50%;z-index:2;padding:.2rem .4rem;border-radius:2px;background:#140907;color:#ff4a2a;font:700 .7rem/1 ui-monospace,Consolas,monospace;letter-spacing:.12em;text-shadow:0 0 4px rgba(255,74,42,.75);transform:translate(-50%,-50%);opacity:0}
 #tapedeck .monitor.waiting .tube .noise,#tapedeck .monitor.waiting .tube .tubemsg{opacity:1}
+/* Full screen (#tapedeck.full): the tube fills the window, black around the CRT's rounded corners; the
+   plate and the keys float over the picture, and go away while the pointer rests (.still) */
+#tapedeck.full .monitor{position:fixed;left:0;top:0;right:0;bottom:0;width:auto;border-radius:0;box-shadow:none}
+#tapedeck.full .monitor .tube{position:absolute;left:0;top:0;width:100%;height:100%;margin:0;padding:0;border-radius:0;box-shadow:0 0 0 60rem #000}
+#tapedeck.full.crt .monitor .tube{border-radius:28px/36px}
+#tapedeck.full .mplate{position:absolute;left:1rem;top:1rem;max-width:calc(100% - 2rem);padding:.45rem .6rem .35rem;border-radius:3px;font-size:.5rem;box-shadow:0 4px 14px rgba(0,0,0,.5)}
+#tapedeck.full .mplate::before{border-radius:3px 3px 0 0}
+#tapedeck.full .mkeys{position:absolute;left:50%;bottom:1.2rem;width:26rem;max-width:calc(100% - 2rem);margin:0;border-radius:4px;transform:translateX(-50%);box-shadow:0 6px 20px rgba(0,0,0,.55),inset 0 -2px 0 rgba(0,0,0,.25)}
+#tapedeck.full .mkeys .key{height:1.6rem;font-size:.7rem}
+#tapedeck.full .mplate,#tapedeck.full .mkeys{transition:opacity .6s}
+#tapedeck.full.still .mplate,#tapedeck.full.still .mkeys{opacity:0}
+#tapedeck.full.still .monitor{cursor:none}
