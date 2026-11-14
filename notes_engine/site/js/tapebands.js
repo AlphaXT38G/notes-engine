@@ -14,7 +14,7 @@ const TAPE_BANDS = [
   { name: "Lofi", short: "LOFI", tapes: [
     { id: "_jH2oTNRe7g", icon: "🍂", short: "Autumn", name: "Cozy autumn lofi", color: "#d9622b" },
     { id: "XVFUtEh9zrY", icon: "☀️", short: "Summer", name: "Summer lofi", color: "#e8a92a" },
-    { file: "lofi/1-am-study-session.mp3", icon: "📚", short: "1 A.M.", name: "1 A.M. study session", color: "#5a5fc4" },
+    { file: "lofi/1-am-study-session.mp3", video: "MhuV4g-rMRU", icon: "📚", short: "1 A.M.", name: "1 A.M. study session", color: "#5a5fc4" },
     { id: "FJs41oeAnHU", icon: "🌃", short: "Tokyo", name: "Tokyo lofi hip hop night", color: "#2a8fa8" },
     { id: "09K79_bD6w0", icon: "📼", short: "Silence", name: "Japanese lofi night", color: "#7a4fb0" },
     { id: "rFZHOHl-L8A", icon: "📻", short: "Radio", name: "Lofi hip hop radio", color: "#c43d6a", live: true },
@@ -22,7 +22,7 @@ const TAPE_BANDS = [
   // the jazz bar's tracks (jazz.js, loaded before)
   { name: "Jazz bar", short: "JAZZ", tapes: JAZZ_TRACKS },
   { name: "Late night", short: "NIGHT", tapes: [
-    { file: "night/mystical-forest.mp3", icon: "🌙", short: "Night", name: "Mystical Forest", color: "#2f5d8a" },
+    { file: "night/mystical-forest.mp3", video: "jmLiHVWgbVY", icon: "🌙", short: "Night", name: "Mystical Forest", color: "#2f5d8a" },
   ] },
   { name: "Metal show", short: "METAL", tapes: [
     { file: "metal/master-of-puppets-solo.mp3", icon: "🤘", short: "Metal", name: "Master of Puppets solo", color: "#b3121f" },
