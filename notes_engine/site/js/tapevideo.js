@@ -58,3 +58,23 @@ const putFrame = frame => {
   frame.classList.add("onscreen");
 };
 tapeDeck.addEventListener("monitormove", () => { if (videoFrame) putFrame(videoFrame); });
+
+// Four times a second while the video is wanted: before the monitor is out, the deck waits
+// (vloading) until there is a picture, then the monitor grows; once its tube is lit, the picture
+// shows, or the snow while an ad breaks in or the next tape's video gets ready
+const videoTick = () => {
+  followTape();
+  const p = videoPlayer(), show = !!p && videoShowable(p);
+  if (!tapeDeck.classList.contains("tv")) {
+    tapeDeck.classList.toggle("vloading", !show);
+    if (show) showMonitor(lightTube);
+    return;
+  }
+  if (videoLit) putFrame(show ? p.frame : null);
+};
+// The tube comes on (taperackfx-like beam, tapemonitorfx.css), then the picture
+const lightTube = () => {
+  videoLit = true;
+  tapeMonitor.classList.add("lit");
+  videoTick();
+};
