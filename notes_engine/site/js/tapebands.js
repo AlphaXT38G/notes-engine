@@ -1,7 +1,7 @@
 // ── The cassette deck's stations ──
 // What the day's cassette deck (tapes.js) plays, in bands, its "stations": the lofi mixes (mostly
 // YouTube), then the music of the screens (jazz bar, late night, metal show, epic finale,
-// Christmas, Halloween, sakura), then the radios live. A tape is a YouTube video (`id`), an audio
+// Christmas, Halloween, sakura), then the radios live, in one band. A tape is a YouTube video (`id`), an audio
 // file of notes-musics (`file`, its path there) or a live stream (`stream`), with its `icon`, its
 // `short` name for the cassette's label, its `name` and the `color` of the label; `live` when it
 // cannot be wound. A band has a `name` and a `short` name for the deck's counter.
@@ -37,10 +37,9 @@ const TAPE_BANDS = [
   { name: "Halloween", short: "SPOOKY", tapes: HW_TRACKS.map(t => Object.assign({}, t, { color: t.tape })) },
   // the sakura screens' tracks (skplayer.js), the label in their flower's colour
   { name: "Sakura", short: "SAKURA", tapes: SK_TRACKS.map(t => Object.assign({}, t, { icon: "🌸" })) },
-  { name: "Radio Impuls", short: "IMPULS", tapes: [
+  // the radios live, together
+  { name: "Radio", short: "RADIO", tapes: [
     { stream: "https://stream.sepia.sk:8000/impuls128.mp3", icon: "📡", short: "Impuls", name: "Radio Impuls (live)", color: "#e30613", live: true },
-  ] },
-  { name: "Hit Radio", short: "HIT", tapes: [
     { stream: "https://hitradio-maroc.ice.infomaniak.ch/hitradio-maroc-128.mp3", icon: "🎧", short: "Hit", name: "Hit Radio Maroc (live)", color: "#c1272d", live: true },
   ] },
 ];
