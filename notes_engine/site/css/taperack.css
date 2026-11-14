@@ -47,3 +47,13 @@
 #tapedeck.racked .label,#tapedeck.unrack .label{opacity:0}
 /* Touch screens: rows a finger high (taperows.css), so a taller rack, whose pages scroll */
 @media(pointer:coarse){#tapedeck{--rack-h:17rem}#tapedeck .plate{height:.9rem;font-size:.45rem}#tapedeck .rack.inband .plate .back{width:1.6rem;height:.9rem;font-size:.5rem}}
+/* Phones: no room beside the deck, so the rack stands on top of it, as wide as it, the rail lying
+   along the joint */
+@media(max-width:640px){
+  #tapedeck{--rack-w:var(--deck-w)}
+  #tapedeck .rack{left:0;bottom:var(--deck-h);clip-path:inset(-2rem -2rem 0 -2rem)}
+  #tapedeck .rack .slide{border-radius:3px 3px 0 0}
+  #tapedeck .chassis{padding:.42rem .35rem .55rem}
+  #tapedeck .chassis::after{top:auto;right:0;width:auto;height:.3rem;background:radial-gradient(circle at .75rem 50%,#e9ebee 0 .07rem,#5d626a .08rem .11rem,transparent .12rem),radial-gradient(circle at calc(100% - .75rem) 50%,#e9ebee 0 .07rem,#5d626a .08rem .11rem,transparent .12rem),linear-gradient(#4a4e55,#1c1e22)}
+  #tapedeck.racked .deck,#tapedeck.unrack .deck{border-radius:0 0 3px 3px}
+}
