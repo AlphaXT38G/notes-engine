@@ -34,16 +34,16 @@ tapeDeck.addEventListener("tapechange", paintMonitor);
 paintMonitor();
 
 // Its size: the free margin on the left of the notes (from the deck's left edge to a gap before the
-// cards), at least MONITOR_MIN rem wide, and no taller than the window (MONITOR_CHROME: its height
+// cards), at least MONITOR_MIN rem wide, and no taller than the window (MONITOR_BEZEL: its height
 // besides the tube, in rem). Then the station rack's place on its tube (--osd-*: at most 18 × 15
 // rem, in the tube's bottom left corner). Whatever lies on the tube is told by a monitormove event.
-const MONITOR_MIN = 15, MONITOR_CHROME = 4.4;
-const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
+const MONITOR_MIN = 15, MONITOR_BEZEL = .8;
+const monitorRem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
 const fitMonitor = () => {
   const notes = document.querySelector(".wrap"), left = tapeDeck.getBoundingClientRect().left;
-  const room = notes.getBoundingClientRect().left + parseFloat(getComputedStyle(notes).paddingLeft) - left - 1.2 * rem();
-  const tall = (innerHeight - 2 * left - MONITOR_CHROME * rem()) * 16 / 9 + .8 * rem();
-  tapeDeck.style.setProperty("--mon-w", `${Math.max(MONITOR_MIN * rem(), Math.min(room, tall))}px`);
+  const room = notes.getBoundingClientRect().left + parseFloat(getComputedStyle(notes).paddingLeft) - left - 1.2 * monitorRem();
+  const tall = (innerHeight - 2 * left - MONITOR_BEZEL * monitorRem()) * 16 / 9 + .8 * monitorRem();
+  tapeDeck.style.setProperty("--mon-w", `${Math.max(MONITOR_MIN * monitorRem(), Math.min(room, tall))}px`);
 };
 // The tube's box in the window, from the layout (not getBoundingClientRect, which would follow the
 // monitor's scale while it grows): the monitor is placed in the deck, or in the window in full screen
@@ -58,12 +58,12 @@ const tubeBox = () => {
   return { left, top, width, height, bottom: top + height };
 };
 const placeOnTube = () => {
-  const deck = tapeDeck.getBoundingClientRect(), tube = tubeBox(), gap = .5 * rem();
+  const deck = tapeDeck.getBoundingClientRect(), tube = tubeBox(), gap = .5 * monitorRem();
   const set = (name, px) => tapeDeck.style.setProperty(name, `${px}px`);
   set("--osd-l", tube.left - deck.left + gap);
   set("--osd-b", deck.bottom - tube.bottom + gap);
-  set("--osd-w", Math.min(tube.width - 2 * gap, 18 * rem()));
-  set("--osd-h", Math.min(tube.height - 2 * gap, 15 * rem()));
+  set("--osd-w", Math.min(tube.width - 2 * gap, 18 * monitorRem()));
+  set("--osd-h", Math.min(tube.height - 2 * gap, 15 * monitorRem()));
   tapeDeck.dispatchEvent(new Event("monitormove"));
 };
 addEventListener("resize", () => {
@@ -75,8 +75,8 @@ addEventListener("resize", () => {
 // Out and back in. A cursor grabs the deck's corner and drags the monitor out of it (mon-pull, from the
 // deck's size; --mon-h measured on a monitor laid out unseen first), then `ready` runs (tapevideo.js
 // puts the video on); back in, it is pushed into the deck (mon-push), then .untv goes. Reduced
-// motion, or hideMonitor(true): at once. The station rack is put away, its place changing. A timer stands in
-// for an animation's end that would not come (a tab in the background draws nothing).
+// motion, or hideMonitor(true): at once. The station rack is put away, its place changing. A timer
+// stands in for an animation's end that would not come (a tab in the background draws nothing).
 const monitorStill = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 let monitorReady = null, monitorTimer = null;
 const monitorGrown = () => {
