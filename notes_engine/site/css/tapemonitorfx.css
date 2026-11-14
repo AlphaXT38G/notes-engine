@@ -7,3 +7,7 @@
 /* its plate and keys come once it is nearly grown */
 #tapedeck.tv .mplate,#tapedeck.tv .mkeys{animation:mon-part .3s ease-out .4s both}
 @keyframes mon-part{from{opacity:0;transform:translateY(.4rem)}}
+/* back in: the plate and the keys go first, then it shrinks into the deck and fades into it */
+#tapedeck.untv .monitor{animation:mon-shrink .4s cubic-bezier(.5,0,.75,0) both}
+#tapedeck.untv .mplate,#tapedeck.untv .mkeys{opacity:0;transition:opacity .12s}
+@keyframes mon-shrink{80%{opacity:1}to{opacity:0;transform:scale(var(--mon-sx),var(--mon-sy))}}
