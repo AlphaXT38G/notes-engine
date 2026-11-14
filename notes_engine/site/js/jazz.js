@@ -65,8 +65,8 @@ document.addEventListener("night", e => setAir(e.detail));
 // (tapebands.js: icon, short, the cover's and the tape's label, name and color, dark enough for white
 // letters on the tape).
 const JAZZ_TRACKS = [
-  { file: "jazz/just-one-more-drink.mp3", icon: "🎷", short: "Jazz", name: "Just One More Drink", color: "#9a4a1c", disc: "#f5b041" },
-  { file: "jazz/whispers-and-jazz.mp3", icon: "🕯️", short: "Noir", name: "Whispers & Jazz", color: "#5c3a2e", disc: "#e8d7b0" },
+  { file: "jazz/just-one-more-drink.mp3", video: "7gtIh5dF9Xk", icon: "🎷", short: "Jazz", name: "Just One More Drink", color: "#9a4a1c", disc: "#f5b041" },
+  { file: "jazz/whispers-and-jazz.mp3", video: "Ln9WaL0HXHc", icon: "🕯️", short: "Noir", name: "Whispers & Jazz", color: "#5c3a2e", disc: "#e8d7b0" },
   { file: "jazz/bunny-chic-swing-time.mp3", video: "WYjmZ3RT574", icon: "🐰", short: "Swing", name: "Bunny Chic Swing Time", color: "#c2417a", disc: "#ff8fbf" },
   { file: "jazz/electro-swing-queen.mp3", video: "hxaEDvTWexM", icon: "🎤", short: "Queen", name: "Electro Swing Queen", color: "#8a6a12", disc: "#ffd23a" },
 ];
