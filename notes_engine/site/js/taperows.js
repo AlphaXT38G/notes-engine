@@ -23,3 +23,11 @@ const stationRow = (band, i) =>
   `<button type="button" class="station" data-band="${i}" style="--i:${i};--tc:${band.tapes[0].color}">` +
   `${signalMeter(band)}<span class="name">${rackText(band.name)}</span>` +
   `<span class="count">${isLiveBand(band) ? "LIVE" : rackNumber(band.tapes.length)}</span><span class="lamp"></span></button>`;
+
+// A tape: its number, its icon on the colour of its label, its name in LED type (with LIVE for a
+// live) and a level meter that dances while it plays; the name in full in the tooltip
+const tapeRow = (tape, i) =>
+  `<button type="button" class="track" data-tape="${i}" title="${rackText(tape.name)}" style="--i:${i};--tc:${tape.color}">` +
+  `<span class="no">${rackNumber(i + 1)}</span><span class="icon">${tape.icon}</span>` +
+  `<span class="name">${rackText(tape.name)}</span>${tape.live ? '<span class="live">LIVE</span>' : ""}` +
+  '<span class="eq"><i></i><i></i><i></i></span></button>';
