@@ -22,3 +22,7 @@
 #tapedeck .rack .track{gap:.28rem;padding:0 .3rem 0 0;background:linear-gradient(90deg,rgba(255,74,42,.09),rgba(255,74,42,.03));box-shadow:inset 0 0 0 1px rgba(255,74,42,.16);border-left:.18rem solid var(--tc);color:#c4492f;font:700 .46rem/1 ui-monospace,Consolas,monospace;letter-spacing:.04em}
 #tapedeck .rack .track .name{text-transform:uppercase}
 #tapedeck .rack .track:hover,#tapedeck .rack .track:focus-visible{color:#ff8a6a;background:rgba(255,74,42,.16);outline:0}
+/* its number, its icon on its label's colour, LIVE for a live */
+#tapedeck .rack .track .no{flex:none;margin-left:.18rem;color:#6e2416}
+#tapedeck .rack .track .icon{flex:none;width:.7rem;height:.7rem;display:grid;place-items:center;border-radius:1px;background:var(--tc);font-size:.42rem;box-shadow:0 0 0 1px rgba(0,0,0,.5)}
+#tapedeck .rack .track .live{flex:none;color:#ff4a2a;font-size:.36rem}
