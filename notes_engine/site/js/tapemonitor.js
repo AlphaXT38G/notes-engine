@@ -18,3 +18,11 @@ tapeMonitor.innerHTML = '<p class="mplate"><i class="rec"></i>VIDEO MONITOR <b>T
   ["band", "crt", "full", "eject"].map(tapeKeyButton).join("") + "</div>";
 tapeDeck.append(tapeMonitor);
 const monitorTube = tapeMonitor.querySelector(".tube");
+
+// The plate names the tape playing
+const paintMonitor = () => {
+  const tape = tapeNow();
+  tapeMonitor.querySelector(".now").textContent = `${tape.icon} ${tape.name}`;
+};
+tapeDeck.addEventListener("tapechange", paintMonitor);
+paintMonitor();
