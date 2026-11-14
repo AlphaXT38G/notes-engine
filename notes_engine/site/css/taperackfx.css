@@ -57,3 +57,8 @@
 #tapedeck.unrack .rack .beam{animation:rack-off-glow .2s ease-in both}
 @keyframes rack-off{50%{transform:scale(1,.01)}100%{opacity:0;transform:scale(0,.01)}}
 @keyframes rack-off-glow{0%{opacity:0;transform:none}50%{opacity:1;transform:scale(1,.012)}100%{opacity:0;transform:scale(0,.012)}}
+/* ...then the rack goes back into the deck (taperack.js waits for rack-push to end) */
+#tapedeck.unrack .rack .slide{animation:rack-push .24s cubic-bezier(.5,0,.8,.4) .2s both}
+#tapedeck.unrack .chassis{animation:rack-push-chassis .24s cubic-bezier(.5,0,.8,.4) .2s both}
+@keyframes rack-push{to{transform:var(--rack-hide)}}
+@keyframes rack-push-chassis{to{transform:var(--rack-unhide)}}
