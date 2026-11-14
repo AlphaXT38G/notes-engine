@@ -15,3 +15,8 @@
   box-shadow:inset 0 1px 0 #fff,inset 0 -2px 0 rgba(0,0,0,.25)}
 /* the deck's black trim on top */
 #tapedeck .chassis::before{content:"";position:absolute;left:0;right:0;top:0;height:.2rem;background:linear-gradient(#3a3d43,#1c1e22)}
+/* the mounting rail on the joint, with its two screws: the rack reads as a module bolted to the deck,
+   whose corners on that side turn square while it is out */
+#tapedeck .chassis::after{content:"";position:absolute;left:0;top:0;bottom:0;width:.34rem;
+  background:radial-gradient(circle at 50% .75rem,#e9ebee 0 .07rem,#5d626a .08rem .11rem,transparent .12rem),radial-gradient(circle at 50% calc(100% - .75rem),#e9ebee 0 .07rem,#5d626a .08rem .11rem,transparent .12rem),linear-gradient(90deg,#2a2c31,#4a4e55 45%,#1c1e22)}
+#tapedeck.racked .deck,#tapedeck.unrack .deck{border-radius:3px 0 0 3px}
