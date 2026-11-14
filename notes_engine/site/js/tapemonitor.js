@@ -26,3 +26,30 @@ const paintMonitor = () => {
 };
 tapeDeck.addEventListener("tapechange", paintMonitor);
 paintMonitor();
+
+// Its size: the free margin on the left of the notes (from the deck's left edge to a gap before the
+// cards), at least MONITOR_MIN rem wide, and no taller than the window (MONITOR_CHROME: its height
+// besides the tube, in rem). Then the station rack's place on its tube (--osd-*: at most 18 × 15
+// rem, in the tube's bottom left corner). Whatever lies on the tube is told by a monitormove event.
+const MONITOR_MIN = 15, MONITOR_CHROME = 4.4;
+const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
+const fitMonitor = () => {
+  const notes = document.querySelector(".wrap"), left = tapeDeck.getBoundingClientRect().left;
+  const room = notes.getBoundingClientRect().left + parseFloat(getComputedStyle(notes).paddingLeft) - left - 1.2 * rem();
+  const tall = (innerHeight - 2 * left - MONITOR_CHROME * rem()) * 16 / 9 + .8 * rem();
+  tapeDeck.style.setProperty("--mon-w", `${Math.max(MONITOR_MIN * rem(), Math.min(room, tall))}px`);
+};
+const placeOnTube = () => {
+  const deck = tapeDeck.getBoundingClientRect(), tube = monitorTube.getBoundingClientRect(), gap = .5 * rem();
+  const set = (name, px) => tapeDeck.style.setProperty(name, `${px}px`);
+  set("--osd-l", tube.left - deck.left + gap);
+  set("--osd-b", deck.bottom - tube.bottom + gap);
+  set("--osd-w", Math.min(tube.width - 2 * gap, 18 * rem()));
+  set("--osd-h", Math.min(tube.height - 2 * gap, 15 * rem()));
+  tapeDeck.dispatchEvent(new Event("monitormove"));
+};
+addEventListener("resize", () => {
+  if (!tapeDeck.classList.contains("tv")) return;
+  fitMonitor();
+  placeOnTube();
+});
