@@ -160,3 +160,25 @@ const ytSeek = (id, owner, t) => {
   ytCommand(p, "seekTo", [t, true]);
   p.time = t;
 };
+
+// A YouTube video played as a screen's track: the little a player uses of an <audio> (play(),
+// pause(), muted, an "ended" listener; dropTrack() pauses it), so that a player of notes-musics'
+// files plays videos the same way. musicTrack() makes either from a track of a list: `id`, a video;
+// `file`, an audio file (screenTrack, screens.js).
+const ytTrack = (id, { muted = false } = {}) => {
+  const ended = [];
+  const owner = { onEnd: () => ended.forEach(fn => fn()) };
+  let sound = !muted;
+  const track = {
+    get muted() { return !sound; },
+    set muted(on) { sound = !on; ytSound(id, owner, sound); },
+    play() { ytPlay(id, owner, sound); return Promise.resolve(); },
+    pause() { ytPause(id, owner); },
+    addEventListener(type, fn) { if (type === "ended") ended.push(fn); },
+    drop() { ytPause(id, owner); },
+  };
+  const p = ytPlay(id, owner, sound);
+  if (p.ready && p.state === 0) ytSeek(id, owner, 0);  // played to its end before: from the start
+  return track;
+};
+const musicTrack = (track, options) => (track.id ? ytTrack(track.id, options) : screenTrack(track.file, options));
