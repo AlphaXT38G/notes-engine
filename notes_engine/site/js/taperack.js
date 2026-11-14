@@ -82,3 +82,10 @@ rackKey.title = "Stations";
 rackKey.setAttribute("aria-label", rackKey.title);
 setRackKey(false);
 TAPE_ACTIONS.band = () => (rackIsOut() ? closeRack() : openRack());
+// Escape or a click elsewhere on the page puts it back too
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape" || !rackIsOut()) return;
+  closeRack();
+  rackKey.focus();
+});
+document.addEventListener("click", e => { if (!tapeDeck.contains(e.target)) closeRack(); });
