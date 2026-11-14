@@ -64,3 +64,5 @@
 #tapedeck.tv .plate{color:#ff8a6a;text-shadow:0 0 4px rgba(255,74,42,.6)}
 #tapedeck.tv .plate .count{color:#c4492f}
 #tapedeck.tv .rack .screen{background:rgba(12,6,5,.72);box-shadow:inset 0 0 0 1px rgba(255,74,42,.25)}
+/* Touch screens: the keys a finger high, as the deck's */
+@media(pointer:coarse){#tapedeck .mkeys .key{height:2.75rem;font-size:.75rem}}
