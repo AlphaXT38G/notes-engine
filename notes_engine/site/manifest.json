@@ -87,6 +87,7 @@
     "js/taperows.js",
     "js/taperack.js",
     "js/tapemonitor.js",
+    "js/tapevideo.js",
     "js/ytall.js",
     "js/start.js"
   ]
