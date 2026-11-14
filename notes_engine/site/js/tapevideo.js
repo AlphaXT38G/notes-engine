@@ -56,11 +56,13 @@ const followTape = () => {
   if (p.owner !== TAPE_VIDEO || p.want !== "play") ytPlay(id, TAPE_VIDEO, false);
   if (p.ready && p.music && Math.abs(p.time - tapeTime) > 1.5) ytSeek(id, TAPE_VIDEO, tapeTime);
 };
-// The player shown, laid under the monitor's tube (none: the tube shows its snow). The embed draws
+// The player shown, laid under the monitor's tube (none: the tube shows its snow). YouTube picks
+// the video's quality by the player's size: the player is laid out VIDEO_WIDTH px wide at least (full
+// HD from the first second, and in full screen), then scaled down onto the tube. The embed draws
 // bars of its own at its top and bottom edges (the title, "more videos"): the player is made
-// VIDEO_CROP px taller at each end and cut back to the tube, the video, fitted to its width, filling
-// the tube exactly and those bars falling outside.
-const VIDEO_CROP = 90;
+// VIDEO_CROP px taller at each end and cut back, the video, fitted to its width, filling the tube
+// exactly and those bars falling outside.
+const VIDEO_WIDTH = 1920, VIDEO_CROP = 90;
 const putFrame = frame => {
   if (videoFrame && videoFrame !== frame) {
     videoFrame.classList.remove("onscreen");
@@ -70,9 +72,10 @@ const putFrame = frame => {
   tapeMonitor.classList.toggle("showing", !!frame);
   tapeMonitor.classList.toggle("waiting", videoLit && !frame);
   if (!frame) return;
-  const tube = tubeBox();
-  frame.style.cssText = `left:${tube.left}px;top:${tube.top - VIDEO_CROP}px;width:${tube.width}px;` +
-    `height:${tube.height + 2 * VIDEO_CROP}px;clip-path:inset(${VIDEO_CROP}px 0)`;
+  const tube = tubeBox(), width = Math.max(VIDEO_WIDTH, tube.width), scale = tube.width / width;
+  frame.style.cssText = `left:${tube.left}px;top:${tube.top - VIDEO_CROP * scale}px;width:${width}px;` +
+    `height:${tube.height / scale + 2 * VIDEO_CROP}px;transform:scale(${scale});transform-origin:0 0;` +
+    `clip-path:inset(${VIDEO_CROP}px 0)`;
   frame.classList.add("onscreen");
 };
 tapeDeck.addEventListener("monitormove", () => { if (videoFrame) putFrame(videoFrame); });
