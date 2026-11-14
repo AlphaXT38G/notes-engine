@@ -23,3 +23,11 @@ tapeDeck.querySelector(".badges").append(videoPill);
 const paintVideoPill = () => tapeDeck.classList.toggle("hasvideo", !!tapeVideoId(tapeNow()));
 tapeDeck.addEventListener("tapechange", paintVideoPill);
 paintVideoPill();
+
+// The player of the tape's video, and whether it has a picture to show: ready, past its ad, and its
+// time moving while the tape plays (youtube.js tells an ad by a time standing still)
+const videoPlayer = () => {
+  const id = tapeVideoId(tapeNow());
+  return id ? ytPlayer(id) : null;
+};
+const videoShowable = p => p.ready && p.music && !p.ad && (!tapePlaying || performance.now() - p.movedAt < YT_STILL_MS());
