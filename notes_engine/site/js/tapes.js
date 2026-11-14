@@ -5,7 +5,8 @@
 // tape plays in a hidden <iframe> driven by postMessage commands, like the Christmas mix (youtube.js,
 // muted during ads); an audio file of notes-musics or a live stream plays in an <audio>.
 // The keys: ↺ restarts the tape, ◀◀ / ▶▶ wind 30 s back / forward, ▶❚❚ plays or
-// pauses, and the station key goes to the next band (its name shows on the counter a moment).
+// pauses, and the station key opens the station rack (taperack.js), where a station and a tape are
+// chosen; a new station's name shows on the counter a moment.
 // As the Christmas turntable's sleeve, the next tape of the band waits in its case leaning behind
 // the deck: clicking it puts it in too. A change of tape is done as on the real thing: the door
 // opens, the tape comes out, the next one goes in, the door closes, it plays. When a tape ends the
