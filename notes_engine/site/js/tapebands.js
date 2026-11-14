@@ -19,12 +19,8 @@ const TAPE_BANDS = [
     { id: "09K79_bD6w0", icon: "📼", short: "Silence", name: "Japanese lofi night", color: "#7a4fb0" },
     { id: "rFZHOHl-L8A", icon: "📻", short: "Radio", name: "Lofi hip hop radio", color: "#c43d6a", live: true },
   ] },
-  // the jazz bar's tracks (jazz.js, loaded before), then two electro swing mixes of the deck's own,
-  // on YouTube (the jazz bar's turntable plays files only)
-  { name: "Jazz bar", short: "JAZZ", tapes: JAZZ_TRACKS.concat([
-    { id: "t7VQ7_diGKQ", icon: "🎙️", short: "Vocals", name: "Electro swing with vocals", color: "#3d6b8a" },
-    { id: "kY914EllIMs", icon: "🎺", short: "Vintage", name: "Electro swing vocals, vintage jazz", color: "#8a3d5c" },
-  ]) },
+  // the jazz bar's tracks (jazz.js, loaded before)
+  { name: "Jazz bar", short: "JAZZ", tapes: JAZZ_TRACKS },
   { name: "Late night", short: "NIGHT", tapes: [
     { file: "night/mystical-forest.mp3", icon: "🌙", short: "Night", name: "Mystical Forest", color: "#2f5d8a" },
   ] },
