@@ -12,8 +12,7 @@
 #tapedeck .rack .signal i:nth-child(1){height:.14rem}#tapedeck .rack .signal i:nth-child(2){height:.22rem}#tapedeck .rack .signal i:nth-child(3){height:.3rem}#tapedeck .rack .signal i:nth-child(4){height:.38rem}#tapedeck .rack .signal i:nth-child(5){height:.46rem}
 #tapedeck .rack .signal i.lit{background:var(--tc);box-shadow:0 0 3px var(--tc)}
 /* its count of tapes on a small red LED, and the lamp lit green while it plays */
-#tapedeck .rack .count{flex:none}
-#tapedeck .rack .station .count{padding:.08rem .16rem;border-radius:1px;background:#140907;color:#ff4a2a;font:700 .36rem/1 ui-monospace,Consolas,monospace;letter-spacing:.06em;text-shadow:0 0 3px rgba(255,74,42,.7)}
+#tapedeck .rack .station .count{flex:none;padding:.08rem .16rem;border-radius:1px;background:#140907;color:#ff4a2a;font:700 .36rem/1 ui-monospace,Consolas,monospace;letter-spacing:.06em;text-shadow:0 0 3px rgba(255,74,42,.7)}
 #tapedeck .rack .lamp{flex:none;width:.26rem;height:.26rem;border-radius:50%;background:#2a2c30}
 #tapedeck .rack .station.on{box-shadow:inset 0 0 0 1px rgba(46,204,113,.55)}
 #tapedeck .rack .station.on .lamp{background:#2ecc71;box-shadow:0 0 4px #2ecc71}
