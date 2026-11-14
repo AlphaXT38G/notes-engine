@@ -22,3 +22,6 @@
 @keyframes video-snow{33%{background-position:7px -5px,0 0}66%{background-position:-4px 6px,0 0}}
 #tapedeck.vloading .label{opacity:1;transform:none;font-size:0}
 #tapedeck.vloading .label::after{content:"Loading the video…";font-size:.78rem}
+/* The player shown, laid under the monitor's tube (its place and size set by tapevideo.js), under the deck
+   (z-index 40) and over the page */
+.ytplayer.onscreen{bottom:auto;opacity:1;z-index:39}
