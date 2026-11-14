@@ -71,9 +71,10 @@ const paintTapes = () => {
   tapeDeck.classList.toggle("paused", !tapePlaying && !!tapeSrc);
   tapeDeck.querySelector(".label").textContent = (tapeSwapping ? "⏏ " : tapePlaying ? "♪ " : tapeSrc ? "❚❚ " : "▶ ")
     + `${band.name} · ${tape.name}`;
-  const play = tapeKey("play");
-  play.title = tapePlaying ? "Pause" : "Play";
-  play.setAttribute("aria-label", play.title);
+  tapeDeck.querySelectorAll(".key.play").forEach(play => {
+    play.title = tapePlaying ? "Pause" : "Play";
+    play.setAttribute("aria-label", play.title);
+  });
   // a live has no tape to wind (on every copy of those keys)
   tapeDeck.querySelectorAll(".key.restart, .key.rew, .key.ff").forEach(key => { key.disabled = !!tape.live; });
   // The case behind the deck: the next tape of the band, its label showing (none in a band of one)
