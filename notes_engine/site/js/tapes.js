@@ -51,14 +51,15 @@ tapeDeck.innerHTML = '<button type="button" class="case"></button><div class="de
     `<button type="button" class="key ${k}" title="${name}" aria-label="${name}">${sym}</button>`).join("") +
   '</div></div><span class="label" aria-live="polite"></span>';
 const tapeBay = tapeDeck.querySelector(".bay"), tapeCase = tapeDeck.querySelector(".case");
-const tapeCounter = tapeDeck.querySelector(".counter");
 const tapeKey = k => tapeDeck.querySelector(`.key.${k}`);
 
-// The counter: the tape's time, LIVE for a live, or the band's name a moment after a change
+// The counter: the tape's time, LIVE for a live, or the band's name a moment after a change; on
+// every counter of the deck (the video monitor has one too, tapemonitor.js)
 const paintCounter = () => {
   const t = Math.floor(tapeTime);
-  tapeCounter.textContent = performance.now() < tapeFlashUntil ? TAPE_BANDS[tapeBand].short
+  const text = performance.now() < tapeFlashUntil ? TAPE_BANDS[tapeBand].short
     : tapeNow().live && tapeSrc ? "LIVE" : `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
+  tapeDeck.querySelectorAll(".counter").forEach(c => { c.textContent = text; });
 };
 const paintTapes = () => {
   const band = TAPE_BANDS[tapeBand], tape = tapeNow(), next = band.tapes[tapeNext()];
