@@ -45,3 +45,5 @@
 #tapedeck.racked .key.band{transform:translateY(2px);background:linear-gradient(#e4e6e9,#c4c7cc);box-shadow:inset 0 -1px 0 rgba(0,0,0,.2)}
 #tapedeck.racked .key.band::after{background:#ff3b30;box-shadow:0 0 4px #ff3b30}
 #tapedeck.racked .label,#tapedeck.unrack .label{opacity:0}
+/* Touch screens: rows a finger high (taperows.css), so a taller rack, whose pages scroll */
+@media(pointer:coarse){#tapedeck{--rack-h:17rem}#tapedeck .plate{height:.9rem;font-size:.45rem}#tapedeck .rack.inband .plate .back{width:1.6rem;height:.9rem;font-size:.5rem}}
