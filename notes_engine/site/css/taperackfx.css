@@ -19,3 +19,14 @@
 #tapedeck .rackcursor path{fill:#111;stroke:#fff;stroke-width:1.4;stroke-linejoin:round}
 #tapedeck.racked .rackcursor{visibility:visible;animation:rack-drag var(--rack-drag) var(--rack-ease) var(--rack-grab) both}
 @keyframes rack-drag{to{transform:translate(var(--rack-drag-x),var(--rack-drag-y))}}
+/* the arrow comes from below right, presses on the corner (smaller), holds it through the drag, lets
+   go and goes away; 22.6% and 58% of 1.55 s are the drag's start and end (--rack-grab, then
+   --rack-drag later) */
+#tapedeck.racked .rackcursor svg{animation:rack-hand 1.55s both}
+@keyframes rack-hand{
+  0%{opacity:0;transform:translate(3.5rem,3.8rem)}
+  16%{opacity:1;transform:translate(.15rem,.1rem)}
+  22.6%{transform:none}
+  24%,58%{transform:scale(.86)}
+  64%,70%{opacity:1;transform:none}
+  100%{opacity:0;transform:translate(1.2rem,.8rem)}}
