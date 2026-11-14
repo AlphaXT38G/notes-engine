@@ -68,9 +68,8 @@ tapeDeck.addEventListener("tapechange", markRack);
 // Out and back in. The stations are drawn anew each time, so that they light up again on the screen
 // coming on. Back in, taperackfx.css switches the screen off and pushes the rack in (rack-push),
 // then .unrack goes; with reduced motion, or closeRack(true), it goes at once.
-const rackKey = tapeKey("band");
 const rackIsOut = () => tapeDeck.classList.contains("racked");
-const setRackKey = out => rackKey.setAttribute("aria-expanded", String(out));
+const setRackKey = out => tapeDeck.querySelectorAll(".key.band").forEach(key => key.setAttribute("aria-expanded", String(out)));
 const openRack = () => {
   tapeDeck.style.setProperty("--deck-h", `${tapeDeck.querySelector(".deck").offsetHeight}px`);
   rackStations.innerHTML = TAPE_BANDS.map(stationRow).join("");
@@ -91,15 +90,18 @@ tapeRack.addEventListener("animationend", e => {
 });
 // The station key pulls the rack out and puts it back (tapes.js's own action, the next station,
 // is what it does without this file)
-rackKey.title = "Stations";
-rackKey.setAttribute("aria-label", rackKey.title);
+TAPE_KEYS.find(key => key[0] === "band")[2] = "Stations";  // for the copies made from now on
+tapeDeck.querySelectorAll(".key.band").forEach(key => {
+  key.title = "Stations";
+  key.setAttribute("aria-label", key.title);
+});
 setRackKey(false);
 TAPE_ACTIONS.band = () => (rackIsOut() ? closeRack() : openRack());
 // Escape or a click elsewhere on the page puts it back too
 document.addEventListener("keydown", e => {
   if (e.key !== "Escape" || !rackIsOut()) return;
   closeRack();
-  rackKey.focus();
+  tapeKey("band").focus();
 });
 document.addEventListener("click", e => { if (!tapeDeck.contains(e.target)) closeRack(); });
 // A screen takes the deck away: the rack goes with it at once, and the day brings the deck back with
