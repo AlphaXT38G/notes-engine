@@ -37,3 +37,7 @@
 #tapedeck.crt .tube .crt,#tapedeck.crt .tube .glare{opacity:1}
 #tapedeck.crt .mkeys .key.crt{transform:translateY(2px);background:linear-gradient(#e4e6e9,#c4c7cc);box-shadow:inset 0 -1px 0 rgba(0,0,0,.2)}
 #tapedeck.crt .mkeys .key.crt::after{background:#f5a623;box-shadow:0 0 4px #f5a623}
+/* What the tube says when it has no picture: snow, and LOADING or AD in the counter's LED type */
+#tapedeck .tube .noise{position:absolute;left:0;top:0;right:0;bottom:0;z-index:1;opacity:0;border-radius:inherit;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.6 -.45'/%3E%3C/filter%3E%3Crect width='120' height='80' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/90px 60px,#101014}
+#tapedeck .tube .tubemsg{position:absolute;left:50%;top:50%;z-index:2;padding:.2rem .4rem;border-radius:2px;background:#140907;color:#ff4a2a;font:700 .7rem/1 ui-monospace,Consolas,monospace;letter-spacing:.12em;text-shadow:0 0 4px rgba(255,74,42,.75);transform:translate(-50%,-50%);opacity:0}
+#tapedeck .monitor.waiting .tube .noise,#tapedeck .monitor.waiting .tube .tubemsg{opacity:1}
