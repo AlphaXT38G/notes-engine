@@ -121,3 +121,10 @@ const setFull = on => {
   else placeOnTube();
 }));
 TAPE_ACTIONS.full = () => setFull(!tapeDeck.classList.contains("full"));
+// In full screen the plate and the keys go away while the pointer rests, and come back as it moves
+let monitorRest = null;
+tapeMonitor.addEventListener("mousemove", () => {
+  tapeDeck.classList.remove("still");
+  clearTimeout(monitorRest);
+  if (tapeDeck.classList.contains("full")) monitorRest = setTimeout(() => tapeDeck.classList.add("still"), 2500);
+});
