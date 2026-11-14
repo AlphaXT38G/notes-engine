@@ -6,8 +6,9 @@
 #tapedeck{--rack-w:11rem;--rack-h:11.4rem;--deck-h:5.4rem}
 /* Three layers, so that opening moves transforms only: .rack stands still and cuts what would show
    over the deck; .slide, the rack's outline and its shadow, comes out of the deck's corner while the
-   chassis inside it goes the other way, so the chassis stands still and shows more of itself */
-#tapedeck .rack{position:absolute;left:var(--deck-w);bottom:0;z-index:1;width:var(--rack-w);height:var(--rack-h);visibility:hidden;clip-path:inset(-2rem -2rem -2rem 0)}
+   chassis inside it goes the other way, so the chassis stands still and shows more of itself. The
+   clip also cuts at the deck's bottom, where the outline hangs below the chassis while it moves */
+#tapedeck .rack{position:absolute;left:var(--deck-w);bottom:0;z-index:1;width:var(--rack-w);height:var(--rack-h);visibility:hidden;clip-path:inset(-2rem -2rem 0 0)}
 #tapedeck.racked .rack,#tapedeck.unrack .rack{visibility:visible}
 #tapedeck .rack .slide{height:100%;overflow:hidden;border-radius:0 3px 3px 0;box-shadow:8px 8px 20px -6px rgba(0,0,0,.4)}
 #tapedeck .chassis{position:relative;height:100%;display:flex;flex-direction:column;gap:.25rem;padding:.42rem .35rem .35rem .62rem;
