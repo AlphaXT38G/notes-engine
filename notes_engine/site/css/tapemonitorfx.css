@@ -1,0 +1,9 @@
+/* The video monitor's moves (js/tapemonitor.js, js/tapevideo.js): it grows out of the deck from the
+   deck's very size (--mon-sx, --mon-sy) and shrinks back into it; its tube comes on as the station
+   rack's screen does, with a bright line opening into a flash, then the picture flickers in. Only
+   transforms and opacity move. */
+#tapedeck.tv .monitor{animation:mon-grow .55s cubic-bezier(.3,.8,.25,1.05) both}
+@keyframes mon-grow{from{transform:scale(var(--mon-sx),var(--mon-sy))}}
+/* its plate and keys come once it is nearly grown */
+#tapedeck.tv .mplate,#tapedeck.tv .mkeys{animation:mon-part .3s ease-out .4s both}
+@keyframes mon-part{from{opacity:0;transform:translateY(.4rem)}}
