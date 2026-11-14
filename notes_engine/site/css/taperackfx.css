@@ -30,3 +30,7 @@
   24%,58%{transform:scale(.86)}
   64%,70%{opacity:1;transform:none}
   100%{opacity:0;transform:translate(1.2rem,.8rem)}}
+/* a ring around the point while it presses */
+#tapedeck .rackcursor::before{content:"";position:absolute;left:-.55rem;top:-.55rem;width:1.1rem;height:1.1rem;border-radius:50%;background:rgba(36,87,197,.28);border:1.5px solid rgba(36,87,197,.6);opacity:0}
+#tapedeck.racked .rackcursor::before{animation:rack-press 1.55s both}
+@keyframes rack-press{0%,19%{opacity:0;transform:scale(.3)}24%,58%{opacity:1;transform:none}68%,100%{opacity:0;transform:scale(1.5)}}
