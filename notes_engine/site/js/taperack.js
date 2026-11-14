@@ -17,3 +17,29 @@ tapeRack.innerHTML = '<div class="slide"><div class="chassis" role="dialog" aria
 tapeDeck.append(tapeRack);
 const rackPart = selector => tapeRack.querySelector(selector);
 const rackStations = rackPart(".stations"), rackTracks = rackPart(".tracks");
+
+// The plate: STATION SELECT and the count of stations, or a station's name and its count of tapes
+const paintRackPlate = band => {
+  rackPart(".title").innerHTML = band ? rackText(band.name.toUpperCase()) : "STATION SELECT <i>TD-82</i>";
+  const n = band ? band.tapes.length : TAPE_BANDS.length;
+  rackPart(".count").textContent = `${n} ${band ? "TAPE" : "STATION"}${n > 1 ? "S" : ""}`;
+};
+// The pages: the stations, or the tapes of the station rackBand (-1 on the stations)
+let rackBand = -1;
+const showStations = () => {
+  rackBand = -1;
+  tapeRack.classList.remove("inband");
+  paintRackPlate(null);
+};
+const showStation = i => {
+  rackBand = i;
+  rackTracks.innerHTML = TAPE_BANDS[i].tapes.map(tapeRow).join("");
+  rackTracks.scrollTop = 0;
+  tapeRack.classList.add("inband");
+  paintRackPlate(TAPE_BANDS[i]);
+};
+rackStations.addEventListener("click", e => {
+  const row = e.target.closest(".station");
+  if (row) showStation(+row.dataset.band);
+});
+rackPart(".back").addEventListener("click", showStations);
