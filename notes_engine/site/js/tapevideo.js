@@ -53,7 +53,7 @@ const putFrame = frame => {
   tapeMonitor.classList.toggle("showing", !!frame);
   tapeMonitor.classList.toggle("waiting", videoLit && !frame);
   if (!frame) return;
-  const tube = monitorTube.getBoundingClientRect();
+  const tube = tubeBox();
   frame.style.cssText = `left:${tube.left}px;top:${tube.top}px;width:${tube.width}px;height:${tube.height}px`;
   frame.classList.add("onscreen");
 };

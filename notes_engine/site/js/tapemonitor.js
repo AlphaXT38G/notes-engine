@@ -39,8 +39,17 @@ const fitMonitor = () => {
   const tall = (innerHeight - 2 * left - MONITOR_CHROME * rem()) * 16 / 9 + .8 * rem();
   tapeDeck.style.setProperty("--mon-w", `${Math.max(MONITOR_MIN * rem(), Math.min(room, tall))}px`);
 };
+// The tube's box in the window, from the layout (not getBoundingClientRect, which would follow the
+// monitor's scale while it grows): the monitor is placed in the deck, or in the window in full screen
+const tubeBox = () => {
+  const full = tapeDeck.classList.contains("full"), deck = tapeDeck.getBoundingClientRect();
+  const left = (full ? 0 : deck.left + tapeMonitor.offsetLeft) + monitorTube.offsetLeft;
+  const top = (full ? 0 : deck.top + tapeMonitor.offsetTop) + monitorTube.offsetTop;
+  const width = monitorTube.offsetWidth, height = monitorTube.offsetHeight;
+  return { left, top, width, height, bottom: top + height };
+};
 const placeOnTube = () => {
-  const deck = tapeDeck.getBoundingClientRect(), tube = monitorTube.getBoundingClientRect(), gap = .5 * rem();
+  const deck = tapeDeck.getBoundingClientRect(), tube = tubeBox(), gap = .5 * rem();
   const set = (name, px) => tapeDeck.style.setProperty(name, `${px}px`);
   set("--osd-l", tube.left - deck.left + gap);
   set("--osd-b", deck.bottom - tube.bottom + gap);
