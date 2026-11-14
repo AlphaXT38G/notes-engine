@@ -99,3 +99,25 @@ const setCrt = on => {
 };
 try { tapeDeck.classList.toggle("crt", localStorage.getItem("tape-crt") === "1"); } catch (e) {}
 TAPE_ACTIONS.crt = () => setCrt(!tapeDeck.classList.contains("crt"));
+
+// Full screen: the monitor fills the window (#tapedeck.full), and the browser goes full screen when
+// it can (the prefixed API for older Safari); leaving it (Escape, the browser's own way) or the key
+// brings the monitor back
+const fullscreenNow = () => document.fullscreenElement || document.webkitFullscreenElement;
+const setFull = on => {
+  if (on === tapeDeck.classList.contains("full")) return;
+  tapeDeck.classList.toggle("full", on);
+  const root = document.documentElement;
+  if (on && !fullscreenNow()) {
+    const ask = root.requestFullscreen || root.webkitRequestFullscreen;
+    const asked = ask && ask.call(root);
+    if (asked && asked.catch) asked.catch(() => {});
+  }
+  if (!on && fullscreenNow()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  placeOnTube();
+};
+["fullscreenchange", "webkitfullscreenchange"].forEach(name => document.addEventListener(name, () => {
+  if (!fullscreenNow()) setFull(false);
+  else placeOnTube();
+}));
+TAPE_ACTIONS.full = () => setFull(!tapeDeck.classList.contains("full"));
