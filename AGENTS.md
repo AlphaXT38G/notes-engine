@@ -45,7 +45,7 @@ notes_engine/shared/  course.sty and cheatsheet.sty, the LaTeX styles of every c
 example/              the smallest notes repository (subjects.json, site.json, one course): the tests build it
 tests/                smoke tests (python -m unittest discover -s tests): settings, and a real build of example/
 .github/workflows/    pages.yml (REUSABLE workflow that notes repositories call to publish); no CI: run the tests locally
-tools/                scripts that remake the images: bartender/ (open it through a local server),
+tools/                serve.py (a local server that can seek in the music), and scripts that remake the images: bartender/ (open it through a local server),
                       werewolf/cut.py and gargoyle/cut.py (Pillow), sakura/cut.py (Pillow, about a
                       minute: the sakura screen's painted layers of sakura/src/, painted by an image
                       generator on a light grey, cut into notes_engine/site/img/sakura/*.webp with
@@ -95,9 +95,10 @@ python -m http.server 8765 --directory dist   # then open http://localhost:8765/
 
 - **Windows**: prefix the build with `PYTHONIOENCODING=utf-8`, or the console cannot print ✔ / →.
 - **Music not yet pushed to notes-musics**: serve it and build with `NOTES_MUSIC`, which overrides
-  the `music` setting: `python -m http.server 8766 --directory ../notes-musics`, then
+  the `music` setting: `python tools/serve.py 8766 ../notes-musics`, then
   `NOTES_MUSIC=http://localhost:8766/ python -m notes_engine --root ../notes_ba5 --index-only`
-  (that server cannot seek in a track; GitHub Pages can).
+  (`tools/serve.py` answers byte ranges, as GitHub Pages does, so that a track can be wound;
+  `python -m http.server` cannot, and a wound track would start over).
 - **Optional tools**: `pdftoppm` and `pdftotext` (poppler) make the thumbnails; without them the
   page shows names only. `pdftotext` also extracts the text of every PDF (cached next to it,
   `<name>.pdf.txt`) into `dist/search.json`, so the search field finds words inside the
