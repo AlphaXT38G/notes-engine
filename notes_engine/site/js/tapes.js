@@ -4,7 +4,7 @@
 // piano keys). The music comes in bands, the deck's "stations" (TAPE_BANDS, tapebands.js). A YouTube
 // tape plays in a hidden <iframe> driven by postMessage commands, like the Christmas mix (youtube.js,
 // muted during ads); an audio file of notes-musics or a live stream plays in an <audio>.
-// The keys: ⏏ puts in the next tape of the band, ◀◀ / ▶▶ wind 30 s back / forward, ▶❚❚ plays or
+// The keys: ↺ restarts the tape, ◀◀ / ▶▶ wind 30 s back / forward, ▶❚❚ plays or
 // pauses, and the station key goes to the next band (its name shows on the counter a moment).
 // As the Christmas turntable's sleeve, the next tape of the band waits in its case leaning behind
 // the deck: clicking it puts it in too. A change of tape is done as on the real thing: the door
@@ -31,9 +31,10 @@ const tapeNext = () => (tapeAt + 1) % TAPE_BANDS[tapeBand].tapes.length;
 const cassette = tape => `<span class="cassette" style="--tc:${tape.color}"><b>${tape.icon} ${tape.short}</b>` +
   '<i class="reels"><i></i><i></i></i></span>';
 // The keys, left to right as on the decks of the time (text glyphs, not emoji: ︎). The
-// station key shows a broadcast mark: an antenna and its waves.
+// restart key shows a circling arrow, the station key a broadcast mark: an antenna and its waves.
 const TAPE_KEYS = [
-  ["eject", "⏏︎", "Eject: next tape"], ["rew", "◀︎◀︎", "Rewind 30 s"],
+  ["restart", '<svg viewBox="0 0 24 16" aria-hidden="true"><path d="M8.6 3.4A5.4 5.4 0 1 1 6.7 8.6"/><path class="head" d="M5.2 1.2l5.1 1.3-3.6 3.7z"/></svg>', "Restart the tape"],
+  ["rew", "◀︎◀︎", "Rewind 30 s"],
   ["play", "▶︎<small>❚❚</small>", "Play"], ["ff", "▶︎▶︎", "Fast forward 30 s"],
   ["band", '<svg viewBox="0 0 24 16" aria-hidden="true"><circle cx="12" cy="8" r="2.2"/><path d="M8.2 4.2a5.4 5.4 0 0 0 0 7.6M15.8 4.2a5.4 5.4 0 0 1 0 7.6M5.2 1.4a9.6 9.6 0 0 0 0 13.2M18.8 1.4a9.6 9.6 0 0 1 0 13.2"/></svg>', "Next station"],
 ];
@@ -67,7 +68,7 @@ const paintTapes = () => {
   const play = tapeKey("play");
   play.title = tapePlaying ? "Pause" : "Play";
   play.setAttribute("aria-label", play.title);
-  for (const k of ["rew", "ff"]) tapeKey(k).disabled = !!tape.live;  // a live has no tape to wind
+  for (const k of ["restart", "rew", "ff"]) tapeKey(k).disabled = !!tape.live;  // a live has no tape to wind
   // The case behind the deck: the next tape of the band, its label showing (none in a band of one)
   tapeDeck.classList.toggle("single", band.tapes.length < 2);
   tapeCase.innerHTML = cassette(next);
@@ -173,7 +174,7 @@ const swapTape = (band, i) => {
   tapeLater(1750, done);
 };
 const TAPE_ACTIONS = {
-  eject: () => swapTape(tapeBand, tapeNext()), rew: () => tapeSeek(tapeTime - 30),
+  restart: () => tapeSeek(0), rew: () => tapeSeek(tapeTime - 30),
   play: () => (tapePlaying ? tapePause() : tapePlay()), ff: () => tapeSeek(tapeTime + 30),
   band: () => swapTape((tapeBand + 1) % TAPE_BANDS.length, 0),
 };
