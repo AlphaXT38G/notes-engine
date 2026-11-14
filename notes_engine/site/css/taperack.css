@@ -25,3 +25,5 @@
 #tapedeck .plate{display:flex;align-items:center;gap:.25rem;height:.55rem;margin:0;font:700 .34rem/1 system-ui,sans-serif;letter-spacing:.1em;color:#34373c;white-space:nowrap}
 #tapedeck .plate i{font-style:italic;font-weight:800;color:#c0392b;letter-spacing:.04em}
 #tapedeck .plate .count{margin-left:auto;color:#6b6f76}
+#tapedeck .plate .back{width:0;height:.55rem;overflow:hidden;border-radius:1px;background:linear-gradient(#fbfbfb,#c9ccd1);box-shadow:inset 0 -1px 0 rgba(0,0,0,.2),0 1px 0 rgba(0,0,0,.5);color:#2a2c30;font:700 .34rem/1 system-ui,sans-serif;visibility:hidden;transition:width .2s,visibility .2s}
+#tapedeck .rack.inband .plate .back{width:.85rem;visibility:visible}
