@@ -34,3 +34,8 @@
 #tapedeck .rackcursor::before{content:"";position:absolute;left:-.55rem;top:-.55rem;width:1.1rem;height:1.1rem;border-radius:50%;background:rgba(36,87,197,.28);border:1.5px solid rgba(36,87,197,.6);opacity:0}
 #tapedeck.racked .rackcursor::before{animation:rack-press 1.55s both}
 @keyframes rack-press{0%,19%{opacity:0;transform:scale(.3)}24%,58%{opacity:1;transform:none}68%,100%{opacity:0;transform:scale(1.5)}}
+/* The screen comes on: a bright line across the middle, which opens to the whole screen in a white
+   flash and dies away in flickers */
+#tapedeck .rack .beam{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(60% 120% at 50% 50%,#fff,#ffd9cc 40%,rgba(255,120,90,.35) 75%,transparent);mix-blend-mode:screen}
+#tapedeck.racked .rack .beam{animation:rack-beam .62s linear var(--rack-crt) both}
+@keyframes rack-beam{0%{opacity:1;transform:scale(0,.012)}18%{opacity:1;transform:scale(1,.012)}36%{opacity:1;transform:none}48%{opacity:.25}56%{opacity:.7}64%{opacity:.1}74%{opacity:.35}100%{opacity:0;transform:none}}
