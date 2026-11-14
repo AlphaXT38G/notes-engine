@@ -68,3 +68,4 @@
 @media(pointer:coarse){#tapedeck .mkeys .key{height:2.75rem;font-size:.75rem}}
 /* laid out unseen, to be measured before it grows (tapemonitor.js) */
 #tapedeck.measure .monitor{display:flex;visibility:hidden;animation:none}
+#tapedeck .tube .tubemsg::after{content:"NO SIGNAL"}
