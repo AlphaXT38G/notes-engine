@@ -43,6 +43,14 @@ rackStations.addEventListener("click", e => {
   const row = e.target.closest(".station");
   if (row) showStation(+row.dataset.band);
 });
+// A tape goes into the deck; the one already in plays or pauses
+rackTracks.addEventListener("click", e => {
+  const row = e.target.closest(".track");
+  if (!row) return;
+  const i = +row.dataset.tape;
+  if (rackBand === tapeBand && i === tapeAt) TAPE_ACTIONS.play();
+  else swapTape(rackBand, i);
+});
 rackPart(".back").addEventListener("click", showStations);
 
 // What plays is lit: the lamp of its station, the level meter of its tape
