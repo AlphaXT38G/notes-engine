@@ -78,7 +78,7 @@ const videoTick = () => {
   }
   if (videoLit) putFrame(show ? p.frame : null);
 };
-// The tube comes on (taperackfx-like beam, tapemonitorfx.css), then the picture
+// The tube comes on (a bright line and a flash, tapemonitorfx.css), then the picture
 const lightTube = () => {
   videoLit = true;
   tapeMonitor.classList.add("lit");
