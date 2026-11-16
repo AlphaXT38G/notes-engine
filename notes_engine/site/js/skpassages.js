@@ -72,6 +72,7 @@ skHit({
     const d = skDragonAt(x, y);
     if (!d || d.roaring) return;
     d.roaring = true;  // its jaws stay wide (skdragon.js)
+    secretFound("sk-dragon");
     skNoise(2.4, 140, "lowpass", .6, 0, .8, 1.1);
     skTone(62, 2.2, { type: "sawtooth", gain: .07, attack: .15, glide: .6 });
     // its breath: a jet of blue fire at us, filling the view; the epic finale behind it
