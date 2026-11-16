@@ -782,6 +782,7 @@ jarBtn.setAttribute("aria-label", "Go to the calm night");
 jarBtn.innerHTML = JAR_SVG;
 jarBtn.addEventListener("click", e => {
   e.stopPropagation();
+  secretFound("x-jar");
   CODES.peace();
 });
 
