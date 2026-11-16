@@ -215,6 +215,7 @@ smHat.addEventListener("click", e => {
   e.stopPropagation();
   if (smBusy || smHatUp) return;
   smHatUp = true;
+  secretFound("sm-hat");
   smAnnoy();
   smSays(["Hey!", "My hat!", "Stop that!"][Math.min(smMad, 3) - 1]);
   smAnimate(smHat, [
