@@ -486,6 +486,7 @@ smNose.addEventListener("pointerdown", e => {
     el.classList.remove("held");
     const r = snowman.getBoundingClientRect();
     const onHim = ev.clientX > r.left && ev.clientX < r.right && ev.clientY > r.top && ev.clientY < r.bottom;
+    if (!onHim) secretFound("sm-nose");  // carried away from him, not just pulled and put back
     (onHim ? smReplant : smFish)(el, gen);
   };
   addEventListener("pointermove", move);
