@@ -18,7 +18,7 @@
 //   ytPause(id, owner)              pauses it, if owner still has it
 //   ytSound(id, owner, on)          sound on / off (it stays muted during ads anyway)
 //   ytSeek(id, owner, t)            goes to t seconds
-//   ytPlayer(id)                    the player: { ready, time, state, warm, ... }
+//   ytPlayer(id)                    the player: { ready, time, state, warm, error, ... }
 //   ytTrack(id, { muted })          the video as a screen's track, like an <audio> (see below)
 //   musicTrack(track, { muted })    a track of a list, video (id) or file of notes-musics (file)
 const YT_PLAYERS = {};
@@ -37,7 +37,7 @@ const ytPlayer = id => {
   frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&enablejsapi=1`;
   const p = YT_PLAYERS[id] = {
     id, frame, ready: false, state: -1, time: 0, movedAt: 0, muted: true, mutedAt: 0,
-    want: "play", owner: null, sound: false, warm: false, music: false, live: false, duration: 0, ad: false,
+    want: "play", owner: null, sound: false, warm: false, music: false, live: false, duration: 0, ad: false, error: 0,
   };
   // Ask the player to report its state and time: again and again until it answers, since it
   // does not listen yet when the frame has just loaded
@@ -92,6 +92,8 @@ window.addEventListener("message", e => {
     // It autoplays: a player paused before it was ready is paused now
     if (p.want === "pause" && !p.warm) ytCommand(p, "pauseVideo");
   }
+  // The video cannot play here (removed, private, not embeddable: 100, 101, 150...): it never will
+  if (msg.event === "onError") p.error = Number(msg.info) || 1;
   if (typeof info.muted === "boolean") p.muted = info.muted;
   if (typeof state === "number") p.state = state;
   // The video, as first reported (a live has no fixed length)
