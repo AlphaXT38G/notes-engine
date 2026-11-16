@@ -43,6 +43,7 @@ const skIai = () => {
 const skProvoked = () => {
   const sam = skSam();
   if (!sam) return;
+  secretFound("sk-provoked");
   skSamBusy = true;
   sam.classList.add("face");
   const [x, y] = skSamTop();
