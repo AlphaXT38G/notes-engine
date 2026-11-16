@@ -5,7 +5,7 @@
 // secret happens (ui.js declares it as a no-op first, so a failure here never breaks the others);
 // the first time, it is remembered in localStorage (on this browser only: the visitor's own count)
 // and a "New secret found" note slides in at the top right.
-// A red parchment tab hangs from the top right corner of every screen: clicked, a strip of
+// A plain red tab hangs from the top right corner of every screen: clicked, a strip of
 // parchment slides out beside it with the count, then unrolls downwards with the list of the
 // secrets found (only those: the others stay secret). The look and the moves are secrets.css.
 const secretCodes = words => words.map(w => [`code-${w}`, `Typed “${w}”`]);
@@ -63,8 +63,7 @@ const secretsEl = (tag, text, className) => {
 // The tab, and the parchment it pulls out: the strip with the count, the sheet with the list
 const secretsBox = document.createElement("div");
 secretsBox.id = "secrets";
-secretsBox.innerHTML = '<button type="button" class="stab" aria-expanded="false" aria-controls="secretsroll" title="Secrets found" aria-label="Secrets found">' +
-  '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8" cy="8" r="4.6"/><path d="M11.4 11.4l5.6 5.6M14.6 14.6l-1.8 1.8M16.4 12.8l-1.4 1.4"/></svg></button>' +
+secretsBox.innerHTML = '<button type="button" class="stab" aria-expanded="false" aria-controls="secretsroll" title="Secrets found" aria-label="Secrets found"></button>' +
   '<div class="sroll" id="secretsroll"><p class="sstrip"><span>Secrets found</span><b class="scount"></b></p>' +
   '<div class="ssheet"><div class="slist"></div></div><i class="srod"></i></div>';
 const secretsTab = secretsBox.querySelector(".stab"), secretsList = secretsBox.querySelector(".slist");
