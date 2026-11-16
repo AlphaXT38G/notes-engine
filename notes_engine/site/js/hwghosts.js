@@ -196,6 +196,7 @@ fxLayers.push({
 hwGhostHit.addEventListener("click", e => {
   if (!hwGh || hwGh.rush) return;
   e.stopPropagation();
+  secretFound("hw-ghost");
   hwGh.rush = true;
   hwGh.target = [hwGh.pos[0], hwGh.pos[1] + 40, 1.6];
   hwNoise(1.4, 600, "bandpass", .14);  // a breath
