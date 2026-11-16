@@ -754,6 +754,7 @@ treeFront.append(saxBtn);
 // in the bar then goes back to the normal screen of that moment
 saxBtn.addEventListener("click", e => {
   e.stopPropagation();
+  secretFound("x-sax");
   CODES.armstrong();
 });
 // The guitar, in the same layer: the metal show takes over for one song (metal.js, loaded after
