@@ -57,6 +57,7 @@
     "js/smmelt.js",
     "js/smxylo.js",
     "js/smball.js",
+    "js/smthrow.js",
     "js/sansscenes.js",
     "js/sansfight.js",
     "js/halloween.js",
