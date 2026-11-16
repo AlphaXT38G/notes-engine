@@ -63,6 +63,7 @@
     "js/sfattacks.js",
     "js/sfhits.js",
     "js/sfframe.js",
+    "js/sfflame.js",
     "js/halloween.js",
     "js/hwcastle.js",
     "js/hwcastlelife.js",
