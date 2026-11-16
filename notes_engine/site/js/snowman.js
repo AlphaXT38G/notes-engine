@@ -797,6 +797,7 @@ const smSnowImages = () => smImages || (smImages = {
 const smThrow = async () => {
   smBusy = true;
   const gen = smGen, stale = () => gen !== smGen, k = smK();
+  secretFound("sm-snowball");
   snowman.classList.add("hold");
   smSays("That's it!", 1400);
   // facing us: the face slides to the middle of his head, the nose points at us (seen short)
