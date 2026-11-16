@@ -84,6 +84,10 @@ q.addEventListener("input", runSearch);
 // sends no "Enter" while a word is being composed (key "Unidentified", keyCode 229). Autocorrect
 // and autocapitalize are off in the field, or the keyboard would turn kamelot into Camelot.
 // Either way it runs inside a key press, a user gesture: the screens' music can play with sound.
+// secretFound(id): a secret found (secrets.js, which makes it real; a no-op until then, so that
+// this file, and every other, keeps working if that one fails). A code typed is one; a code run by
+// a shortcut clicked in a scene (CODES.peace()...) is not: that shortcut is a secret of its own.
+let secretFound = () => {};
 const CODES = {};
 const onCode = (word, fn) => {
   CODES[word] = fn;
