@@ -48,6 +48,7 @@
     "js/xscene.js",
     "js/xlights.js",
     "js/xsky.js",
+    "js/xshortcuts.js",
     "js/xmusic.js",
     "js/stuckpointer.js",
     "js/snowman.js",
