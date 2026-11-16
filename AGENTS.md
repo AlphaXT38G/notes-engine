@@ -498,6 +498,9 @@ Example: a calm "dawn" screen from 06:00 to 07:00.
   YouTube players left (the Christmas mix, the day's cassettes in `tapes.js`) go through
   `youtube.js`: hidden `<iframe>`s driven by `postMessage` commands, never removed, muted during
   ads. Never make a YouTube `<iframe>` of your own: it would play the ads aloud.
+- **A new easter egg** is a secret: list it in `SECRETS` (`secrets.js`, with its group and name)
+  and call `secretFound("its-id")` where it happens; a new screen only needs its entry
+  (`screen-<name>`).
 - **A new music player** puts its play / pause button in `musicButtons` (`screens.js`): the
   space bar clicks it, on every screen, so the key does whatever a click on it does.
 
