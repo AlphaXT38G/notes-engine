@@ -1,5 +1,5 @@
 // ── The snowman's games (both Christmas screens) ──
-// The snowman of christmas.js (#xsnowman, in the left margin) is alive:
+// The snowman of xscene.js (#xsnowman, in the left margin) is alive:
 // - his eyes follow the mouse pointer.
 // - his hat: a click knocks it up in the air; it lands crooked and he straightens it.
 // - his carrot nose: it can be dragged off his face. Put back on him, he takes it and plants it in
@@ -25,6 +25,11 @@
 // made for the move and removed after; on the snowman only transforms and opacity change. The
 // snowball and its lumps are bitmaps drawn once on a canvas, so growing them redraws nothing.
 // Reduced motion: the same story without the flights (no rod, no flying ball, no slow pointer).
+//
+// In this file: his parts, the helpers and sounds the games share (smTone(), smNoise(), also used
+// by the fight), his eyes, his temper, and the reset when Christmas ends. The games are in
+// smhatnose.js (hat, nose, fishing), smmelt.js (tickling, melting), smxylo.js (the buttons,
+// Megalovania), smball.js and smthrow.js (the snowball).
 const smQ = sel => snowman.querySelector(sel);
 const smHat = smQ(".hat"), smNose = smQ(".nose"), smFace = smQ(".face"), smArm = smQ(".wave");
 const smSvg = smQ("svg"), smLook = smQ(".look"), smPuddle = smQ(".puddle"), smUpper = smQ(".upper"), smDent = smQ(".dent");
@@ -208,12 +213,6 @@ const smCheck = () => { if (smMad >= 3 && !smBusy) smThrow(); };
 everySecond.push(() => {
   if (smMad && !smBusy && Date.now() - smMadAt > 15000) { smMad--; smMadAt = Date.now(); smPaintMad(); }
 });
-
-
-
-
-
-
 
 // Christmas over: every game stops, he is himself again
 const smReset = () => {
