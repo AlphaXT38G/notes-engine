@@ -57,7 +57,7 @@ const skShred = () => {
   const now = performance.now();
   skPlucks = skPlucks.filter(t => now - t < 5000);
   skPlucks.push(now);
-  if (skPlucks.length >= 10) { skPlucks = []; startMetalEgg("You shredded the shamisen."); }
+  if (skPlucks.length >= 10) { skPlucks = []; secretFound("sk-shred"); startMetalEgg("You shredded the shamisen."); }
 };
 
 // ── The dragon ──
