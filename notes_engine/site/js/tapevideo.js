@@ -9,7 +9,11 @@
 // An ad breaking into the video, or a tape whose video is not ready, shows snow on the tube.
 const tapeVideoId = tape => (tape.video === false ? "" : tape.video || tape.id || "");
 const TAPE_VIDEO = {};  // the owner of an audio file's video player (youtube.js)
-let videoOn = false, videoTicker = null, videoFrame = null, videoLit = false, videoFollowed = "";
+let videoOn = false, videoTicker = null, videoFrame = null, videoLit = false, videoFollowed = "", videoAsked = 0;
+// The deck waits for a picture this long at most (a player that never answers, an ad never seen to
+// end), then gives up: the monitor stays in, the tape plays on. Warmed players are past their ad
+// (ytall.js), so a picture normally comes within seconds; an ad left can last two minutes.
+const VIDEO_WAIT_MS = 150 * 1000;
 
 // The pill, in the deck's badges (in place of AUTO REVERSE while it shows); a key of the deck (data-key)
 const videoPill = document.createElement("button");
@@ -26,7 +30,8 @@ videoBadges.insertBefore(videoPill, videoBadges.lastChild);
 // An audio file's `video` is taken as long.
 const VIDEO_LONG = 20 * 60;
 const videoLong = tape => {
-  if (!tapeVideoId(tape)) return false;
+  const id = tapeVideoId(tape);
+  if (!id || (YT_PLAYERS[id] && YT_PLAYERS[id].error)) return false;  // a video YouTube refuses: no pill
   if (!tape.id) return true;
   const p = YT_PLAYERS[tape.id];
   return !!p && (p.live || p.duration >= VIDEO_LONG);
@@ -88,6 +93,7 @@ const videoTick = () => {
   followTape();
   const p = videoPlayer(), show = !!p && videoShowable(p);
   if (!tapeDeck.classList.contains("tv")) {
+    if (!show && ((p && p.error) || performance.now() - videoAsked > VIDEO_WAIT_MS)) { closeVideo(); paintVideoPill(); return; }
     tapeDeck.classList.toggle("vloading", !show);
     if (show) showMonitor(lightTube);
     return;
@@ -108,6 +114,7 @@ const lightTube = () => {
 const openVideo = () => {
   if (!videoLong(tapeNow())) return;
   videoOn = true;
+  videoAsked = performance.now();
   if (!tapePlaying) tapePlay();
   tapeDeck.classList.add("vloading");
   clearInterval(videoTicker);
