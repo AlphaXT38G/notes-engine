@@ -104,7 +104,7 @@ const HW_STARS = (() => {
   return `<g class="stars"><g fill="#fff4e0">${dots}</g><g class="twinkle" fill="#fff">${twinkle}</g></g>`;
 })();
 
-// The giant moon: the moon of christmas.js, huge, its centre on the far ridge so only its dome
+// The giant moon: the moon of xscene.js, huge, its centre on the far ridge so only its dome
 // shows behind the hills and the castle, in a halo, the haze thickening towards the horizon. By
 // day pale, barely warmed by a veil; at night (CSS) warm and slightly orange, the tint of a full
 // moon low in the sky (#hw-bigmoon-night: sepia(.45) saturate(1.6) hue-rotate(-12deg) as one SVG
