@@ -109,6 +109,11 @@ window.addEventListener("message", e => {
   if (/ad(end|complete)/i.test(msg.event)) p.ad = false;
   if (p.ad) p.movedAt = 0;
   if (typeof info.currentTime === "number") {
+    // The player reports only what changed, and it starts playing by itself (autoplay) before it
+    // listens: its "playing" state may never come, the state left at -1 (or 3) while the time runs.
+    // A time running forward by small steps, with no ad, is a video playing.
+    const step = info.currentTime - p.time;
+    if (!p.ad && p.state !== 1 && p.state !== 2 && p.state !== 0 && step > 0 && step < 1.5) p.state = 1;
     if (!p.ad && Math.abs(info.currentTime - p.time) > 0.01 && p.state === 1) {
       p.movedAt = performance.now();
       p.music = true;
