@@ -67,6 +67,7 @@ const hwScreech = () => {
 let hwScreamAt = 0, hwScreenSince = 0;
 const hwScream = () => {
   hwScreamAt = Date.now();
+  secretFound("hw-scream");
   if (!hwZombie.src) hwZombie.src = "img/screamer.webp";
   document.body.append(hwScreamer);
   hwScreech();
