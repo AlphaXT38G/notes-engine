@@ -94,7 +94,7 @@ const hwSecretsPlace = () => {
   hwJar.style.top = `${f1(y - w * 1.25)}px`;
   hwJar.hidden = covered({ left: x - w / 2, right: x + w / 2, top: y - w * 1.4, bottom: y });
 };
-hwJar.addEventListener("click", e => { e.stopPropagation(); CODES.peace(); });
+hwJar.addEventListener("click", e => { e.stopPropagation(); secretFound("hw-jar"); CODES.peace(); });
 let hwSecretsResize = null;
 const hwSecretsOnResize = () => { clearTimeout(hwSecretsResize); hwSecretsResize = setTimeout(hwSecretsPlace, 150); };
 hwPart({
