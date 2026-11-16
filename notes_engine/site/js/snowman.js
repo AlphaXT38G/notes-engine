@@ -378,6 +378,7 @@ const smMegalovania = () => {
   track.play().catch(() => { if (smMegaTrack === track) smMegaStop(); });
   smHush(true);
   smSays("💀", 1500);
+  secretFound("megalovania");
   sfStart();  // and the fight begins (sansfight.js)
 };
 const SM_JINGLE = "11111110321";  // E E E, E E E, E G C D E
