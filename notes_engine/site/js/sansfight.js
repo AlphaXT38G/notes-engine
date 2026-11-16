@@ -23,6 +23,11 @@
 // (rising from the top of the eye, leaning back, flickering), on a small canvas over his face that
 // follows his gaze.
 // Everything here is made when the fight starts and removed when it ends.
+//
+// In this file: the fight's state, the heart's drawing, the layout, the dioramas behind it, its
+// line of speech, and the start and the end. The rest: sfattacks.js (the attacks), sfhits.js
+// (the rounds, the heart's HP and hits), sfframe.js (every frame and the drawing), sfflame.js
+// (the flame of his eye), sfrise.js (the quakes, his rise, the blue fire).
 const SF_HP = 40;
 const SF = { on: false, raf: null, phase: "", t: 0, fight: 0, hp: SF_HP, hitAt: 0, shake: 0, quakes: [], objs: [], active: [], nextAt: 0, n: 0, last: 0, keys: {}, typing: null, over: false, useMouse: true, scene: null };
 const SF_SCENE_S = 22;  // seconds of each diorama
@@ -79,11 +84,6 @@ const sfSay = (text, done) => {
     if (i >= text.length) { clearInterval(SF.typing); SF.typing = null; if (done) setTimeout(done, 700); }
   }, 30);
 };
-
-
-
-
-// His outline, in his 300 x 520 (christmas.js draws him): the balls (cx, cy, rx, ry, and their
 
 // ── Start and end
 const sfKey = e => {
