@@ -404,7 +404,7 @@ snowman.querySelectorAll(".btn").forEach(btn => {
     if (now - smTuneAt > 2500) smTune = "";
     smTune = (smTune + i).slice(-20);
     smTuneAt = now;
-    if (smTune.endsWith(SM_JINGLE)) { smTune = ""; smDance(true); }
+    if (smTune.endsWith(SM_JINGLE)) { smTune = ""; secretFound("sm-jingle"); smDance(true); }
     else if (smTune.length >= 8 && SM_JINGLE.indexOf(smTune) !== 0 && !smDancing) smDance(false);
   });
 });
