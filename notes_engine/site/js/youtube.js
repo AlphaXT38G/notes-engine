@@ -2,10 +2,11 @@
 // The music still played from YouTube: hidden <iframe>s driven by postMessage commands, as the
 // YouTube iframe API does, without loading its script. Two things the plain embed did badly:
 // - Ads. A video may open with an ad (and a long mix or a live may break for more), played at
-//   full volume where the music was expected. The embed does not say when an ad plays, but the
-//   video's own clock (the time it reports) stands still meanwhile. So a player stays muted until
-//   its video's time moves, and is muted again whenever that time stops moving while it should
-//   play: what is heard is only the music, from its first note.
+//   full volume where the music was expected. The embed does not say plainly when an ad plays: it
+//   reports the ad's time as the video's, but the ad's length with it (progressState), not the
+//   video's. So a player stays muted until its video's own time moves, and is muted again whenever
+//   an ad plays or that time stops moving while it should play: what is heard is only the music,
+//   from its first note.
 // - Ads again and again. A player was removed with its tape and a new one, with a new ad, made
 //   when the tape came back. Now a player, once made, stays in the page (paused, out of sight),
 //   so coming back to a video plays on where it was, with no ad. And ytWarm() makes the players
@@ -96,25 +97,31 @@ window.addEventListener("message", e => {
   if (msg.event === "onError") p.error = Number(msg.info) || 1;
   if (typeof info.muted === "boolean") p.muted = info.muted;
   if (typeof state === "number") p.state = state;
-  // The video, as first reported (a live has no fixed length)
+  // The video, as first reported with its own id (a live has no fixed length)
   const data = info.videoData;
   if (data && data.video_id === id && !p.duration) p.live = !!data.isLive;
-  if (typeof info.duration === "number" && info.duration > 0 && !p.duration && !(data && data.video_id !== id)) p.duration = info.duration;
-  // Other signs of an ad, in case the player ever reports the ad's own time: another video, a
-  // length that is not the video's (not for a live), or an event named after it. Meanwhile the
-  // video's time is taken as standing still.
-  if (data && data.video_id) p.ad = data.video_id !== id;
+  if (typeof info.duration === "number" && info.duration > 0 && !p.duration && data && data.video_id === id) p.duration = info.duration;
+  // An ad. The player reports the AD's time as currentTime, running like the music's, and the ad's
+  // length in progressState (16 s, 30 s... where the video lasts an hour; a live has no end, so a
+  // short length is an ad there). Other signs: another video, a length that is not the video's,
+  // an event named after it. Meanwhile the video's time is taken as standing still: no picture
+  // (snow), no sound, the time reported not the video's.
+  const ps = info.progressState;
+  if (ps && typeof ps.duration === "number" && ps.duration > 0 && p.duration) {
+    p.ad = p.live ? ps.duration < 600 : Math.abs(ps.duration - p.duration) > 2;
+  } else if (data && data.video_id) p.ad = data.video_id !== id;
   else if (typeof info.duration === "number" && p.duration && !p.live) p.ad = Math.abs(info.duration - p.duration) > 2;
   if (/ad(start|break|play)/i.test(msg.event)) p.ad = true;
   if (/ad(end|complete)/i.test(msg.event)) p.ad = false;
   if (p.ad) p.movedAt = 0;
-  if (typeof info.currentTime === "number") {
+  if (typeof info.currentTime === "number" && !p.ad) {
     // The player reports only what changed, and it starts playing by itself (autoplay) before it
     // listens: its "playing" state may never come, the state left at -1 (or 3) while the time runs.
     // A time running forward by small steps, with no ad, is a video playing.
     const step = info.currentTime - p.time;
-    if (!p.ad && p.state !== 1 && p.state !== 2 && p.state !== 0 && step > 0 && step < 1.5) p.state = 1;
-    if (!p.ad && Math.abs(info.currentTime - p.time) > 0.01 && p.state === 1) {
+    // Only small steps forward count: the end of an ad may report one last time of its own (a jump)
+    if (p.state !== 1 && p.state !== 2 && p.state !== 0 && step > 0 && step < 1.5) p.state = 1;
+    if (step > 0.01 && step < 1.5 && p.state === 1) {
       p.movedAt = performance.now();
       p.music = true;
     }
