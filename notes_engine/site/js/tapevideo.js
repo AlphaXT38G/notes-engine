@@ -126,10 +126,7 @@ const closeVideo = atOnce => {
 TAPE_ACTIONS.video = () => (videoOn ? closeVideo() : openVideo());
 TAPE_ACTIONS.eject = closeVideo;
 document.addEventListener("phase", () => closeVideo(true));
-// A tape put in while the video shows (the rack, a tape ending) goes back to the cassette when it has
-// no video or a short one; one whose length is not known yet waits on the tube
-const videoShort = tape => {
-  const p = tape.id && YT_PLAYERS[tape.id];
-  return !tapeVideoId(tape) || (!!p && p.duration > 0 && !videoLong(tape));
-};
-tapeDeck.addEventListener("tapechange", () => { if (videoOn && videoShort(tapeNow())) closeVideo(); });
+// A tape put in while the video shows (the rack, a tape ending: the next of the station, the first
+// again after the last) stays on the tube, short video or not, so that a station plays on in full
+// screen; only a tape with no video at all goes back to the cassette
+tapeDeck.addEventListener("tapechange", () => { if (videoOn && !tapeVideoId(tapeNow())) closeVideo(); });
