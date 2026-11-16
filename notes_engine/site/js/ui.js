@@ -89,6 +89,7 @@ q.addEventListener("input", runSearch);
 // a shortcut clicked in a scene (CODES.peace()...) is not: that shortcut is a secret of its own.
 let secretFound = () => {};
 const CODES = {};
+const typedCode = word => { secretFound(`code-${word}`); CODES[word](); };
 const onCode = (word, fn) => {
   CODES[word] = fn;
   let pos = 0;  // how many letters of the word have been typed so far
@@ -96,7 +97,7 @@ const onCode = (word, fn) => {
     if (e.target.matches("input")) return;  // typing in the search field is a search
     const k = e.key.toLowerCase();
     pos = k === word[pos] ? pos + 1 : (k === word[0] ? 1 : 0);
-    if (pos === word.length) { pos = 0; fn(); }
+    if (pos === word.length) { pos = 0; typedCode(word); }
   });
 };
 q.form.addEventListener("submit", e => {
