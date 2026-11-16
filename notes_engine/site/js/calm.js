@@ -57,7 +57,7 @@ const calmMoonAge = (now = Date.now()) => {
   const prev = calmNewMoon(k);
   return (now - prev) / (calmNewMoon(k + 1) - prev);
 };
-// The unlit part of the moon, drawn over the full moon of christmas.js in the same -50..50 box: a
+// The unlit part of the moon, drawn over the full moon of xscene.js in the same -50..50 box: a
 // half disc on the dark side, closed by the terminator, a half ellipse whose width follows the
 // phase (it bulges into the lit half for a crescent, into the dark half for a gibbous moon). Seen
 // from the northern hemisphere: lit on the right while waxing, on the left while waning. It is
@@ -97,7 +97,7 @@ const CALM_HILLS = (() => {
 })();
 
 // The night scene behind the page (#calm-sky, click-through): the moon in the top right corner,
-// as it is tonight (the full moon of the Christmas night, christmas.js, under its shade), the
+// as it is tonight (the full moon of the Christmas night, xscene.js, under its shade), the
 // hills, and two banks of mist drifting slowly along the bottom (CSS). Created when the calm
 // night starts, removed when it ends.
 const calmSky = document.createElement("div");
