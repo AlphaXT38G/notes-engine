@@ -36,11 +36,10 @@ let smMad = 0, smMadAt = 0, smBusy = false, smHatUp = false, smGen = 0, smSayEnd
 let smMouse = null;  // the pointer: his eyes follow it
 let smAnims = [], smExtras = [], smStuck = null, smBox = null, smLookRaf = null;
 
-const smStill = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
-const smWait = ms => new Promise(done => setTimeout(done, smStill() ? 0 : ms));
+const smWait = ms => new Promise(done => setTimeout(done, xmasStill() ? 0 : ms));
 // a move over ms milliseconds, step(t) called on each frame with t from 0 to 1
 const smTween = (ms, step) => new Promise(done => {
-  if (smStill() || ms <= 0) { step(1); return done(); }
+  if (xmasStill() || ms <= 0) { step(1); return done(); }
   const t0 = performance.now();
   const frame = now => {
     const t = Math.min(1, (now - t0) / ms);
@@ -52,7 +51,7 @@ const smTween = (ms, step) => new Promise(done => {
 const smEase = t => t < .5 ? 2 * t * t : 1 - 2 * (1 - t) * (1 - t);
 const smLerp = (a, b, t) => a + (b - a) * t;
 const smAnimate = (el, frames, opts) => {
-  if (smStill()) return null;
+  if (xmasStill()) return null;
   const a = el.animate(frames, opts);
   smAnims.push(a);
   return a;
@@ -224,7 +223,7 @@ smHat.addEventListener("click", e => {
     { transform: "translate(14px,-3px) rotate(374deg)", offset: .82 }, { transform: "translate(0,-6px) rotate(358deg)", offset: .92 },
     { transform: "rotate(360deg)" },
   ], { duration: 2400, easing: "ease-out" });
-  setTimeout(() => { smHatUp = false; smCheck(); }, smStill() ? 300 : 2400);
+  setTimeout(() => { smHatUp = false; smCheck(); }, xmasStill() ? 300 : 2400);
 });
 
 // ── His body: tickled by a click, melted by a hand held on it
@@ -566,7 +565,7 @@ const smRod = () => {
 // Dropped elsewhere: it lies there, and he fishes it back
 const smFish = async (el, gen) => {
   smPlace(el, smAt[0], smAt[1], 18);
-  if (smStill()) { await smNoseBack(el, gen, 0); smBusy = false; smSays("Got it."); return smCheck(); }
+  if (xmasStill()) { await smNoseBack(el, gen, 0); smBusy = false; smSays("Got it."); return smCheck(); }
   await smWait(500);
   if (gen !== smGen) return;
   smSays("Hmm… 🎣", 1600);
@@ -806,7 +805,7 @@ const smThrow = async () => {
   const imgs = smSnowImages();
   await smWait(600);
   if (stale()) return;
-  if (smStill()) { smFreeze(innerWidth / 2, innerHeight / 2, gen); return smThrowEnd(gen, face, nose); }
+  if (xmasStill()) { smFreeze(innerWidth / 2, innerHeight / 2, gen); return smThrowEnd(gen, face, nose); }
   // He bends down to his right and scoops snow from his own belly with his hand (it leaves a
   // hollow there), stands up again with a loose handful, and packs it in three squeezes: each one
   // makes it rounder, smaller and harder, crumbs falling off.
@@ -977,13 +976,13 @@ const smImpact = (gen, imgs) => {
 const smFreeze = (x, y, gen) => {
   const frost = smExtra("div", "xfrost"), blur = smExtra("div", "xblur");
   const melt = SM_FREEZE_MS + 2500;
-  if (smStill()) frost.style.opacity = 1;
+  if (xmasStill()) frost.style.opacity = 1;
   else {
     smAnimate(frost, [{ opacity: 0 }, { opacity: 1, offset: .03 }, { opacity: 1, offset: SM_FREEZE_MS / melt }, { opacity: 0 }], { duration: melt, fill: "forwards" });
     smAnimate(blur, [{ opacity: 1 }, { opacity: 1, offset: .2 }, { opacity: 0, offset: .55 }, { opacity: 0 }], { duration: melt, fill: "forwards" });
   }
   setTimeout(() => { if (gen === smGen) { smDrop(frost); smDrop(blur); } }, melt);
-  if (!smStill()) smSlowPointer(x, y, melt);
+  if (!xmasStill()) smSlowPointer(x, y, melt);
 };
 // The frozen pointer: an icy one, following the real one slowly (stuckpointer.js)
 const SM_ICY = '<svg viewBox="0 0 26 34" width="26" height="34"><path d="M2,2V27L8.5,21 13,31.5 17.5,29.5 13,19.5H22Z" fill="#e3f6ff" stroke="#3d8fc4" stroke-width="1.6" stroke-linejoin="round"/>' +

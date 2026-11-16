@@ -834,7 +834,7 @@ const sfKey = e => {
 };
 const sfPointer = () => { SF.useMouse = true; };
 const sfStart = () => {
-  if (SF.on || smStill()) return;
+  if (SF.on || xmasStill()) return;
   Object.assign(SF, { on: true, phase: "talk", t: 0, fight: 0, hp: SF_HP, hitAt: 0, shake: 0, quakes: [], objs: [], active: [], nextAt: 0, n: 0, keys: {}, over: false, useMouse: true });
   smUnfreeze();  // no slow, frozen pointer from a snowball during the fight
   smBusy = true;

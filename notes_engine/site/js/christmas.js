@@ -70,6 +70,8 @@ const seeded = seed => () => {
   t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
   return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
 };
+// reduced motion: the scene's moving things stay still (the jar, the tree lights, the sleigh, the snowman)
+const xmasStill = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 const f1 = n => n.toFixed(1);  // one decimal is plenty in SVG coordinates, and keeps the markup short
 // point at t (0 - 1) on a quadratic Bezier curve from (x0, y0) to (x1, y1), controlled by (cx, cy)
 const quad = (x0, y0, cx, cy, x1, y1, t) => [(1 - t) ** 2 * x0 + 2 * (1 - t) * t * cx + t * t * x1, (1 - t) ** 2 * y0 + 2 * (1 - t) * t * cy + t * t * y1];
@@ -865,7 +867,7 @@ const setTreeLights = on => {
   removeEventListener("resize", treeResize);
   treeCanvas.remove();
   if (!on) return;
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { paintGarlandGlow(null); return; }
+  if (xmasStill()) { paintGarlandGlow(null); return; }
   tree.append(treeCanvas);
   treeResize();
   addEventListener("resize", treeResize);
@@ -1008,7 +1010,7 @@ sleighEl.innerHTML = `<svg viewBox="-12 -34 452 100"><defs>` +
 let sleighIn = 20 + Math.random() * 60;  // seconds before the next flight
 let sleighFlight = null;
 const flySleigh = () => {
-  if (document.hidden || sleighEl.isConnected || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (document.hidden || sleighEl.isConnected || xmasStill()) return;
   const ltr = Math.random() < .5, w = 130 + Math.random() * 70, y = 15 + Math.random() * 25, rise = (Math.random() - .5) * 10;
   sleighEl.style.cssText = `top:${f1(y)}vh;width:${f1(w)}px`;
   sleighEl.classList.toggle("ltr", ltr);  // flying left to right: the drawing is mirrored (CSS)
@@ -1048,7 +1050,6 @@ const placeJar = (x, y) => {
   jarBtn.style.cssText = `left:${f1(x - JAR.w * k / 2)}px;top:${f1(y)}px;width:${f1(JAR.w * k)}px;height:${f1(JAR.h * k)}px`;
   Object.assign(jarAt, { x, y, bottom: y + JAR.h * k });
 };
-const jarStill = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 const jarFrame = now => {
   jarRaf = null;
   const dt = Math.min(.05, (now - (jarLast || now)) / 1000);
@@ -1065,7 +1066,7 @@ const jarFrame = now => {
   if (scrollY < jarAt.bottom) jarNap = setTimeout(wakeJar, Math.max(0, jarGust - now));
 };
 const wakeJar = () => {
-  if (jarRaf || jarStill() || !jarBtn.isConnected) return;
+  if (jarRaf || xmasStill() || !jarBtn.isConnected) return;
   clearTimeout(jarNap);
   jarLast = 0;
   jarRaf = requestAnimationFrame(jarFrame);
@@ -1091,7 +1092,7 @@ const setJarSwing = on => {
   jarRaf = null;
   jarAngle = jarSpin = 0;
   jarBtn.style.transform = "";
-  if (!on || jarStill()) return;
+  if (!on || xmasStill()) return;
   jarScroll = scrollY;
   addEventListener("pointermove", pushJar, { passive: true });
   addEventListener("scroll", scrollJar, { passive: true });
