@@ -61,6 +61,7 @@
     "js/sansscenes.js",
     "js/sansfight.js",
     "js/sfattacks.js",
+    "js/sfhits.js",
     "js/halloween.js",
     "js/hwcastle.js",
     "js/hwcastlelife.js",
