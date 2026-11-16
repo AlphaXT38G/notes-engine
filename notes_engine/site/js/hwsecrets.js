@@ -85,7 +85,7 @@ const hwSecretsPlace = () => {
   });
   hwBack.querySelectorAll(".statue").forEach(el => hit(el.querySelector("image"), "A gargoyle", () => {
     el.classList.toggle("lit");
-    if (el.classList.contains("lit")) hwNoise(.7, 160, "lowpass", .3);
+    if (el.classList.contains("lit")) { hwNoise(.7, 160, "lowpass", .3); secretFound("hw-gargoyle"); }
   }));
   // the jar, half buried on the near hill, a little right of the dead tree (where the hill is,
   // the planes not slid: hwmotion.js slides it with the near plane)
