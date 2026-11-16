@@ -297,6 +297,7 @@ const smMeltFrame = now => {
 };
 const smMeltedFlat = async () => {  // a puddle, then he builds himself up again, cross
   const gen = smGen;
+  secretFound("sm-melt");
   smSays("…", 1200);
   await smWait(1600);
   if (gen !== smGen) return;
