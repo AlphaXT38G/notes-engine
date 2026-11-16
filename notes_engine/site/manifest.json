@@ -25,10 +25,12 @@
     "css/tapemonitor.css",
     "css/tapemonitorfx.css",
     "css/screens.css",
+    "css/secrets.css",
     "css/konami.css"
   ],
   "js": [
     "js/ui.js",
+    "js/secrets.js",
     "js/search.js",
     "js/flames.js",
     "js/surprise.js",

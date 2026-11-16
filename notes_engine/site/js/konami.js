@@ -10,7 +10,7 @@ document.addEventListener("keydown", e => {
   // Advance on the expected key; on a wrong key restart, unless it is itself a first "up"
   const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
   konamiPos = k === KONAMI[konamiPos] ? konamiPos + 1 : (k === KONAMI[0] ? 1 : 0);
-  if (konamiPos === KONAMI.length) { konamiPos = 0; rift(); }
+  if (konamiPos === KONAMI.length) { konamiPos = 0; secretFound("konami"); rift(); }
 });
 
 const wait = ms => new Promise(r => setTimeout(r, ms));  // pause inside an async function

@@ -84,7 +84,12 @@ q.addEventListener("input", runSearch);
 // sends no "Enter" while a word is being composed (key "Unidentified", keyCode 229). Autocorrect
 // and autocapitalize are off in the field, or the keyboard would turn kamelot into Camelot.
 // Either way it runs inside a key press, a user gesture: the screens' music can play with sound.
+// secretFound(id): a secret found (secrets.js, which makes it real; a no-op until then, so that
+// this file, and every other, keeps working if that one fails). A code typed is one; a code run by
+// a shortcut clicked in a scene (CODES.peace()...) is not: that shortcut is a secret of its own.
+let secretFound = () => {};
 const CODES = {};
+const typedCode = word => { secretFound(`code-${word}`); CODES[word](); };
 const onCode = (word, fn) => {
   CODES[word] = fn;
   let pos = 0;  // how many letters of the word have been typed so far
@@ -92,15 +97,15 @@ const onCode = (word, fn) => {
     if (e.target.matches("input")) return;  // typing in the search field is a search
     const k = e.key.toLowerCase();
     pos = k === word[pos] ? pos + 1 : (k === word[0] ? 1 : 0);
-    if (pos === word.length) { pos = 0; fn(); }
+    if (pos === word.length) { pos = 0; typedCode(word); }
   });
 };
 q.form.addEventListener("submit", e => {
   e.preventDefault();  // never reloads the page: the search is already live
-  const fn = CODES[q.value.trim().toLowerCase()];
-  if (!fn) return;
+  const word = q.value.trim().toLowerCase();
+  if (!Object.prototype.hasOwnProperty.call(CODES, word)) return;  // not "constructor"...
   q.value = "";
   q.dispatchEvent(new Event("input"));
   q.blur();
-  fn();
+  typedCode(word);
 });

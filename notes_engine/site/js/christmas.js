@@ -754,6 +754,7 @@ treeFront.append(saxBtn);
 // in the bar then goes back to the normal screen of that moment
 saxBtn.addEventListener("click", e => {
   e.stopPropagation();
+  secretFound("x-sax");
   CODES.armstrong();
 });
 // The guitar, in the same layer: the metal show takes over for one song (metal.js, loaded after
@@ -768,6 +769,7 @@ guitarBtn.style.cssText = `left:${GUITAR.x / TREE_W * 100}%;top:${GUITAR.y / TRE
 treeFront.append(guitarBtn);
 guitarBtn.addEventListener("click", e => {
   e.stopPropagation();
+  secretFound("x-guitar");
   startMetalEgg("Santa brought a guitar.");
 });
 // The firefly jar, hanging under the garland (placed by placeJar, below): it does what the peace
@@ -780,6 +782,7 @@ jarBtn.setAttribute("aria-label", "Go to the calm night");
 jarBtn.innerHTML = JAR_SVG;
 jarBtn.addEventListener("click", e => {
   e.stopPropagation();
+  secretFound("x-jar");
   CODES.peace();
 });
 

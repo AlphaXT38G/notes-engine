@@ -129,6 +129,7 @@ tapeMonitor.addEventListener("animationend", e => {
 // The CRT key: an old tube's look on the video, or not; remembered
 const setCrt = on => {
   tapeDeck.classList.toggle("crt", on);
+  if (on) secretFound("crt");
   try { localStorage.setItem("tape-crt", on ? "1" : "0"); } catch (e) {}
 };
 try { tapeDeck.classList.toggle("crt", localStorage.getItem("tape-crt") === "1"); } catch (e) {}
@@ -156,13 +157,38 @@ const setFull = on => {
   else placeOnTube();
 }));
 TAPE_ACTIONS.full = () => setFull(!tapeDeck.classList.contains("full"));
+// The F key does the same while the monitor is out (not while typing, nor with a modifier: Ctrl+F
+// still searches the page)
+document.addEventListener("keydown", e => {
+  if ((e.key !== "f" && e.key !== "F") || e.repeat || e.ctrlKey || e.altKey || e.metaKey ||
+    !tapeDeck.classList.contains("tv") || e.target.matches("input, textarea, select, [contenteditable]")) return;
+  e.preventDefault();
+  TAPE_ACTIONS.full();
+  restMonitor(false);
+});
 // The plate and the keys go away while the pointer rests or is elsewhere, and come back as it moves
-// over the picture, a finger touches it, or the keyboard comes in (.rest; the focus keeps them)
-let monitorRest = null;
+// over the picture, a finger touches it, or the keyboard comes in (.rest; the focus keeps them). The
+// pointer goes with them (cursor: none, tapemonitor.css). Once they are gone, a hand barely moving
+// the mouse (less than MONITOR_STIR px from where it was) does not bring them back.
+const MONITOR_STIR = 12;
+let monitorRest = null, monitorStirX = 0, monitorStirY = 0;
 const restMonitor = rest => {
   clearTimeout(monitorRest);
   tapeMonitor.classList.toggle("rest", rest);
   if (!rest) monitorRest = setTimeout(() => tapeMonitor.classList.add("rest"), 2500);
 };
-["mousemove", "touchstart", "focusin"].forEach(name => tapeMonitor.addEventListener(name, () => restMonitor(false)));
+tapeMonitor.addEventListener("mousemove", e => {
+  const rested = tapeMonitor.classList.contains("rest");
+  if (rested && Math.hypot(e.clientX - monitorStirX, e.clientY - monitorStirY) < MONITOR_STIR) return;
+  monitorStirX = e.clientX;
+  monitorStirY = e.clientY;
+  restMonitor(false);
+});
+["touchstart", "focusin"].forEach(name => tapeMonitor.addEventListener(name, () => restMonitor(false)));
 tapeMonitor.addEventListener("mouseleave", () => restMonitor(true));
+// A key clicked with the mouse lets go of the focus, or it would keep the keys (and the pointer) on
+// the picture for good; a key pressed from the keyboard keeps it (e.detail: 0)
+tapeMonitor.addEventListener("click", e => {
+  const key = e.target.closest("button");
+  if (key && e.detail > 0) key.blur();
+});

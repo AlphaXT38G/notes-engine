@@ -111,6 +111,8 @@ const tapeStart = () => {
   const tape = tapeNow();
   if (tape.id) {
     const player = ytPlay(tape.id, TAPE_YT, true);
+    // played to its end before (the station looping back to it, or a station of one tape): from the start
+    if (player.ready && player.state === 0) ytSeek(tape.id, TAPE_YT, 0);
     tapeSrc = player.frame;
     tapeReady = true;  // commands before the player is ready wait in youtube.js
     tapeTime = player.time;

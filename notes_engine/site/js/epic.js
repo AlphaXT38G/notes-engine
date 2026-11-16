@@ -196,6 +196,7 @@ moreBtn.addEventListener("click", e => {
   e.stopPropagation();
   if (epicQueued) return;
   epicQueued = true;
+  secretFound("more-epic");
   preloadEpic();
   moreBtn.classList.add("queued");
   paintMore();

@@ -77,11 +77,15 @@ const hwSecretsPlace = () => {
   hwBack.querySelectorAll(".portal").forEach(el => {
     const name = el.dataset.portal;
     hit(el.querySelector(".win"), name === "knight" ? "A knight in the window" : "Someone playing the saxophone",
-      () => el.classList.contains("open") ? CODES[HW_PORTAL_TO[name]]() : hwPortalOpen(name, 14));
+      () => {
+        if (!el.classList.contains("open")) return hwPortalOpen(name, 14);
+        secretFound(`hw-${name}`);
+        CODES[HW_PORTAL_TO[name]]();
+      });
   });
   hwBack.querySelectorAll(".statue").forEach(el => hit(el.querySelector("image"), "A gargoyle", () => {
     el.classList.toggle("lit");
-    if (el.classList.contains("lit")) hwNoise(.7, 160, "lowpass", .3);
+    if (el.classList.contains("lit")) { hwNoise(.7, 160, "lowpass", .3); secretFound("hw-gargoyle"); }
   }));
   // the jar, half buried on the near hill, a little right of the dead tree (where the hill is,
   // the planes not slid: hwmotion.js slides it with the near plane)
@@ -90,7 +94,7 @@ const hwSecretsPlace = () => {
   hwJar.style.top = `${f1(y - w * 1.25)}px`;
   hwJar.hidden = covered({ left: x - w / 2, right: x + w / 2, top: y - w * 1.4, bottom: y });
 };
-hwJar.addEventListener("click", e => { e.stopPropagation(); CODES.peace(); });
+hwJar.addEventListener("click", e => { e.stopPropagation(); secretFound("hw-jar"); CODES.peace(); });
 let hwSecretsResize = null;
 const hwSecretsOnResize = () => { clearTimeout(hwSecretsResize); hwSecretsResize = setTimeout(hwSecretsPlace, 150); };
 hwPart({

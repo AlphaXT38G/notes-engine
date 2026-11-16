@@ -60,6 +60,7 @@ const hwHowl = () => {
   const ac = hwAudioCtx();
   if (!ac || !screenGesture()) return;
   hwHowlLoad(ac).then(buf => {
+    secretFound("hw-howl");  // heard: only with sound (a gesture came before)
     hwHowlVoice(ac, buf, 0, 1, .9, .45);
     hwHowlVoice(ac, buf, 2.2, .9, .12, 1.2);  // the answer, far away
   }, () => {});

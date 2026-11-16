@@ -95,6 +95,7 @@ hwPumpkins.forEach(b => b.addEventListener("click", e => {
 // All lit: the castle's windows blaze and its bats burst out, the subtitle says so for a moment
 const hwCastleAwakes = () => {
   hwPumpkinsDone = true;
+  secretFound("hw-pumpkins");
   hwBack.classList.add("awake");
   setTimeout(() => hwBack.classList.remove("awake"), 9000);
   hwBatBurst(innerWidth * .8, innerHeight * .45, 30);

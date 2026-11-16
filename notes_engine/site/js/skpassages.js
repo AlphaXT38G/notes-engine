@@ -40,6 +40,7 @@ skHit({
   },
   click() {
     skSakeBusy = true;
+    secretFound("sk-sake");
     skSake.classList.add("pour");
     skNoise(.9, 900, "bandpass", .08, .4, 2, 1);  // the sake running
     skTone(2093, .5, { gain: .05, delay: 1.1 });   // the cup's clink
@@ -56,7 +57,7 @@ const skShred = () => {
   const now = performance.now();
   skPlucks = skPlucks.filter(t => now - t < 5000);
   skPlucks.push(now);
-  if (skPlucks.length >= 10) { skPlucks = []; startMetalEgg("You shredded the shamisen."); }
+  if (skPlucks.length >= 10) { skPlucks = []; secretFound("sk-shred"); startMetalEgg("You shredded the shamisen."); }
 };
 
 // ── The dragon ──
@@ -71,6 +72,7 @@ skHit({
     const d = skDragonAt(x, y);
     if (!d || d.roaring) return;
     d.roaring = true;  // its jaws stay wide (skdragon.js)
+    secretFound("sk-dragon");
     skNoise(2.4, 140, "lowpass", .6, 0, .8, 1.1);
     skTone(62, 2.2, { type: "sawtooth", gain: .07, attack: .15, glide: .6 });
     // its breath: a jet of blue fire at us, filling the view; the epic finale behind it

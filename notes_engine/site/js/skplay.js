@@ -60,5 +60,5 @@ skHit({
     const r = disc.getBoundingClientRect();
     return Math.hypot(x - (r.left + r.right) / 2, y - (r.top + r.bottom) / 2) < r.width / 2;
   },
-  click() { CODES.peace(); },
+  click() { secretFound("sk-moon"); CODES.peace(); },
 });

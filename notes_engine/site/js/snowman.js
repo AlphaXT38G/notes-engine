@@ -215,6 +215,7 @@ smHat.addEventListener("click", e => {
   e.stopPropagation();
   if (smBusy || smHatUp) return;
   smHatUp = true;
+  secretFound("sm-hat");
   smAnnoy();
   smSays(["Hey!", "My hat!", "Stop that!"][Math.min(smMad, 3) - 1]);
   smAnimate(smHat, [
@@ -246,6 +247,7 @@ const smTickle = () => {
   smAnimate(smSvg, [{ transform: "none" }, { transform: "scale(1.06,.93)" }, { transform: "scale(.96,1.05)" }, { transform: "scale(1.02,.98)" }, { transform: "none" }], { duration: 500, easing: "ease-out" });
   if (smTickles.length >= 4) {  // a fit of laughter
     smTickles = [];
+    secretFound("sm-laugh");
     snowman.classList.add("laughing");
     smSays("HA HA HA! Stop!", 1600);
     smAnimate(smSvg, [{ transform: "none" }, { transform: "translateY(-10px) rotate(-3deg)" }, { transform: "none" }, { transform: "translateY(-8px) rotate(3deg)" }, { transform: "none" }, { transform: "translateY(-6px)" }, { transform: "none" }], { duration: 1200, delay: 450 });
@@ -295,6 +297,7 @@ const smMeltFrame = now => {
 };
 const smMeltedFlat = async () => {  // a puddle, then he builds himself up again, cross
   const gen = smGen;
+  secretFound("sm-melt");
   smSays("…", 1200);
   await smWait(1600);
   if (gen !== smGen) return;
@@ -375,6 +378,7 @@ const smMegalovania = () => {
   track.play().catch(() => { if (smMegaTrack === track) smMegaStop(); });
   smHush(true);
   smSays("💀", 1500);
+  secretFound("megalovania");
   sfStart();  // and the fight begins (sansfight.js)
 };
 const SM_JINGLE = "11111110321";  // E E E, E E E, E G C D E
@@ -400,7 +404,7 @@ snowman.querySelectorAll(".btn").forEach(btn => {
     if (now - smTuneAt > 2500) smTune = "";
     smTune = (smTune + i).slice(-20);
     smTuneAt = now;
-    if (smTune.endsWith(SM_JINGLE)) { smTune = ""; smDance(true); }
+    if (smTune.endsWith(SM_JINGLE)) { smTune = ""; secretFound("sm-jingle"); smDance(true); }
     else if (smTune.length >= 8 && SM_JINGLE.indexOf(smTune) !== 0 && !smDancing) smDance(false);
   });
 });
@@ -482,6 +486,7 @@ smNose.addEventListener("pointerdown", e => {
     el.classList.remove("held");
     const r = snowman.getBoundingClientRect();
     const onHim = ev.clientX > r.left && ev.clientX < r.right && ev.clientY > r.top && ev.clientY < r.bottom;
+    if (!onHim) secretFound("sm-nose");  // carried away from him, not just pulled and put back
     (onHim ? smReplant : smFish)(el, gen);
   };
   addEventListener("pointermove", move);
@@ -792,6 +797,7 @@ const smSnowImages = () => smImages || (smImages = {
 const smThrow = async () => {
   smBusy = true;
   const gen = smGen, stale = () => gen !== smGen, k = smK();
+  secretFound("sm-snowball");
   snowman.classList.add("hold");
   smSays("That's it!", 1400);
   // facing us: the face slides to the middle of his head, the nose points at us (seen short)
