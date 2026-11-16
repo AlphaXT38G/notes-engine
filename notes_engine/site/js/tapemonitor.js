@@ -175,3 +175,9 @@ const restMonitor = rest => {
 };
 ["mousemove", "touchstart", "focusin"].forEach(name => tapeMonitor.addEventListener(name, () => restMonitor(false)));
 tapeMonitor.addEventListener("mouseleave", () => restMonitor(true));
+// A key clicked with the mouse lets go of the focus, or it would keep the keys (and the pointer) on
+// the picture for good; a key pressed from the keyboard keeps it (e.detail: 0)
+tapeMonitor.addEventListener("click", e => {
+  const key = e.target.closest("button");
+  if (key && e.detail > 0) key.blur();
+});
