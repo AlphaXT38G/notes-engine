@@ -102,10 +102,10 @@ const onCode = (word, fn) => {
 };
 q.form.addEventListener("submit", e => {
   e.preventDefault();  // never reloads the page: the search is already live
-  const fn = CODES[q.value.trim().toLowerCase()];
-  if (!fn) return;
+  const word = q.value.trim().toLowerCase();
+  if (!Object.prototype.hasOwnProperty.call(CODES, word)) return;  // not "constructor"...
   q.value = "";
   q.dispatchEvent(new Event("input"));
   q.blur();
-  fn();
+  typedCode(word);
 });
