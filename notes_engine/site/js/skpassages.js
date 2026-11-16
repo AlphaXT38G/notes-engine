@@ -40,6 +40,7 @@ skHit({
   },
   click() {
     skSakeBusy = true;
+    secretFound("sk-sake");
     skSake.classList.add("pour");
     skNoise(.9, 900, "bandpass", .08, .4, 2, 1);  // the sake running
     skTone(2093, .5, { gain: .05, delay: 1.1 });   // the cup's clink
