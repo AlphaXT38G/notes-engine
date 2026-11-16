@@ -156,6 +156,15 @@ const setFull = on => {
   else placeOnTube();
 }));
 TAPE_ACTIONS.full = () => setFull(!tapeDeck.classList.contains("full"));
+// The F key does the same while the monitor is out (not while typing, nor with a modifier: Ctrl+F
+// still searches the page)
+document.addEventListener("keydown", e => {
+  if ((e.key !== "f" && e.key !== "F") || e.repeat || e.ctrlKey || e.altKey || e.metaKey ||
+    !tapeDeck.classList.contains("tv") || e.target.matches("input, textarea, select, [contenteditable]")) return;
+  e.preventDefault();
+  TAPE_ACTIONS.full();
+  restMonitor(false);
+});
 // The plate and the keys go away while the pointer rests or is elsewhere, and come back as it moves
 // over the picture, a finger touches it, or the keyboard comes in (.rest; the focus keeps them)
 let monitorRest = null;
