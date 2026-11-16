@@ -129,6 +129,7 @@ tapeMonitor.addEventListener("animationend", e => {
 // The CRT key: an old tube's look on the video, or not; remembered
 const setCrt = on => {
   tapeDeck.classList.toggle("crt", on);
+  if (on) secretFound("crt");
   try { localStorage.setItem("tape-crt", on ? "1" : "0"); } catch (e) {}
 };
 try { tapeDeck.classList.toggle("crt", localStorage.getItem("tape-crt") === "1"); } catch (e) {}
