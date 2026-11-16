@@ -46,6 +46,7 @@
     "js/xgarland.js",
     "js/xtree.js",
     "js/xscene.js",
+    "js/xlights.js",
     "js/xmusic.js",
     "js/stuckpointer.js",
     "js/snowman.js",
