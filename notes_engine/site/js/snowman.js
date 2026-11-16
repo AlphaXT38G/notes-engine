@@ -247,6 +247,7 @@ const smTickle = () => {
   smAnimate(smSvg, [{ transform: "none" }, { transform: "scale(1.06,.93)" }, { transform: "scale(.96,1.05)" }, { transform: "scale(1.02,.98)" }, { transform: "none" }], { duration: 500, easing: "ease-out" });
   if (smTickles.length >= 4) {  // a fit of laughter
     smTickles = [];
+    secretFound("sm-laugh");
     snowman.classList.add("laughing");
     smSays("HA HA HA! Stop!", 1600);
     smAnimate(smSvg, [{ transform: "none" }, { transform: "translateY(-10px) rotate(-3deg)" }, { transform: "none" }, { transform: "translateY(-8px) rotate(3deg)" }, { transform: "none" }, { transform: "translateY(-6px)" }, { transform: "none" }], { duration: 1200, delay: 450 });
