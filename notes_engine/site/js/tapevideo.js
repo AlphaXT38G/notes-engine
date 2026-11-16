@@ -97,6 +97,7 @@ const videoTick = () => {
 // The tube comes on (a bright line and a flash, tapemonitorfx.css), then the picture
 const lightTube = () => {
   videoLit = true;
+  secretFound("video");
   tapeMonitor.classList.add("lit");
   restMonitor(false);  // the plate and the keys show a moment
   videoTick();
