@@ -86,7 +86,6 @@ const XMAS_LIGHTS = [["#a3192d", "#ff5a6e", "255,70,90"], ["#b07d12", "#ffd86a",
   // Star on the top
 
 
-let treeBuilt = false;
 
 
 
@@ -94,31 +93,3 @@ let treeBuilt = false;
 
 // Turning the screen on and off: the garland and the scene come and go with the class (the music:
 // xmusic.js)
-let garlandResize = null;
-const onGarlandResize = () => {
-  clearTimeout(garlandResize);
-  garlandResize = setTimeout(() => {
-    if (garland.w === document.documentElement.clientWidth) return;
-    buildGarland();
-    // the night lights loop repaints the halos; without it (reduced motion), paint them still
-    if (!treeRaf && document.body.dataset.phase === "christmas-night") paintGarlandGlow(null);
-  }, 200);
-};
-const setChristmas = on => {
-  removeEventListener("resize", onGarlandResize);
-  if (!on) { [garland, scene, treeFront, sleighEl, jarBtn].forEach(el => el.remove()); setTreeLights(false); setJarSwing(false); return; }
-  if (!treeBuilt) {
-    tree.innerHTML = buildTree();
-    scene.innerHTML = MOUNTAINS;
-    scene.append(moon, tree, snowman);
-    treeBuilt = true;
-  }
-  buildGarland();
-  addEventListener("resize", onGarlandResize);
-  document.body.prepend(garland, scene);
-  document.body.append(treeFront);
-  garland.after(jarBtn);  // over the garland, in the page
-  setJarSwing(true);
-};
-setChristmas(document.body.classList.contains("christmas"));
-document.addEventListener("christmas", e => setChristmas(e.detail));
