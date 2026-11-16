@@ -77,7 +77,11 @@ const hwSecretsPlace = () => {
   hwBack.querySelectorAll(".portal").forEach(el => {
     const name = el.dataset.portal;
     hit(el.querySelector(".win"), name === "knight" ? "A knight in the window" : "Someone playing the saxophone",
-      () => el.classList.contains("open") ? CODES[HW_PORTAL_TO[name]]() : hwPortalOpen(name, 14));
+      () => {
+        if (!el.classList.contains("open")) return hwPortalOpen(name, 14);
+        secretFound(`hw-${name}`);
+        CODES[HW_PORTAL_TO[name]]();
+      });
   });
   hwBack.querySelectorAll(".statue").forEach(el => hit(el.querySelector("image"), "A gargoyle", () => {
     el.classList.toggle("lit");
