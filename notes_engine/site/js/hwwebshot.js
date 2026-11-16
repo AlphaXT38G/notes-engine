@@ -95,6 +95,7 @@ const HW_WEB_CURSOR = '<svg viewBox="0 0 30 36" width="30" height="36"><path d="
   '<path d="M0,6 24,14M1,18 20,8M3,25 18,24M6,31 15,18M10,4 12,30" stroke="#fff" stroke-width=".7" opacity=".85"/><circle cx="12" cy="13" r="1.2" fill="#fff"/></svg>';
 let hwShotFly = null, hwShotWebs = [], hwShotStuck = null, hwShotTimers = [];
 const hwWebShot = (x, y) => {
+  secretFound("hw-web");
   hwWebShotEnd();
   hwWebsGone();  // the webs a former spit left (hwwebleft.js): this one leaves its own
   const W = innerWidth, H = innerHeight, size = Math.min(1400, Math.max(W, H) * 1.1);
