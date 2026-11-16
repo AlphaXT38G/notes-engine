@@ -358,7 +358,7 @@ The search field finds subjects and documents by name (`ui.js`) and by what the 
 ### CSS files, in cascade order
 
 `base.css` (layout, cards, search, previews) → `flames.css` → `surprise.css` → `jazz.css` → `closing.css` →
-`metal.css` → `epic.css` → `bard.css` → `christmas.css` → `snowman.css` → `sansfight.css` → `halloween.css` → `hwlife.css` → `hwcreatures.css` → `hwmusic.css` → `sakura.css` → `calm.css` → `tapes.css` → `taperack.css` → `taperows.css` → `taperackfx.css` (the station rack: its chassis and screen, its rows, its opening and closing) → `tapevideo.css` → `tapemonitor.css` → `tapemonitorfx.css` (the VIDEO pill and the waiting deck, the video monitor, its growing and its tube coming on) → `screens.css` (effects canvas, view transitions) → `konami.css`.
+`metal.css` → `epic.css` → `bard.css` → `christmas.css` → `snowman.css` → `sansfight.css` → `halloween.css` → `hwlife.css` → `hwcreatures.css` → `hwmusic.css` → `sakura.css` → `calm.css` → `tapes.css` → `taperack.css` → `taperows.css` → `taperackfx.css` (the station rack: its chassis and screen, its rows, its opening and closing) → `tapevideo.css` → `tapemonitor.css` → `tapemonitorfx.css` (the VIDEO pill and the waiting deck, the video monitor, its growing and its tube coming on) → `screens.css` (effects canvas, view transitions) → `secrets.css` (the secrets' tab, parchment and note) → `konami.css`.
 The Konami file is last on purpose: during its animation `body.rift .wrap` must win over every
 theme's `.wrap` rule.
 
