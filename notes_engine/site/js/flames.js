@@ -45,6 +45,7 @@ fireBtn.addEventListener("click", () => {
   if (fireClicks.length === 10) preloadRiff();  // halfway: get the song ready (see metal.js)
   if (fireClicks.length >= 20) {
     fireClicks.length = 0;
+    secretFound("fire-clicks");
     startMetalEgg();
   }
 });
