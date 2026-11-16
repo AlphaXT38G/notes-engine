@@ -134,6 +134,7 @@ let skStorm = null;
 const SK_STORM_BLOW = 4.2;  // seconds of petals blown at us
 const skPetalStorm = () => {
   if (skStorm || skStill()) return;
+  secretFound("sk-storm");
   const { W } = skLay, tree = skCrownImg(), r = tree && tree.getBoundingClientRect();
   skStorm = { t: 0, from: r ? Math.min(W - 60, r.left + r.width * .75) : W * .8, flying: [], stuck: [], rate: Math.min(1500, W * .8) };
   skGust(1.5);
