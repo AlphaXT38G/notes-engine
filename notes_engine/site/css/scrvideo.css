@@ -36,3 +36,9 @@
 /* the layer of the transformation's effects, laid over the corner by scrvideo.js (.in, .out) */
 .svfx{position:fixed;z-index:44;pointer-events:none}
 .svfx>*{position:absolute}
+
+/* The cabinet: over the page and the players, under the picture; laid out unseen while measured
+   (.svpre), coming (.svrise) and going (.svdrop) with its look's animations */
+.svback{position:fixed;z-index:41;width:var(--sv-w,15rem);transform-origin:0 100%;pointer-events:none}
+.svback.svpre{visibility:hidden}
+.svback .svtube{position:relative;padding-top:56.25%;background:#050505}
