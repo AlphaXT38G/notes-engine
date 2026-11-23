@@ -256,3 +256,8 @@
 .svfront.stv .svkey:active{transform:scale(.9)}
 .svfront.stv.crt .svkey.crt{filter:drop-shadow(0 0 4px #ff8ab0) saturate(2.2) brightness(.95)}
 .svfront.stv .svmsg{background:#2a1c1e;color:#ffd2dc;text-shadow:0 0 4px #ff9ab8}
+/* turned on: the two paper doors light up, then slide away on the picture */
+.svfront.stv .svturn{opacity:1;visibility:hidden}
+.svfront.stv.lit .svturn{animation:stv-show 1.9s both}
+@keyframes stv-show{0%,99%{visibility:visible}100%{visibility:hidden}}
+.svfront.stv .svturn b{position:absolute;top:0;bottom:0;width:50%;background:linear-gradient(90deg,#3a2418 0 2px,transparent 2px) 0 0/25% 100%,linear-gradient(#3a2418 0 2px,transparent 2px) 0 0/100% 33.4%,linear-gradient(#fbf3e4,#f0e2c8);box-shadow:inset 0 0 0 2px #3a2418}
