@@ -11,3 +11,7 @@
 .svtrig{position:fixed;z-index:41;display:block;width:1.35rem;height:1.35rem;margin:0;padding:0;border:0;background:none;cursor:pointer;transform:translate(-50%,-50%);animation:sv-in .55s cubic-bezier(.3,1.6,.5,1) both}
 @keyframes sv-in{from{opacity:0;transform:translate(-50%,-50%) scale(.2)}}
 .svtrig>i{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-style:normal;transition:transform .25s cubic-bezier(.3,1.6,.5,1),filter .25s}
+.svtrig:hover>i,.svtrig:focus-visible>i{transform:scale(1.12);filter:brightness(1.1)}
+.svtrig:focus-visible{outline:none}
+.svtrig .svglyph{width:62%;height:62%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.svtrig .svglyph .play{fill:currentColor;stroke:none}
