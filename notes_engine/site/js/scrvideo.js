@@ -283,3 +283,22 @@ const svEffects = (sv, way) => {
   sv.fx.classList.add(way);
   svLater(sv, SV_OUT.end + 300, () => sv.fx.remove());
 };
+// The player turns into the television, then its tube comes on (.lit: the look's turn-on effect,
+// over the picture laid under it at once)
+const svShow = sv => {
+  svStop(sv);
+  sv.out = true;
+  svLoading(sv, false);
+  sv.back.classList.remove("svrise", "svdrop");
+  sv.back.classList.add("svpre");  // laid out, unseen, to be measured
+  sv.front.classList.remove("lit", "showing", "waiting");
+  sv.front.classList.toggle("crt", svCrtOn());
+  sv.front.style.visibility = "hidden";
+  document.body.append(sv.back, sv.front);
+  svFit(sv);
+  if (svStill()) { svAway(sv, true); sv.back.classList.remove("svpre"); svGrown(sv); return; }
+  svEffects(sv, "in");
+  svAway(sv, true);
+  svLater(sv, SV_IN.swap, () => { sv.back.classList.remove("svpre"); sv.back.classList.add("svrise"); });
+  svLater(sv, SV_IN.grown, () => svGrown(sv));
+};
