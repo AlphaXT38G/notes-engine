@@ -64,3 +64,10 @@
 .svfront.xtv .svplate b{color:#c8102e;font-style:italic}
 .svfront.xtv .svctr{padding:1.5px 3px;border-radius:1px;background:#2a0710;color:#ffd25a;text-shadow:0 0 3px #e3a923}
 .svfront.xtv .svkeys{bottom:1.15rem;gap:2px;height:9px;padding:0 9px;align-items:flex-start;border-radius:999px;background:radial-gradient(circle at 30% 45%,#3a9a52 0 2px,transparent 2.5px) 0 0/5px 5px,radial-gradient(circle at 70% 60%,#1f6a35 0 2.2px,transparent 2.7px) 2px 1px/6px 6px,linear-gradient(#1f6a35,#0f3a1d);box-shadow:0 2px 4px rgba(0,0,0,.5)}
+.svfront.xtv .svkeys::before{content:"";position:absolute;left:5px;right:5px;top:2px;height:5px;background:radial-gradient(circle,#ffe27a 0 1.1px,transparent 1.7px) 0 0/10px 5px repeat-x,radial-gradient(circle,#ff6a7a 0 1.1px,transparent 1.7px) 5px 0/10px 5px repeat-x;animation:xtv-lights 1.4s steps(2) infinite}
+@keyframes xtv-lights{50%{opacity:.45}}
+.svfront.xtv .svgap{width:6px}
+.svfront.xtv .svkey{--b1:#ff5a6e;--b2:#c8102e;--b3:#5a0712;width:.95rem;height:.95rem;margin-top:7px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff 0 7%,var(--b1) 15%,var(--b2) 55%,var(--b3));color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.5);box-shadow:inset -2px -2px 4px rgba(0,0,0,.3),0 2px 3px rgba(0,0,0,.45);transform-origin:50% -6px}
+.svfront.xtv .svkey::before{content:"";position:absolute;left:50%;top:-3px;width:5px;height:3.5px;margin-left:-2.5px;border-radius:1px 1px 0 0;background:linear-gradient(90deg,#8a6410,#ffe9a8,#8a6410)}
+.svfront.xtv .svkey::after{content:"";position:absolute;left:50%;top:-7px;width:1px;height:4px;background:#e3b341}
+.svfront.xtv .svkey:nth-child(4n+2){--b1:#fff0a0;--b2:#d4a020;--b3:#6a4808;color:#5a3a08;text-shadow:0 1px 0 rgba(255,255,255,.5)}
