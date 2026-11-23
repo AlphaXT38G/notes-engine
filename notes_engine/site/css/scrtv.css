@@ -78,3 +78,12 @@
 .svfront.xtv .svkey:active{transform:scale(.9)}
 .svfront.xtv.crt .svkey.crt{box-shadow:0 0 9px 2px #ffe27a,inset -2px -2px 4px rgba(0,0,0,.3)}
 .svfront.xtv .svmsg{background:#2a0710;color:#ffd25a;text-shadow:0 0 4px #e3a923}
+/* turned on: a white line across the middle, opening into a flash, fading on the picture */
+.svfront.xtv.lit .svturn{background:#fff;animation:xtv-on 1.2s both}
+@keyframes xtv-on{0%{opacity:1;clip-path:inset(50% 0)}25%{opacity:1;clip-path:inset(49.3% 0)}55%{opacity:.9;clip-path:inset(0)}100%{opacity:0;clip-path:inset(0)}}
+
+/* ── Jazz: the walnut lounge television (.jtv) ── */
+/* the medallion: a brass knob on the turntable's plinth, the little television engraved */
+.svtrig.jtv{color:#f5d080}
+.svtrig.jtv .svknob{border-radius:50%;background:radial-gradient(circle,transparent 54%,rgba(60,30,0,.35) 57%,transparent 62%),conic-gradient(from 20deg,#f6e2a0,#a07a30,#f0d890,#7a5a20,#f6e2a0,#a07a30,#f0d890,#7a5a20,#f6e2a0);color:#3a200f;box-shadow:0 2px 4px rgba(0,0,0,.6),inset 0 0 0 1.5px #5a3a18}
+.svtrig.jtv .svglyph{filter:drop-shadow(0 .6px 0 rgba(255,240,200,.7))}
