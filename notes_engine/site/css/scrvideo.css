@@ -82,3 +82,7 @@
 .svfront .svkey svg path{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .svfront .svkey svg .head{fill:currentColor;stroke:none}
 .svfront .svkey:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.svfront .svplate,.svfront .svkeys{transition:opacity .4s}
+.svfront.lit .svplate,.svfront.lit .svkeys{animation:sv-fade .4s 1.6s both}
+@keyframes sv-fade{from{opacity:0}}
+.svfront:not(.lit) .svplate,.svfront:not(.lit) .svkeys,.svfront.rest:not(:focus-within) .svplate,.svfront.rest:not(:focus-within) .svkeys{opacity:0}
