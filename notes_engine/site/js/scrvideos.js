@@ -11,3 +11,4 @@
 // Effects scattered at random once: n elements, each with its own CSS variables
 const svScatter = (n, tag, vars) => Array.from({ length: n }, (x, i) => `<${tag} style="${vars(i, n)}"></${tag}>`).join("");
 const svRand = (a, b) => (a + Math.random() * (b - a)).toFixed(2);
+const svRect = el => (el && el.isConnected ? el.getBoundingClientRect() : null);
