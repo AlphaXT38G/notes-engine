@@ -1,0 +1,13 @@
+/* Watching a video on a screen's music player (js/scrvideo.js): what every television shares, the
+   looks being in scrtv.css. The medallion set on the player (.svtrig), the label of the player while
+   the picture is awaited ([data-svload]), the player going away and coming back (.svaway, .svreturn),
+   the layer of effects over the corner during the transformation (.svfx), the cabinet under the
+   picture (.svback, --sv-w wide, its tube .svtube) and the layer laid on the tube over the picture
+   (.svfront: snow, CRT look, the turn-on effect .svturn, the plate, the keys). The YouTube player
+   shown lies between the two (.ytplayer.svscreen, placed by scrvideo.js). */
+
+/* The medallion: centred on its spot of the player (left / top set by scrvideo.js), coming with a
+   bounce; while the picture is awaited a ring turns around it */
+.svtrig{position:fixed;z-index:41;display:block;width:1.35rem;height:1.35rem;margin:0;padding:0;border:0;background:none;cursor:pointer;transform:translate(-50%,-50%);animation:sv-in .55s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes sv-in{from{opacity:0;transform:translate(-50%,-50%) scale(.2)}}
+.svtrig>i{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-style:normal;transition:transform .25s cubic-bezier(.3,1.6,.5,1),filter .25s}
