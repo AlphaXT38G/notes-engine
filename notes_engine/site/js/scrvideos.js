@@ -102,3 +102,13 @@ svScreen({
   turn: "<b>👻</b>",
   chrome: [1.2, 5],
 });
+
+// Sakura (skplayer.js): a television of black lacquer with a vermilion and gold edge, a branch of
+// cherry blossom resting on its top, petals falling. Its medallion is a hanko seal, 映 (a picture),
+// stamped on the shamisen's skin; a gust of petals blows the shamisen away and the television unrolls
+// out of it as a hanging scroll; its shoji doors light up and slide open on the picture; its keys are
+// cherry blossoms along a lacquered branch; its plate a strip of washi paper.
+const SV_BRANCH = '<svg class="svover svbranch" viewBox="0 0 120 50" aria-hidden="true"><path d="M0 8C30 10 50 18 70 14S100 22 118 30M38 13C42 22 40 30 46 36M78 16C80 8 88 4 94 2" stroke="#4a2a1e" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+  [[20, 10], [34, 6], [44, 22], [47, 34], [60, 12], [74, 18], [90, 4], [96, 24], [110, 28], [28, 16], [84, 20], [66, 8]].map(([x, y], i) =>
+    `<g transform="translate(${x} ${y}) rotate(${i * 30})">` + [0, 72, 144, 216, 288].map(a => `<ellipse rx="2.6" ry="4" cy="-3.2" transform="rotate(${a})" fill="${i % 3 ? "#ffc2d4" : "#ff9ab8"}"/>`).join("") +
+    '<circle r="1.2" fill="#e8a020"/></g>').join("") + "</svg>";
