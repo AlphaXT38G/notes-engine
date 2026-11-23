@@ -19,3 +19,26 @@ const svRect = el => (el && el.isConnected ? el.getBoundingClientRect() : null);
 // it with a golden shimmer; its tube comes on as an old one, a white line then a flash; its keys are
 // baubles hanging from a fir garland. Only the Lofi mix has a video.
 const SV_XMAS_TRACKS = { rock: { file: "christmas/jingle-bell-rock.mp3", name: "Jingle Bell Rock" }, radio: { id: XMAS_YT, name: "Lofi Christmas" } };
+svScreen({
+  look: "xtv",
+  here: () => xmasDeck.isConnected,
+  track: () => SV_XMAS_TRACKS[carolsRecord],
+  media: () => (carolsRecord === "radio" ? (carolsRadio ? { yt: XMAS_YT } : null) : carolsRock),
+  playing: () => carolsPlaying,
+  play: () => carolsPlay(),
+  pause: () => carolsPause(),
+  next: () => xmasSleeve.click(),
+  label: () => xmasDeck.querySelector(".label"),
+  parts: () => [xmasDeck, xmasSleeve],
+  spot: () => { const d = svRect(xmasDeck.querySelector(".deck")); return d && [d.right + 3, d.top - 2]; },
+  trigger: `<i class="svball">${SV_GLYPH}</i>`,
+  cabinet: '<div class="svant"><b></b><b></b></div><div class="svcab"><i class="svcap"></i>' +
+    '<svg class="svholly" viewBox="0 0 40 26" aria-hidden="true"><path d="M20,14C14,4 6,8 1,4 4,9 2,12 6,14 3,16 6,20 4,24 10,20 14,22 20,14Z" fill="#1f7a3e"/>' +
+    '<path d="M20,14C26,4 34,8 39,4 36,9 38,12 34,14 37,16 34,20 36,24 30,20 26,22 20,14Z" fill="#17643a"/>' +
+    '<circle cx="17" cy="15" r="3" fill="#d6203a"/><circle cx="23" cy="15" r="3" fill="#c8102e"/><circle cx="20" cy="11" r="3" fill="#e0263f"/></svg>' +
+    '<div class="svtube"></div><span class="svknobs"><b></b><b></b></span><span class="svfeet"><b></b><b></b></span></div>',
+  effects: '<span class="svswirl">' + svScatter(22, "i", i => `--a:${(i * 360 / 22).toFixed(0)}deg;--d:${svRand(3, 9)}rem;--s:${svRand(.5, 1.1)}rem;--t:${svRand(0, .35)}s`) +
+    '</span><b class="svring"></b>',
+  brand: "<b>★ XMAS-TV</b>",
+  chrome: [1.2, 5],
+});
