@@ -46,3 +46,9 @@ const svText = (el, text) => { if (el.textContent !== text) el.textContent = tex
 
 // The music's sound: a YouTube video ({ yt: id }) or an <audio>; its time, and winding it
 const svMedia = sv => sv.media() || null;
+const svTime = sv => {
+  const m = svMedia(sv);
+  if (!m) return 0;
+  if (m.yt) return YT_PLAYERS[m.yt] ? YT_PLAYERS[m.yt].time : 0;
+  return m.currentTime || 0;
+};
