@@ -238,3 +238,4 @@ const svTick = () => SV_ALL.forEach(sv => {
   svText(sv.front.querySelector(".svkey.play span"), sv.playing() ? "❚❚" : "▶︎");
   sv.front.classList.toggle("paused", !sv.playing());
 });
+setInterval(svTick, 250);
