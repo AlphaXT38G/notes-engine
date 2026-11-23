@@ -102,3 +102,11 @@
 @keyframes jtv-rod{0%,100%{opacity:0}12%,85%{opacity:1}}
 .svfx.jtv .svlight{left:5%;right:5%;top:0;bottom:0;background:radial-gradient(ellipse 60% 70% at 50% 100%,rgba(255,226,160,.4),transparent 70%),linear-gradient(rgba(255,230,170,.18),transparent);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);opacity:0}
 .svfx.jtv.in .svlight{animation:jtv-spot 1.6s .55s ease-out both}
+@keyframes jtv-spot{0%{opacity:0}35%{opacity:1}100%{opacity:0}}
+.svback.jtv{left:.9rem;bottom:1.7rem}
+.svback.jtv.svrise,.svback.jtv.svdrop{animation:none}
+/* the cabinet */
+.svback.jtv .svant b{background:linear-gradient(#e8e2d6,#8a8478)}
+.svback.jtv .svant b::after{background:radial-gradient(circle at 35% 35%,#fff,#a9a296)}
+.svback.jtv .svant::before{background:linear-gradient(#5a3a22,#2a160a)}
+.svback.jtv .svcab{position:relative;padding:9px 9px 26px;border-radius:12px;background:repeating-linear-gradient(95deg,rgba(0,0,0,.08) 0 2px,transparent 2px 7px),linear-gradient(135deg,#8a5530,#5a3218 55%,#3a200f);box-shadow:0 12px 28px rgba(0,0,0,.6),inset 0 0 0 1.5px #c9a050,inset 0 1px 0 rgba(255,220,170,.3)}
