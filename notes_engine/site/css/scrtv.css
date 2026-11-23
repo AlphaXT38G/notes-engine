@@ -1,0 +1,13 @@
+/* The screens' televisions (js/scrvideos.js), each in its screen's style; what they share is in
+   scrvideo.css. Per look: its medallion set on the player (.svtrig), the player going away and coming
+   back ([data-svlook].svaway / .svreturn), the transformation's effects (.svfx: .in, .out), its
+   cabinet (.svback: in the player's corner; coming .svrise, going .svdrop), its front (.svfront: the
+   tube's corners --sv-r, the plate, the keys, the turn-on effect .svturn, the ornaments .svover). */
+
+/* ── Christmas: the 1950s television in red lacquer and gold (.xtv) ── */
+/* the medallion: a glass bauble set on the turntable's corner, swaying a little */
+.svtrig.xtv{color:#ffd25a}
+.svtrig.xtv .svball{border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff 0 7%,#ff5a6e 15%,#c8102e 50%,#5a0712);color:#fff3c8;box-shadow:inset -2px -3px 5px rgba(0,0,0,.35),0 3px 6px rgba(0,0,0,.35);transform-origin:50% -5px;animation:xtv-sway 3s ease-in-out infinite alternate}
+.svtrig.xtv .svball::before{content:"";position:absolute;left:50%;top:-4px;width:6px;height:5px;margin-left:-3px;border-radius:1.5px 1.5px 0 0;background:linear-gradient(90deg,#8a6410,#ffe9a8,#8a6410)}
+.svtrig.xtv .svball::after{content:"";position:absolute;left:50%;top:-8px;width:4px;height:4px;margin-left:-2.5px;border:1px solid #e3b341;border-radius:50%}
+@keyframes xtv-sway{from{rotate:-7deg}to{rotate:7deg}}
