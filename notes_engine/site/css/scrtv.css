@@ -163,3 +163,10 @@
 @keyframes htv-rise{0%{opacity:0;transform:translateY(.8rem);filter:blur(6px) brightness(2) hue-rotate(80deg)}20%{opacity:.7}30%{opacity:.15}45%{opacity:.85}55%{opacity:.35}70%{opacity:1;filter:blur(1px)}100%{opacity:1;transform:none;filter:none}}
 .svback.htv.svdrop{animation:htv-drop .5s ease-in both}
 @keyframes htv-drop{0%{opacity:1}25%{opacity:.3}40%{opacity:.8}100%{opacity:0;transform:translateY(.8rem);filter:blur(6px) brightness(2) hue-rotate(80deg)}}
+/* the cabinet */
+.svback.htv .svant b{height:34px;background:#6a4a8a}
+.svback.htv .svant b:first-child{transform:rotate(-40deg)}
+.svback.htv .svant b:last-child{height:42px;transform:rotate(15deg)}
+.svback.htv .svant b::after{display:none}
+.svback.htv .svant::before{background:#6a4a8a}
+.svback.htv .svbat{position:absolute;left:calc(50% + 6px);top:-40px;z-index:3;width:26px}
