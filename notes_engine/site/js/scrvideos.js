@@ -112,3 +112,23 @@ const SV_BRANCH = '<svg class="svover svbranch" viewBox="0 0 120 50" aria-hidden
   [[20, 10], [34, 6], [44, 22], [47, 34], [60, 12], [74, 18], [90, 4], [96, 24], [110, 28], [28, 16], [84, 20], [66, 8]].map(([x, y], i) =>
     `<g transform="translate(${x} ${y}) rotate(${i * 30})">` + [0, 72, 144, 216, 288].map(a => `<ellipse rx="2.6" ry="4" cy="-3.2" transform="rotate(${a})" fill="${i % 3 ? "#ffc2d4" : "#ff9ab8"}"/>`).join("") +
     '<circle r="1.2" fill="#e8a020"/></g>').join("") + "</svg>";
+svScreen({
+  look: "stv",
+  here: () => skShamisen.isConnected,
+  track: () => SK_TRACKS[skTrackAt],
+  media: () => (!skTrack ? null : skTrack.yt ? { yt: skTrack.yt } : skTrack),
+  playing: () => skPlaying(),
+  play: () => skSelect(skTrackAt, true),
+  pause: () => { skTrackPlay(false); skPlayerShow(); },
+  next: () => skSelect((skTrackAt + 1) % SK_TRACKS.length, true),
+  parts: () => [skShamisen, skFlowers],
+  spot: () => { const b = svRect(skShamisen.querySelector(".skhide")); return b && [b.right - 17, b.bottom - 17]; },
+  trigger: '<i class="svhanko">映</i>',
+  cabinet: '<div class="svcab"><div class="svtube"></div></div><i class="svroller"></i>',
+  over: SV_BRANCH + [8, 30, 55, 72, 90].map((x, i) => `<i class="svover svpetal" style="left:${x}%;animation-delay:${i * .8}s"></i>`).join(""),
+  effects: '<b class="svbloom"></b>' + svScatter(26, "i", () => `--x:${svRand(0, 4)}rem;--y:${svRand(0, 8)}rem;--dx:${svRand(6, 16)}rem;--dy:${svRand(-3, -12)}rem;` +
+    `--r:${svRand(200, 720)}deg;--s:${svRand(.35, .7)}rem;--t:${svRand(0, .45)}s`),
+  brand: '<span class="svseal">桜</span>',
+  turn: '<b class="l"></b><b class="r"></b>',
+  chrome: [1.4, 2],
+});
