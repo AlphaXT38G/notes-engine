@@ -217,3 +217,10 @@
 .svfx.stv.in i,.svfx.stv.out i{animation:stv-gust 1.5s var(--t) cubic-bezier(.3,.5,.4,1) both}
 @keyframes stv-gust{0%{opacity:0;transform:translate(0,0) rotate(0)}15%{opacity:1}50%{transform:translate(calc(var(--dx) * .5),calc(var(--dy) * .3 - 1rem)) rotate(calc(var(--r) * .5))}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r))}}
 .svfx.stv .svbloom{left:0;bottom:0;width:9rem;height:9rem;border-radius:50%;background:radial-gradient(circle,rgba(255,200,215,.55),rgba(255,200,215,0) 65%);margin:0 0 -3rem -3rem;opacity:0}
+.svfx.stv.in .svbloom,.svfx.stv.out .svbloom{animation:stv-bloom 1.2s ease-out both}
+@keyframes stv-bloom{0%{opacity:0;transform:scale(.4)}40%{opacity:1}100%{opacity:0;transform:scale(1.4)}}
+.svback.stv{left:.9rem;bottom:1.1rem}
+.svback.stv.svrise{animation:stv-unroll .85s cubic-bezier(.35,.6,.3,1) both}
+@keyframes stv-unroll{from{clip-path:inset(-40px -40px 100% -40px)}to{clip-path:inset(-40px -40px -40px -40px)}}
+.svback.stv.svdrop{animation:stv-roll .5s cubic-bezier(.6,0,.8,.5) both}
+@keyframes stv-roll{from{clip-path:inset(-40px -40px -40px -40px)}to{clip-path:inset(-40px -40px 100% -40px)}}
