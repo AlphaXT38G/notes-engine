@@ -122,3 +122,9 @@ const svCrt = on => {
   tapeDeck.classList.toggle("crt", on);
   SV_ALL.forEach(sv => sv.front.classList.toggle("crt", on));
 };
+// The plate and the keys go away while the pointer rests (as on the deck's monitor)
+const svRest = (sv, rest) => {
+  clearTimeout(sv.rest);
+  sv.front.classList.toggle("rest", rest);
+  if (!rest) sv.rest = setTimeout(() => sv.front.classList.add("rest"), 2500);
+};
