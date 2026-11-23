@@ -239,3 +239,8 @@
 .svback.stv .svcab::before{left:2px;border-right:0}
 .svback.stv .svcab::after{right:2px;border-left:0}
 .svback.stv .svtube{border-radius:3px;box-shadow:0 0 0 2px #0a0506}
+/* over the picture: a branch of cherry blossom resting on the top, petals falling */
+.svfront.stv{--sv-r:3px}
+.svfront.stv .svbranch{position:absolute;left:-31px;top:-35px;z-index:6;width:120px;pointer-events:none}
+.svfront.stv .svpetal{position:absolute;top:-10px;z-index:6;width:6px;height:5px;border-radius:60% 0 60% 0;background:#ffb7c9;pointer-events:none;animation:stv-fall 4s linear infinite}
+@keyframes stv-fall{from{transform:none}to{transform:translate(40px,150px) rotate(400deg);opacity:0}}
