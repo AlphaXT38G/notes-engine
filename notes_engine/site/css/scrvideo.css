@@ -42,3 +42,7 @@
 .svback{position:fixed;z-index:41;width:var(--sv-w,15rem);transform-origin:0 100%;pointer-events:none}
 .svback.svpre{visibility:hidden}
 .svback .svtube{position:relative;padding-top:56.25%;background:#050505}
+.svback.svrise{animation:sv-rise .7s cubic-bezier(.2,.8,.3,1.15) both}
+@keyframes sv-rise{from{opacity:0;transform:translate(-.4rem,3rem) scale(.2)}}
+.svback.svdrop{animation:sv-drop .45s ease-in both}
+@keyframes sv-drop{to{opacity:0;transform:translate(-.4rem,3rem) scale(.2)}}
