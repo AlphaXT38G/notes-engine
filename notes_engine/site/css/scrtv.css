@@ -192,3 +192,10 @@
 .svfront.htv .svkey:nth-child(odd){rotate:-3deg}
 .svfront.htv .svkey:nth-child(3n){rotate:4deg}
 .svfront.htv .svkey:hover{color:#9dff6a;text-shadow:0 0 4px #62d03e;box-shadow:inset 1px 1px 0 rgba(255,255,255,.35),inset -1px -2px 0 rgba(0,0,0,.35),0 0 8px rgba(98,208,62,.7)}
+.svfront.htv .svkey:active{transform:translateY(1px)}
+.svfront.htv.crt .svkey.crt{color:#b8ff8a;text-shadow:0 0 5px #62d03e;background:linear-gradient(135deg,#a8c4a0,#5a7a5a 55%,#3a4e3a)}
+.svfront.htv .svmsg{background:#0a0510;color:#9dff6a;text-shadow:0 0 4px #62d03e}
+/* turned on: green snow, a ghost leaping out of it and vanishing, then the picture */
+.svfront.htv .svturn{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 1 0 0 0 0 .3 0 0 0 1.6 -.45'/%3E%3C/filter%3E%3Crect width='120' height='80' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/60px 40px,#0a140a}
+.svfront.htv.lit .svturn{animation:htv-on 1.5s steps(1) both}
+@keyframes htv-on{0%{opacity:1}10%{opacity:1;background-position:30px 10px,0 0}30%{opacity:1;background-position:10px 25px,0 0}50%{opacity:1;background-position:40px 5px,0 0}70%{opacity:.6}100%{opacity:0}}
