@@ -377,3 +377,4 @@ const svRelay = () => {
   else svPlace(sv);
   svRelay();
 }));
+addEventListener("resize", svRelay);
