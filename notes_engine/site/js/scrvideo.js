@@ -52,3 +52,12 @@ const svTime = sv => {
   if (m.yt) return YT_PLAYERS[m.yt] ? YT_PLAYERS[m.yt].time : 0;
   return m.currentTime || 0;
 };
+const svSeek = (sv, t) => {
+  const m = svMedia(sv);
+  if (!m) return;
+  t = Math.max(0, t);
+  if (m.yt) {
+    const p = YT_PLAYERS[m.yt];
+    if (p && !p.live) ytSeek(m.yt, p.owner, t);  // whoever plays it (a screen's own owner, or ytTrack's)
+  } else m.currentTime = isFinite(m.duration) ? Math.min(t, m.duration - .5) : t;
+};
