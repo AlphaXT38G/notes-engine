@@ -417,8 +417,8 @@ Current screens:
 | `metal` | `metal` | 01:00:00 – 01:01:51 (the song 3 times), or 20 flame clicks, or the Christmas guitar | `metal.js`, `metal.css` |
 | `epic` | `epic` | after a metal show, if "More epicness ?" was clicked, or the `kamelot` code, until a code leaves it | `epic.js`, `epic.css`, `bardscene.js`, `bard.js`, `bard.css` |
 | `calm` | `calm` | 01:01:51 – 05:30, unless the epic finale runs (a `normal` screen), or the `peace` code (the Christmas and Halloween jars too) | `calm.js`, `calm.css` |
-| `christmas` | `christmas` | Dec 1 – Jan 3, 06:00 – 18:00 (replaces the day) | `christmas.js`, `x*.js`, `christmas.css` |
-| `christmas-night` | `christmas` | Dec 1 – Jan 3, 18:00 – 06:00 (replaces the day, the jazz bar and the calm night) | `christmas.js`, `x*.js`, `christmas.css` |
+| `christmas` | `christmas` | Nov 23 – Jan 3, 06:00 – 18:00 (replaces the day) | `christmas.js`, `x*.js`, `christmas.css` |
+| `christmas-night` | `christmas` | Nov 23 – Jan 3, 18:00 – 06:00 (replaces the day, the jazz bar and the calm night) | `christmas.js`, `x*.js`, `christmas.css` |
 | `halloween` | `halloween` | Oct 25 – Nov 1, 07:00 – 18:00 (replaces the day, the jazz bar and the calm night), or the `boo` code | `halloween.js`, `hw*.js`, `halloween.css`, `hwlife.css`, `hwcreatures.css`, `hwmusic.css` |
 | `halloween-night` | `halloween` | Oct 25 – Nov 1, 18:00 – 07:00 | the same |
 | `sakura` | `sakura` | Mar 15 – Apr 10, 07:00 – 18:30, the golden hour from 17:30 (replaces the day, the jazz bar and the calm night), or the `kojiro` code | `sakura.js`, `skscene.js`, `sakura.css`, `img/sakura/` |

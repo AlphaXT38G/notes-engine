@@ -1,5 +1,5 @@
 // ── Christmas (screens "christmas" and "christmas-night", body.christmas) ─────────────────────
-// From December 1 to January 3 the usual looks are replaced by Christmas (css/christmas.css):
+// From November 23 to January 3 the usual looks are replaced by Christmas (css/christmas.css):
 // the day screen from 6:00 to 18:00, the night screen from 18:00 to 6:00. Typing "yeti" brings
 // them at any time of the year. Both screens have:
 //   - a garland across the top (lit at night): xgarland.js,
@@ -21,7 +21,7 @@
 // every visit).
 const xmasSubtitle = () => {
   const d = new Date(), m = d.getMonth(), day = d.getDate();
-  if (m === 11 && day < 24) return `${25 - day} days until Christmas. Revise by the tree.`;
+  if (m === 10 || (m === 11 && day < 24)) return `${(m === 10 ? 55 : 25) - day} days until Christmas. Revise by the tree.`;
   if (m === 11 && day === 24) return "Christmas Eve. One last chapter before the presents.";
   if (m === 11 && day === 25) return "Merry Christmas! The notes can wait until tomorrow.";
   if (m === 11 && day === 31) return "New Year's Eve. Last revisions of the year.";
@@ -36,7 +36,7 @@ SCREENS["christmas-night"] = { className: "christmas", subtitle: xmasSubtitle, t
 // it runs before the metal and epic ones (this file is loaded before metal.js), so those still
 // win. A forced ?screen=... is left alone (?screen=christmas and ?screen=christmas-night force these
 // screens), unless the yeti code was typed (xmasEgg).
-const isXmasDate = (d = new Date()) => d.getMonth() === 11 || (d.getMonth() === 0 && d.getDate() <= 3);  // all December, and Jan 1 - 3
+const isXmasDate = (d = new Date()) => (d.getMonth() === 10 && d.getDate() >= 23) || d.getMonth() === 11 || (d.getMonth() === 0 && d.getDate() <= 3);  // Nov 23 - Dec 31, and Jan 1 - 3
 const isXmasDaytime = () => { const t = clockSeconds(); return t >= 6 * 3600 && t < 18 * 3600; };
 // Easter egg: typing y e t i (outside the search field, or in it then Enter: onCode, ui.js) brings
 // Christmas at any time of the year, day or night by the clock as usual, for the rest of the visit,
