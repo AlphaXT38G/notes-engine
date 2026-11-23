@@ -96,3 +96,9 @@
 .svfx.jtv .svcur.l{left:0;transform-origin:0 0;border-radius:0 0 40% 0/0 0 12% 0}
 .svfx.jtv .svcur.r{right:0;transform-origin:100% 0;border-radius:0 0 0 40%/0 0 0 12%}
 .svfx.jtv.in .svcur,.svfx.jtv.out .svcur{animation:jtv-curtain 1.25s cubic-bezier(.45,0,.3,1) both}
+@keyframes jtv-curtain{0%{transform:scaleX(0) skewX(0)}34%{transform:scaleX(1.02) skewX(0)}56%{transform:scaleX(1.02)}100%{transform:scaleX(0) skewX(-4deg)}}
+.svfx.jtv .svrod{left:-.4rem;right:-.4rem;top:0;height:.45rem;border-radius:.3rem;background:linear-gradient(#fff3c0,#c9a050 50%,#7a5a20);box-shadow:0 2px 4px rgba(0,0,0,.5);opacity:0}
+.svfx.jtv.in .svrod,.svfx.jtv.out .svrod{animation:jtv-rod 1.25s both}
+@keyframes jtv-rod{0%,100%{opacity:0}12%,85%{opacity:1}}
+.svfx.jtv .svlight{left:5%;right:5%;top:0;bottom:0;background:radial-gradient(ellipse 60% 70% at 50% 100%,rgba(255,226,160,.4),transparent 70%),linear-gradient(rgba(255,230,170,.18),transparent);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);opacity:0}
+.svfx.jtv.in .svlight{animation:jtv-spot 1.6s .55s ease-out both}
