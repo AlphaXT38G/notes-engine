@@ -159,3 +159,18 @@ const svFit = sv => {
   const tall = (innerHeight - bottom - 1.5 * r - sv.chrome[1] * r) * 16 / 9 + sv.chrome[0] * r;
   sv.back.style.setProperty("--sv-w", `${Math.max(12 * r, Math.min(room, tall, 40 * r))}px`);
 };
+// The tube's box in the window: the cabinet's .svtube, or the whole window (16:9) in full screen;
+// the front layer is laid on it, and the picture under it
+const svPlace = sv => {
+  let box;
+  if (sv.full) {
+    const w = Math.min(innerWidth, innerHeight * 16 / 9), h = w * 9 / 16;
+    box = { left: (innerWidth - w) / 2, top: (innerHeight - h) / 2, width: w, height: h };
+  } else {
+    const t = sv.back.querySelector(".svtube").getBoundingClientRect();
+    box = { left: t.left, top: t.top, width: t.width, height: t.height };
+  }
+  sv.box = box;
+  Object.assign(sv.front.style, { left: `${box.left}px`, top: `${box.top}px`, width: `${box.width}px`, height: `${box.height}px` });
+  if (sv.frame) svPut(sv, sv.frame);
+};
