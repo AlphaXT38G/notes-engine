@@ -87,3 +87,12 @@
 .svtrig.jtv{color:#f5d080}
 .svtrig.jtv .svknob{border-radius:50%;background:radial-gradient(circle,transparent 54%,rgba(60,30,0,.35) 57%,transparent 62%),conic-gradient(from 20deg,#f6e2a0,#a07a30,#f0d890,#7a5a20,#f6e2a0,#a07a30,#f0d890,#7a5a20,#f6e2a0);color:#3a200f;box-shadow:0 2px 4px rgba(0,0,0,.6),inset 0 0 0 1.5px #5a3a18}
 .svtrig.jtv .svglyph{filter:drop-shadow(0 .6px 0 rgba(255,240,200,.7))}
+/* a red velvet stage curtain closes over the turntable and opens on the television, a spotlight on it */
+[data-svlook=jtv].svaway{animation:jtv-hide .45s step-end forwards}
+@keyframes jtv-hide{to{opacity:0}}
+[data-svlook=jtv].svreturn{animation:none}
+.svfx.jtv .svcur{top:.4rem;bottom:0;width:51%;background:linear-gradient(transparent 88%,rgba(0,0,0,.35)),repeating-linear-gradient(90deg,#4a0810 0,#8e1424 7%,#c8303e 10%,#8e1424 13%,#4a0810 18%);box-shadow:inset 0 -.5rem 1rem rgba(0,0,0,.4),0 0 1.2rem rgba(0,0,0,.5);transform:scaleX(0)}
+.svfx.jtv .svcur::after{content:"";position:absolute;left:0;right:0;bottom:0;height:.55rem;background:repeating-linear-gradient(90deg,#f0d070 0 1.5px,transparent 1.5px 3.5px) 0 3px/100% 100% no-repeat,linear-gradient(#f6e2a0,#b08020) 0 0/100% 3px no-repeat}
+.svfx.jtv .svcur.l{left:0;transform-origin:0 0;border-radius:0 0 40% 0/0 0 12% 0}
+.svfx.jtv .svcur.r{right:0;transform-origin:100% 0;border-radius:0 0 0 40%/0 0 0 12%}
+.svfx.jtv.in .svcur,.svfx.jtv.out .svcur{animation:jtv-curtain 1.25s cubic-bezier(.45,0,.3,1) both}
