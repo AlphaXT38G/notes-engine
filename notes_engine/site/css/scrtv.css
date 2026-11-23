@@ -20,3 +20,8 @@
 .svfx.xtv .svswirl i{position:absolute;width:var(--s);height:var(--s);margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);opacity:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-10 -10 20 20'%3E%3Cpath d='M0-9V9M-7.8-4.5 7.8 4.5M-7.8 4.5 7.8-4.5M-2.4-7.4 0-5 2.4-7.4M-2.4 7.4 0 5 2.4 7.4' stroke='white' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 0 3px rgba(190,220,255,.9))}
 .svfx.xtv.in .svswirl,.svfx.xtv.out .svswirl{animation:xtv-whirl 1.5s cubic-bezier(.3,.6,.4,1) both}
 @keyframes xtv-whirl{to{transform:rotate(260deg)}}
+.svfx.xtv.in .svswirl i,.svfx.xtv.out .svswirl i{animation:xtv-flake 1.4s var(--t) ease-out both}
+@keyframes xtv-flake{0%{opacity:0;transform:rotate(var(--a)) translateX(.3rem) scale(.3)}25%{opacity:1}100%{opacity:0;transform:rotate(var(--a)) translateX(var(--d)) rotate(180deg) scale(1)}}
+.svfx.xtv .svring{left:3.4rem;bottom:3rem;width:2rem;height:2rem;margin:0 0 -1rem -1rem;border:2px solid #ffe27a;border-radius:50%;opacity:0;box-shadow:0 0 12px #ffd25a,inset 0 0 12px #ffd25a}
+.svfx.xtv.in .svring,.svfx.xtv.out .svring{animation:xtv-ring .9s .25s ease-out both}
+@keyframes xtv-ring{0%{opacity:1;transform:scale(.2)}100%{opacity:0;transform:scale(7)}}
