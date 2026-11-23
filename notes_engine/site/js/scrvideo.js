@@ -174,3 +174,27 @@ const svPlace = sv => {
   Object.assign(sv.front.style, { left: `${box.left}px`, top: `${box.top}px`, width: `${box.width}px`, height: `${box.height}px` });
   if (sv.frame) svPut(sv, sv.frame);
 };
+// The player shown, laid over the tube's place (as putFrame, tapevideo.js: 1920 px wide at least,
+// scaled down, the embed's bars cut off), its corners rounded as the tube's. Written only when the
+// player or the tube's box changes: its style written again, even the same, would have the browser
+// lay the big <iframe> out again four times a second (the picture jolting)
+const svPut = (sv, frame) => {
+  if (sv.frame && sv.frame !== frame) {
+    sv.frame.classList.remove("svscreen");
+    sv.frame.style.cssText = "";
+    sv.placed = "";
+  }
+  sv.frame = frame;
+  sv.front.classList.toggle("showing", !!frame);
+  sv.front.classList.toggle("waiting", sv.lit && !frame);
+  if (!frame || !sv.box) return;
+  const b = sv.box, at = [b.left, b.top, b.width, b.height].join();
+  if (at === sv.placed) return;
+  sv.placed = at;
+  const width = Math.max(VIDEO_WIDTH, b.width), k = b.width / width;
+  const radius = getComputedStyle(sv.front).borderTopLeftRadius.split(" ").map(v => (parseFloat(v) || 0) / k);
+  const round = radius.length > 1 ? `${radius[0]}px / ${radius[1]}px` : `${radius[0]}px`;
+  frame.style.cssText = `left:${b.left}px;top:${b.top - VIDEO_CROP * k}px;width:${width}px;height:${b.height / k + 2 * VIDEO_CROP}px;` +
+    `transform:scale(${k});transform-origin:0 0;clip-path:inset(${VIDEO_CROP}px 0 round ${round})`;
+  frame.classList.add("svscreen");
+};
