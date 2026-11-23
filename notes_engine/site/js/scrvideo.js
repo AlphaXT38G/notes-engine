@@ -41,3 +41,5 @@ const svClock = t => {
   const h = Math.floor(t / 3600), m = Math.floor(t / 60) % 60, s = t % 60;
   return (h ? `${h}:${String(m).padStart(2, "0")}` : m) + ":" + String(s).padStart(2, "0");
 };
+// Text written only when it changes (the plate, the counter, the play key under the pointer)
+const svText = (el, text) => { if (el.textContent !== text) el.textContent = text; };
