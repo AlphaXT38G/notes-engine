@@ -356,3 +356,6 @@ const svFull = (sv, on) => {
   if (sv.lit) svPlace(sv);
 };
 const svShown = () => SV_ALL.find(sv => sv.lit);
+// The window's size changing (full screen, a phone's bars, the window resized): laid out again once
+// per frame at most, when the browser has settled its new size
+let svFrameAsked = 0;
