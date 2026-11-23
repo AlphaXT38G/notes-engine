@@ -208,3 +208,12 @@
 .svtrig.stv{color:#c0392b}
 .svtrig.stv .svhanko{border-radius:3px;background:radial-gradient(circle at 30% 70%,rgba(255,255,255,.12),transparent 40%),linear-gradient(135deg,#d8402e,#a8261a);color:#fff3e8;font:700 .78rem/1 "Yu Mincho","Hiragino Mincho ProN","Noto Serif CJK JP",serif;box-shadow:inset 0 0 0 1.5px rgba(255,235,220,.85),inset 0 0 0 3px #b8301f,0 1px 3px rgba(0,0,0,.35);rotate:-6deg}
 .svtrig.stv::after{border-radius:4px}
+/* a gust of petals blows the shamisen away; the television unrolls out of it as a hanging scroll */
+[data-svlook=stv].svaway{animation:stv-away .55s ease-in forwards}
+@keyframes stv-away{to{opacity:0;translate:1.4rem -.8rem;rotate:7deg;filter:blur(3px)}}
+[data-svlook=stv].svreturn{animation:stv-return .7s cubic-bezier(.2,.8,.3,1.1) both}
+@keyframes stv-return{from{opacity:0;translate:-1rem .5rem;rotate:-5deg;filter:blur(3px)}}
+.svfx.stv i{left:var(--x);bottom:var(--y);width:var(--s);height:calc(var(--s) * .8);border-radius:70% 0 70% 0;background:linear-gradient(135deg,#fff0f4,#ffb7c9 50%,#f28aa8);opacity:0}
+.svfx.stv.in i,.svfx.stv.out i{animation:stv-gust 1.5s var(--t) cubic-bezier(.3,.5,.4,1) both}
+@keyframes stv-gust{0%{opacity:0;transform:translate(0,0) rotate(0)}15%{opacity:1}50%{transform:translate(calc(var(--dx) * .5),calc(var(--dy) * .3 - 1rem)) rotate(calc(var(--r) * .5))}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r))}}
+.svfx.stv .svbloom{left:0;bottom:0;width:9rem;height:9rem;border-radius:50%;background:radial-gradient(circle,rgba(255,200,215,.55),rgba(255,200,215,0) 65%);margin:0 0 -3rem -3rem;opacity:0}
