@@ -378,3 +378,12 @@ const svRelay = () => {
   svRelay();
 }));
 addEventListener("resize", svRelay);
+// The F key while a television is on (not while typing, nor with a modifier)
+document.addEventListener("keydown", e => {
+  const sv = svShown();
+  if (!sv || (e.key !== "f" && e.key !== "F") || e.repeat || e.ctrlKey || e.altKey || e.metaKey ||
+    e.target.matches("input, textarea, select, [contenteditable]")) return;
+  e.preventDefault();
+  svFull(sv, !sv.full);
+  svRest(sv, false);
+});
