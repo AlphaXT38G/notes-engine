@@ -116,3 +116,9 @@ const SV_ACTIONS = {
 };
 // The CRT look, shared with the deck's monitor (tape-crt)
 const svCrtOn = () => { try { return localStorage.getItem("tape-crt") === "1"; } catch (e) { return false; } };
+const svCrt = on => {
+  try { localStorage.setItem("tape-crt", on ? "1" : "0"); } catch (e) {}
+  if (on) secretFound("crt");
+  tapeDeck.classList.toggle("crt", on);
+  SV_ALL.forEach(sv => sv.front.classList.toggle("crt", on));
+};
