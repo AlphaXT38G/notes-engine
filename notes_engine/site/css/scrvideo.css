@@ -100,3 +100,5 @@ body .svback.svfull>*{visibility:hidden}
 
 /* Touch screens: a medallion and keys a finger can hit */
 @media(pointer:coarse){.svtrig{width:2rem;height:2rem}.svfront .svkey{width:1.55rem;height:1.4rem;font-size:.55rem}}
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){.svtrig,.svtrig.svwait::after,.svback.svrise,.svback.svdrop,.svfront.waiting .svnoise{animation:none}.svfront.lit .svplate,.svfront.lit .svkeys,.svfront .svturn,.svfront .svturn *{animation:none!important}.svfx{display:none}}
