@@ -302,3 +302,14 @@ const svShow = sv => {
   svLater(sv, SV_IN.swap, () => { sv.back.classList.remove("svpre"); sv.back.classList.add("svrise"); });
   svLater(sv, SV_IN.grown, () => svGrown(sv));
 };
+const svGrown = sv => {
+  if (!sv.out) return;
+  sv.back.classList.remove("svrise", "svpre");
+  svPlace(sv);
+  sv.front.style.visibility = "";
+  sv.front.classList.add("lit");
+  sv.lit = true;
+  secretFound("video");
+  svRest(sv, false);
+  svTick();
+};
