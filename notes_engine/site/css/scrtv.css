@@ -261,3 +261,12 @@
 .svfront.stv.lit .svturn{animation:stv-show 1.9s both}
 @keyframes stv-show{0%,99%{visibility:visible}100%{visibility:hidden}}
 .svfront.stv .svturn b{position:absolute;top:0;bottom:0;width:50%;background:linear-gradient(90deg,#3a2418 0 2px,transparent 2px) 0 0/25% 100%,linear-gradient(#3a2418 0 2px,transparent 2px) 0 0/100% 33.4%,linear-gradient(#fbf3e4,#f0e2c8);box-shadow:inset 0 0 0 2px #3a2418}
+.svfront.stv .svturn .l{left:0}
+.svfront.stv .svturn .r{right:0}
+.svfront.stv.lit .svturn .l{animation:stv-l 1.8s both}
+.svfront.stv.lit .svturn .r{animation:stv-r 1.8s both}
+@keyframes stv-l{0%{transform:none;filter:none}35%{transform:none;filter:brightness(1.15)}100%{transform:translateX(-102%)}}
+@keyframes stv-r{0%{transform:none;filter:none}35%{transform:none;filter:brightness(1.15)}100%{transform:translateX(102%)}}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){.svtrig.xtv .svball,.svtrig.htv .svglyph,.svfront.xtv .svkeys::before,.svfront.htv .svspider,.svfront.stv .svpetal{animation:none}.svfront .svturn{display:none}}
