@@ -246,3 +246,13 @@ const svLoading = (sv, on) => {
   const label = sv.label ? sv.label() : null;
   if (label && label.hasAttribute("data-svload") !== on) label.toggleAttribute("data-svload", on);
 };
+const svOpen = sv => {
+  const t = sv.track();
+  if (!t || !videoLong(t)) return;
+  SV_ALL.forEach(other => { if (other !== sv && other.on) svClose(other, true); });
+  sv.on = true;
+  sv.asked = performance.now();
+  sv.trig.classList.add("on");
+  if (!sv.playing()) sv.play();
+  svTick();
+};
