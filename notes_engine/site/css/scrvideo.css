@@ -33,3 +33,6 @@
 .svreturn{animation:sv-return .5s cubic-bezier(.2,.8,.3,1.2) both}
 @keyframes sv-return{from{opacity:0;scale:.3;translate:-.5rem 1.5rem}}
 .svgone{visibility:hidden!important}
+/* the layer of the transformation's effects, laid over the corner by scrvideo.js (.in, .out) */
+.svfx{position:fixed;z-index:44;pointer-events:none}
+.svfx>*{position:absolute}
