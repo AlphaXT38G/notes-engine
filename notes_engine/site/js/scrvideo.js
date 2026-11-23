@@ -34,3 +34,10 @@ const SV_KEYS = [
 // The medallion's little television (with a play mark on its screen)
 const SV_GLYPH = '<svg class="svglyph" viewBox="0 0 20 16" aria-hidden="true"><rect x="2" y="3.5" width="16" height="11" rx="2.2"/>' +
   '<path d="M7 1l3 2.5 3-2.5"/><path class="play" d="M8.6 6.6v5l4.2-2.5z"/></svg>';
+const svRem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
+const svStill = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const svClock = t => {
+  t = Math.max(0, Math.floor(t || 0));
+  const h = Math.floor(t / 3600), m = Math.floor(t / 60) % 60, s = t % 60;
+  return (h ? `${h}:${String(m).padStart(2, "0")}` : m) + ":" + String(s).padStart(2, "0");
+};
