@@ -128,3 +128,12 @@ const svRest = (sv, rest) => {
   sv.front.classList.toggle("rest", rest);
   if (!rest) sv.rest = setTimeout(() => sv.front.classList.add("rest"), 2500);
 };
+
+// The video's player, and whether it has a picture to show (as videoShowable, tapevideo.js, for the
+// screen's player rather than the tape's)
+const svPlayer = sv => {
+  const t = sv.track(), id = t ? tapeVideoId(t) : "";
+  return id ? ytPlayer(id) : null;
+};
+const svShowable = (sv, p) => p.ready && p.music && !p.ad &&
+  (!sv.playing() || p.state === 3 || performance.now() - p.movedAt < YT_STILL_MS());
