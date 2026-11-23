@@ -244,3 +244,15 @@
 .svfront.stv .svbranch{position:absolute;left:-31px;top:-35px;z-index:6;width:120px;pointer-events:none}
 .svfront.stv .svpetal{position:absolute;top:-10px;z-index:6;width:6px;height:5px;border-radius:60% 0 60% 0;background:#ffb7c9;pointer-events:none;animation:stv-fall 4s linear infinite}
 @keyframes stv-fall{from{transform:none}to{transform:translate(40px,150px) rotate(400deg);opacity:0}}
+/* the plate, a strip of washi paper with a seal; the keys, cherry blossoms along a lacquered branch */
+.stv .svseal{display:block;width:11px;height:11px;border-radius:2px;background:#c0392b;color:#fff;font:700 7.5px/11px serif;text-align:center}
+.svfront.stv .svplate{padding:3px 7px 3px 3px;border-radius:1px;background:repeating-linear-gradient(80deg,rgba(160,130,90,.07) 0 1px,transparent 1px 4px),linear-gradient(#fdf7ea,#f3e6cc);color:#2a1c1e;font-family:"Yu Mincho","Hiragino Mincho ProN",Georgia,serif;box-shadow:inset 0 2px 0 #c0392b,0 2px 6px rgba(0,0,0,.45)}
+.svfront.stv .svctr{color:#c0392b}
+.svfront.stv .svkeys{gap:2px;padding:3px 9px;border-radius:999px;background:linear-gradient(transparent 46%,rgba(216,176,96,.75) 48%,rgba(216,176,96,.75) 52%,transparent 54%),linear-gradient(#2a1c1e,#0e0808);box-shadow:0 0 0 1px #d8b060,0 3px 10px rgba(0,0,0,.55)}
+.svfront.stv .svkey{width:1.08rem;height:1.08rem;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-12 -12 24 24'%3E%3Cg fill='%23ffc8d8' stroke='%23e8809e' stroke-width='.6'%3E%3Cpath d='M0-1C-4-3-5-9-1.4-11.4L0-9.8 1.4-11.4C5-9 4-3 0-1z'/%3E%3Cpath transform='rotate(72)' d='M0-1C-4-3-5-9-1.4-11.4L0-9.8 1.4-11.4C5-9 4-3 0-1z'/%3E%3Cpath transform='rotate(144)' d='M0-1C-4-3-5-9-1.4-11.4L0-9.8 1.4-11.4C5-9 4-3 0-1z'/%3E%3Cpath transform='rotate(216)' d='M0-1C-4-3-5-9-1.4-11.4L0-9.8 1.4-11.4C5-9 4-3 0-1z'/%3E%3Cpath transform='rotate(288)' d='M0-1C-4-3-5-9-1.4-11.4L0-9.8 1.4-11.4C5-9 4-3 0-1z'/%3E%3C/g%3E%3Ccircle r='3' fill='%23fff3f6'/%3E%3C/svg%3E") center/contain no-repeat;color:#6a1030;filter:drop-shadow(0 1px 1px rgba(0,0,0,.5));transition:transform .4s cubic-bezier(.3,1.5,.5,1),filter .2s}
+.svfront.stv .svkey span{font-size:.36rem}
+.svfront.stv .svkey:hover{transform:rotate(36deg) scale(1.1)}
+.svfront.stv .svkey:hover span{transform:rotate(-36deg)}
+.svfront.stv .svkey:active{transform:scale(.9)}
+.svfront.stv.crt .svkey.crt{filter:drop-shadow(0 0 4px #ff8ab0) saturate(2.2) brightness(.95)}
+.svfront.stv .svmsg{background:#2a1c1e;color:#ffd2dc;text-shadow:0 0 4px #ff9ab8}
