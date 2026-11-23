@@ -69,3 +69,9 @@
 .svfront.crt .svcrt,.svfront.crt .svglare{opacity:1}
 /* the turn-on effect (the look's), over the picture, once */
 .svfront .svturn{z-index:4;overflow:hidden;opacity:0}
+/* The plate (top left) and the keys (bottom), over the picture; they come once the tube is on and go
+   away while the pointer rests (.rest; the keyboard's focus keeps them), the pointer with them */
+.svfront .svplate{position:absolute;left:.45rem;top:.45rem;z-index:5;display:flex;align-items:center;gap:.25rem;max-width:calc(100% - .9rem);margin:0;padding:.18rem .35rem;overflow:hidden;white-space:nowrap;font:700 .42rem/1 system-ui,sans-serif;letter-spacing:.04em;transform-origin:0 0}
+.svfront .svnow{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.svfront .svctr{flex:none;font:700 .42rem/1 ui-monospace,Consolas,monospace}
+.svfront .svkeys{position:absolute;left:50%;bottom:.45rem;z-index:5;display:flex;align-items:center;gap:3px;transform:translateX(-50%);transform-origin:50% 100%}
