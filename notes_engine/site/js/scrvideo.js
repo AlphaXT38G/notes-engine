@@ -43,3 +43,6 @@ const svClock = t => {
 };
 // Text written only when it changes (the plate, the counter, the play key under the pointer)
 const svText = (el, text) => { if (el.textContent !== text) el.textContent = text; };
+
+// The music's sound: a YouTube video ({ yt: id }) or an <audio>; its time, and winding it
+const svMedia = sv => sv.media() || null;
