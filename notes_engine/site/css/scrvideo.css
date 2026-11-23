@@ -86,3 +86,9 @@
 .svfront.lit .svplate,.svfront.lit .svkeys{animation:sv-fade .4s 1.6s both}
 @keyframes sv-fade{from{opacity:0}}
 .svfront:not(.lit) .svplate,.svfront:not(.lit) .svkeys,.svfront.rest:not(:focus-within) .svplate,.svfront.rest:not(:focus-within) .svkeys{opacity:0}
+.svfront.rest:not(:focus-within){cursor:none}
+
+/* Full screen: the picture fills the window, black around it, the plate and the keys larger; the
+   look's ornaments put away */
+body .svback.svfull{left:0;top:0;right:0;bottom:0;width:auto;background:#000;animation:none}
+body .svback.svfull>*{visibility:hidden}
