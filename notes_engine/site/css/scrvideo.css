@@ -92,3 +92,11 @@
    look's ornaments put away */
 body .svback.svfull{left:0;top:0;right:0;bottom:0;width:auto;background:#000;animation:none}
 body .svback.svfull>*{visibility:hidden}
+.svfront.svfull{border-radius:0}
+.svfront.svfull.crt{border-radius:28px/36px}
+.svfront.svfull .svover{display:none}
+.svfront.svfull .svplate{left:1rem;top:1rem;transform:scale(1.7)}
+.svfront.svfull .svkeys{bottom:1.6rem;transform:translateX(-50%) scale(1.9)}
+
+/* Touch screens: a medallion and keys a finger can hit */
+@media(pointer:coarse){.svtrig{width:2rem;height:2rem}.svfront .svkey{width:1.55rem;height:1.4rem;font-size:.55rem}}
