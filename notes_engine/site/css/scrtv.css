@@ -11,3 +11,12 @@
 .svtrig.xtv .svball::before{content:"";position:absolute;left:50%;top:-4px;width:6px;height:5px;margin-left:-3px;border-radius:1.5px 1.5px 0 0;background:linear-gradient(90deg,#8a6410,#ffe9a8,#8a6410)}
 .svtrig.xtv .svball::after{content:"";position:absolute;left:50%;top:-8px;width:4px;height:4px;margin-left:-2.5px;border:1px solid #e3b341;border-radius:50%}
 @keyframes xtv-sway{from{rotate:-7deg}to{rotate:7deg}}
+/* the turntable whisked away into a whirl of snow; back, it lands out of it */
+[data-svlook=xtv].svaway{animation:xtv-away .5s cubic-bezier(.5,0,.75,.4) forwards}
+@keyframes xtv-away{to{opacity:0;scale:.15;rotate:-30deg;translate:1.6rem -2.6rem;filter:blur(3px) brightness(2.2)}}
+[data-svlook=xtv].svreturn{animation:xtv-return .7s cubic-bezier(.2,.9,.3,1.25) both}
+@keyframes xtv-return{from{opacity:0;scale:.15;rotate:-30deg;translate:1.6rem -2.6rem;filter:blur(3px) brightness(2.2)}60%{filter:none}}
+.svfx.xtv .svswirl{left:3.4rem;bottom:3rem;width:0;height:0}
+.svfx.xtv .svswirl i{position:absolute;width:var(--s);height:var(--s);margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);opacity:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-10 -10 20 20'%3E%3Cpath d='M0-9V9M-7.8-4.5 7.8 4.5M-7.8 4.5 7.8-4.5M-2.4-7.4 0-5 2.4-7.4M-2.4 7.4 0 5 2.4 7.4' stroke='white' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 0 3px rgba(190,220,255,.9))}
+.svfx.xtv.in .svswirl,.svfx.xtv.out .svswirl{animation:xtv-whirl 1.5s cubic-bezier(.3,.6,.4,1) both}
+@keyframes xtv-whirl{to{transform:rotate(260deg)}}
