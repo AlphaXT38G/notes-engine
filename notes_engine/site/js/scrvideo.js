@@ -114,3 +114,5 @@ const SV_ACTIONS = {
   full: sv => svFull(sv, !sv.full),
   eject: sv => svClose(sv),
 };
+// The CRT look, shared with the deck's monitor (tape-crt)
+const svCrtOn = () => { try { return localStorage.getItem("tape-crt") === "1"; } catch (e) { return false; } };
