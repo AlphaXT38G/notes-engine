@@ -239,3 +239,10 @@ const svTick = () => SV_ALL.forEach(sv => {
   sv.front.classList.toggle("paused", !sv.playing());
 });
 setInterval(svTick, 250);
+
+// Waiting for the picture: the medallion turns, the player's label says so (or a bubble by it)
+const svLoading = (sv, on) => {
+  sv.trig.classList.toggle("svwait", on);
+  const label = sv.label ? sv.label() : null;
+  if (label && label.hasAttribute("data-svload") !== on) label.toggleAttribute("data-svload", on);
+};
