@@ -21,3 +21,15 @@
 /* a player with no label: a bubble beside the medallion says what it waits for */
 .svtrig .svbubble{position:absolute;left:100%;top:50%;margin-left:.6rem;padding:.25rem .55rem;border-radius:999px;background:rgba(30,14,20,.85);color:#fff;font:600 .7rem/1.2 system-ui,sans-serif;white-space:nowrap;transform:translateY(-50%);opacity:0;pointer-events:none;transition:opacity .3s}
 .svtrig.nolabel.svwait .svbubble{opacity:1}
+/* the player's label while the picture is awaited */
+[data-svload]{font-size:0!important}
+[data-svload]::after{content:"📺 Loading the video…";font-size:.78rem}
+
+/* The player while its television is out: gone with its look's animation ([data-svlook], scrtv.css;
+   individual scale / translate / rotate, not transform, which the players use for their own poses),
+   back after; these are the plain ones */
+.svaway{animation:sv-away .4s ease-in forwards;pointer-events:none!important}
+@keyframes sv-away{to{opacity:0;scale:.3;translate:-.5rem 1.5rem}}
+.svreturn{animation:sv-return .5s cubic-bezier(.2,.8,.3,1.2) both}
+@keyframes sv-return{from{opacity:0;scale:.3;translate:-.5rem 1.5rem}}
+.svgone{visibility:hidden!important}
