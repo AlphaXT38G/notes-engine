@@ -110,3 +110,11 @@
 .svback.jtv .svant b::after{background:radial-gradient(circle at 35% 35%,#fff,#a9a296)}
 .svback.jtv .svant::before{background:linear-gradient(#5a3a22,#2a160a)}
 .svback.jtv .svcab{position:relative;padding:9px 9px 26px;border-radius:12px;background:repeating-linear-gradient(95deg,rgba(0,0,0,.08) 0 2px,transparent 2px 7px),linear-gradient(135deg,#8a5530,#5a3218 55%,#3a200f);box-shadow:0 12px 28px rgba(0,0,0,.6),inset 0 0 0 1.5px #c9a050,inset 0 1px 0 rgba(255,220,170,.3)}
+.svback.jtv .svtube{border-radius:12px/16px;box-shadow:0 0 0 3px #1a0f08,0 0 0 4.5px #c9a050}
+.svback.jtv .svgrille{position:absolute;left:12px;bottom:7px;width:45%;height:12px;border-radius:2px;background:repeating-linear-gradient(90deg,#c9a050 0 1.5px,#2a160a 1.5px 4px);box-shadow:inset 0 0 0 1px #c9a050}
+.svback.jtv .svbadge{position:absolute;left:calc(45% + 22px);bottom:8px;font:italic 800 8px Georgia,serif;color:#e8c070;letter-spacing:.05em}
+.svback.jtv .svknobs{position:absolute;right:14px;bottom:5px;display:flex;gap:10px}
+.svback.jtv .svknobs b{width:14px;height:14px;border-radius:50%;background:conic-gradient(from 30deg,#f0d890,#a07a30,#f0d890,#a07a30,#f0d890);box-shadow:0 1px 2px rgba(0,0,0,.6)}
+.svback.jtv .svlegs{position:absolute;left:18px;right:18px;bottom:-12px;display:flex;justify-content:space-between}
+.svback.jtv .svlegs b{width:4px;height:14px;background:linear-gradient(#3a200f,#1a0f08);transform:rotate(12deg)}
+.svback.jtv .svlegs b:first-child{transform:rotate(-12deg)}
