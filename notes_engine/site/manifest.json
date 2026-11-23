@@ -111,6 +111,7 @@
     "js/tapemonitor.js",
     "js/tapevideo.js",
     "js/scrvideo.js",
+    "js/scrvideos.js",
     "js/ytall.js",
     "js/start.js"
   ]
