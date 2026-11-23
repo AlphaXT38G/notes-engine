@@ -208,3 +208,33 @@ const svSpot = sv => {
   sv.trig.style.left = `${at[0]}px`;
   sv.trig.style.top = `${at[1]}px`;
 };
+
+// Four times a second: the medallions come and go with their tracks, and a video wanted waits for
+// its picture, then the player turns into the television, then its tube shows the picture (or the snow)
+const svTick = () => SV_ALL.forEach(sv => {
+  const here = sv.here(), t = here ? sv.track() : null, can = !!t && videoLong(t);
+  if (can && !sv.trig.isConnected) { sv.spotAt = ""; document.body.append(sv.trig); }
+  if (!can && !sv.on && sv.trig.isConnected) sv.trig.remove();
+  if (sv.trig.isConnected && !sv.out) svSpot(sv);
+  if (!sv.on) return;
+  if (!here || !t || !tapeVideoId(t)) { svClose(sv, !here); return; }  // the screen has gone, or a track with no video
+  svFollow(sv);
+  const p = svPlayer(sv), show = !!p && svShowable(sv, p);
+  if (!sv.out) {
+    if (!show && ((p && p.error) || performance.now() - sv.asked > VIDEO_WAIT_MS)) { svClose(sv); return; }
+    svLoading(sv, !show);
+    if (show) svShow(sv);
+    return;
+  }
+  if (!sv.lit) return;
+  // a picture lost for a moment (the player's time standing still while it loads more) stays on a
+  // little before the snow comes, unless an ad breaks in or the video changes
+  const now = performance.now();
+  if (show) sv.lostAt = 0; else if (!sv.lostAt) sv.lostAt = now;
+  const keep = !show && !!p && sv.frame === p.frame && !p.ad && !p.error && now - sv.lostAt < SV_LOST_MS;
+  svPut(sv, show || keep ? p.frame : null);
+  svText(sv.front.querySelector(".svnow"), t.name);
+  svText(sv.front.querySelector(".svctr"), p && p.live ? "LIVE" : svClock(svTime(sv)));
+  svText(sv.front.querySelector(".svkey.play span"), sv.playing() ? "❚❚" : "▶︎");
+  sv.front.classList.toggle("paused", !sv.playing());
+});
