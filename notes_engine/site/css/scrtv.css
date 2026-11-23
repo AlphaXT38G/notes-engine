@@ -182,3 +182,13 @@
 .svfront.htv .svspider{position:absolute;right:22%;top:-9px;z-index:6;width:1px;height:26px;background:linear-gradient(rgba(235,225,255,.8),rgba(235,225,255,.45));pointer-events:none;animation:htv-spider 4s ease-in-out infinite alternate}
 .svfront.htv .svspider b{position:absolute;left:-7px;bottom:-9px;width:15px;height:12px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-10 -8 20 16'%3E%3Cpath d='M-3-1-8-5-9 0M-3 0-9 2-9 6M3-1 8-5 9 0M3 0 9 2 9 6M-2 2-6 6M2 2 6 6' stroke='%23140a1c' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3Cellipse cy='1' rx='3.4' ry='4' fill='%23140a1c'/%3E%3Ccircle cy='-3' r='2.2' fill='%23140a1c'/%3E%3Ccircle cx='-.8' cy='-3.4' r='.6' fill='%23ff8a2a'/%3E%3Ccircle cx='.8' cy='-3.4' r='.6' fill='%23ff8a2a'/%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 0 2px rgba(255,138,42,.6))}
 @keyframes htv-spider{0%,30%{height:14px}70%,100%{height:34px}}
+/* the plate, a scorched parchment; the keys, tombstones on a mound, lighting up green */
+.svfront.htv .svplate{padding:4px 8px;border-radius:1px;background:radial-gradient(ellipse at 50% 50%,#f3e6c4 30%,#d8bf8a 70%,#7a4a1a);color:#2a1408;font-family:Georgia,serif;clip-path:polygon(0 12%,6% 0,18% 8%,30% 1%,44% 7%,58% 0,72% 6%,86% 1%,100% 10%,97% 50%,100% 88%,88% 100%,74% 93%,60% 100%,45% 94%,30% 100%,16% 93%,4% 100%,2% 55%);filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+.svfront.htv .svplate b{color:#8a2a08;letter-spacing:.08em}
+.svfront.htv .svctr{color:#5a1a08}
+.svfront.htv .svkeys{gap:3px;padding:7px 9px 4px;border-radius:50% 50% 6px 6px/70% 70% 6px 6px;background:radial-gradient(ellipse 50% 30% at 50% 0,rgba(98,208,62,.25),transparent),linear-gradient(#2e1c3e,#120a1a);box-shadow:0 0 0 1px rgba(255,138,42,.55),0 4px 12px rgba(0,0,0,.7)}
+.svfront.htv .svkey{width:.92rem;height:1.12rem;padding-top:2px;border-radius:50% 50% 2px 2px/42% 42% 2px 2px;background:linear-gradient(135deg,#b4b4c0,#76768a 55%,#4e4e60);color:#24182e;text-shadow:0 1px 0 rgba(255,255,255,.35);box-shadow:inset 1px 1px 0 rgba(255,255,255,.35),inset -1px -2px 0 rgba(0,0,0,.35),0 2px 0 #0a0510}
+.svfront.htv .svkey::after{content:"";position:absolute;left:-2px;right:-2px;bottom:-2px;height:4px;border-radius:50%;background:radial-gradient(ellipse,#3a6a2a,#1e3a14 70%,transparent 72%)}
+.svfront.htv .svkey:nth-child(odd){rotate:-3deg}
+.svfront.htv .svkey:nth-child(3n){rotate:4deg}
+.svfront.htv .svkey:hover{color:#9dff6a;text-shadow:0 0 4px #62d03e;box-shadow:inset 1px 1px 0 rgba(255,255,255,.35),inset -1px -2px 0 rgba(0,0,0,.35),0 0 8px rgba(98,208,62,.7)}
