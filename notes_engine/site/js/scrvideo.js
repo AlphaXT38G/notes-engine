@@ -338,3 +338,21 @@ const svClose = (sv, atOnce) => {
   svLater(sv, SV_OUT.swap, () => { sv.back.remove(); sv.back.classList.remove("svdrop"); svAway(sv, false); });
   svLater(sv, SV_OUT.end, () => svParts(sv).forEach(el => el.classList.remove("svreturn")));
 };
+
+// Full screen: the picture fills the window (black around it), and the browser goes full screen
+// when it can (as setFull, tapemonitor.js)
+const svFull = (sv, on) => {
+  if (on === sv.full) return;
+  sv.full = on;
+  sv.back.classList.toggle("svfull", on);
+  sv.front.classList.toggle("svfull", on);
+  document.documentElement.classList.toggle("tapefull", on);
+  if (on && !fullscreenNow()) {
+    const root = document.documentElement, ask = root.requestFullscreen || root.webkitRequestFullscreen;
+    const asked = ask && ask.call(root);
+    if (asked && asked.catch) asked.catch(() => {});
+  }
+  if (!on && fullscreenNow()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  if (sv.lit) svPlace(sv);
+};
+const svShown = () => SV_ALL.find(sv => sv.lit);
