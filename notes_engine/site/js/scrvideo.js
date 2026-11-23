@@ -61,3 +61,56 @@ const svSeek = (sv, t) => {
     if (p && !p.live) ytSeek(m.yt, p.owner, t);  // whoever plays it (a screen's own owner, or ytTrack's)
   } else m.currentTime = isFinite(m.duration) ? Math.min(t, m.duration - .5) : t;
 };
+
+// A screen's television: its medallion, its two layers, its keys and its layer of effects, made once
+const svScreen = cfg => {
+  const sv = Object.assign({ on: false, out: false, lit: false, full: false, frame: null, box: null, placed: "", spotAt: "",
+    lostAt: 0, asked: 0, followed: "", timers: [], rest: null, stirX: 0, stirY: 0 }, cfg);
+  sv.trig = document.createElement("button");
+  sv.trig.type = "button";
+  sv.trig.className = `svtrig ${sv.look}${sv.label ? "" : " nolabel"}`;  // no label: a bubble says it waits
+  sv.trig.title = "Watch the video";
+  sv.trig.setAttribute("aria-label", sv.trig.title);
+  sv.trig.innerHTML = sv.trigger + '<span class="svbubble">Loading the video…</span>';
+  sv.trig.addEventListener("click", e => { e.stopPropagation(); if (sv.on) svClose(sv); else svOpen(sv); });
+  sv.back = document.createElement("div");
+  sv.back.className = `svback ${sv.look}`;
+  sv.back.innerHTML = sv.cabinet;
+  sv.front = document.createElement("div");
+  sv.front.className = `svfront ${sv.look}`;
+  sv.front.innerHTML = `<i class="svnoise"></i><span class="svmsg"></span><i class="svcrt"></i><i class="svglare"></i>${sv.over || ""}` +
+    `<i class="svturn">${sv.turn || ""}</i><p class="svplate">${sv.brand}<span class="svnow"></span><span class="svctr">0:00</span></p>` +
+    '<div class="svkeys">' + SV_KEYS.map(k => k ? `<button type="button" class="svkey ${k[0]}" data-key="${k[0]}" title="${k[2]}" aria-label="${k[2]}"><span>${k[1]}</span></button>` : '<i class="svgap"></i>').join("") + "</div>";
+  sv.fx = document.createElement("div");
+  sv.fx.className = `svfx ${sv.look}`;
+  sv.fx.innerHTML = sv.effects || "";
+  sv.front.addEventListener("click", e => {
+    e.stopPropagation();
+    const key = e.target.closest(".svkey");
+    if (!key) return;
+    if (e.detail > 0) key.blur();  // a mouse click lets go of the focus, which would keep the keys
+    SV_ACTIONS[key.dataset.key](sv);
+  });
+  sv.front.addEventListener("mousemove", e => {
+    if (sv.front.classList.contains("rest") && Math.hypot(e.clientX - sv.stirX, e.clientY - sv.stirY) < MONITOR_STIR) return;
+    sv.stirX = e.clientX;
+    sv.stirY = e.clientY;
+    svRest(sv, false);
+  });
+  ["touchstart", "focusin"].forEach(name => sv.front.addEventListener(name, () => svRest(sv, false)));
+  sv.front.addEventListener("mouseleave", () => svRest(sv, true));
+  SV_ALL.push(sv);
+  return sv;
+};
+
+// The keys
+const SV_ACTIONS = {
+  restart: sv => svSeek(sv, 0),
+  rew: sv => svSeek(sv, svTime(sv) - 30),
+  ff: sv => svSeek(sv, svTime(sv) + 30),
+  play: sv => (sv.playing() ? sv.pause() : sv.play()),
+  next: sv => sv.next(),
+  crt: () => svCrt(!svCrtOn()),
+  full: sv => svFull(sv, !sv.full),
+  eject: sv => svClose(sv),
+};
