@@ -256,3 +256,8 @@ const svOpen = sv => {
   if (!sv.playing()) sv.play();
   svTick();
 };
+
+// The transformation: timers of its own (cleared when another starts), the player's parts (the
+// medallion with them) going away and coming back with the look's animations ([data-svlook]), and
+// the layer of effects laid over the whole corner, the player and the television together
+const svLater = (sv, ms, fn) => sv.timers.push(setTimeout(fn, ms));
