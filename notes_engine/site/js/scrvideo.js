@@ -313,3 +313,28 @@ const svGrown = sv => {
   svRest(sv, false);
   svTick();
 };
+// Back: at once when the screen goes, else the television turns back into the player
+const svClose = (sv, atOnce) => {
+  sv.on = false;
+  sv.lit = false;
+  svFollow(sv);
+  svPut(sv, null);
+  svLoading(sv, false);
+  svFull(sv, false);
+  sv.trig.classList.remove("on", "svwait");
+  sv.front.remove();
+  if (!sv.out) return;
+  svStop(sv);
+  sv.out = false;
+  if (atOnce === true || svStill()) {
+    sv.back.remove();
+    sv.fx.remove();
+    svParts(sv).forEach(el => el.classList.remove("svaway", "svreturn", "svgone"));
+    return;
+  }
+  svEffects(sv, "out");
+  sv.back.classList.remove("svrise", "svpre");
+  sv.back.classList.add("svdrop");
+  svLater(sv, SV_OUT.swap, () => { sv.back.remove(); sv.back.classList.remove("svdrop"); svAway(sv, false); });
+  svLater(sv, SV_OUT.end, () => svParts(sv).forEach(el => el.classList.remove("svreturn")));
+};
