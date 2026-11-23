@@ -42,3 +42,29 @@ svScreen({
   brand: "<b>★ XMAS-TV</b>",
   chrome: [1.2, 5],
 });
+
+// The jazz bar (jazz.js): a walnut lounge television of the 1950s, brass trim, a speaker grille and
+// brass knobs, splayed legs, chrome antennas. Its medallion is a brass knob on the turntable's plinth;
+// a red velvet stage curtain closes over the turntable and opens on the television, a spotlight on it;
+// the tube warms up as an old one, an amber dot growing, the picture sepia before its colours; its
+// keys are a piano's, ivory and ebony; its plate an Art Deco marquee.
+svScreen({
+  look: "jtv",
+  here: () => vinyl.isConnected,
+  track: () => JAZZ_TRACKS[jazzAt],
+  media: () => (!jazz ? null : JAZZ_TRACKS[jazzAt].id ? { yt: JAZZ_TRACKS[jazzAt].id } : jazz),
+  playing: () => playing,
+  play: () => play(),
+  pause: () => pause(),
+  next: () => jazzSleeves[jazzNextAt()].click(),
+  label: () => vinyl.querySelector(".label"),
+  parts: () => [vinyl, jazzCrate],
+  spot: () => { const d = svRect(vinyl.querySelector(".deck")); return d && [d.right - 10, d.bottom - 10]; },
+  trigger: `<i class="svknob">${SV_GLYPH}</i>`,
+  cabinet: '<div class="svant"><b></b><b></b></div><div class="svcab"><div class="svtube"></div>' +
+    '<i class="svgrille"></i><span class="svbadge">Deluxe</span><span class="svknobs"><b></b><b></b></span><span class="svlegs"><b></b><b></b></span></div>',
+  effects: '<b class="svlight"></b><b class="svcur l"></b><b class="svcur r"></b><b class="svrod"></b>',
+  brand: "<b>Now playing</b>",
+  turn: "<b></b>",
+  chrome: [1.2, 5.6],
+});
