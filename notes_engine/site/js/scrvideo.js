@@ -137,3 +137,15 @@ const svPlayer = sv => {
 };
 const svShowable = (sv, p) => p.ready && p.music && !p.ad &&
   (!sv.playing() || p.state === 3 || performance.now() - p.movedAt < YT_STILL_MS());
+// An audio file's video plays and pauses with the music, muted, and goes back to its time when it
+// drifts away from it; the one followed before is paused
+const svFollow = sv => {
+  const t = sv.track(), id = sv.on && t && !t.id ? tapeVideoId(t) : "";
+  if (sv.followed && sv.followed !== id) ytPause(sv.followed, SV_FOLLOW);
+  sv.followed = id;
+  if (!id) return;
+  const p = ytPlayer(id);
+  if (!sv.playing()) { ytPause(id, SV_FOLLOW); return; }
+  if (p.owner !== SV_FOLLOW || p.want !== "play") ytPlay(id, SV_FOLLOW, false);
+  if (p.ready && p.music && Math.abs(p.time - svTime(sv)) > 1.5) ytSeek(id, SV_FOLLOW, svTime(sv));
+};
