@@ -1,5 +1,5 @@
 /* Watching a video on a screen's music player (js/scrvideo.js): what every television shares, the
-   looks being in scrtv.css. The medallion set on the player (.svtrig), the label of the player while
+   looks being in scrtvxmas.css, scrtvjazz.css, scrtvhw.css and scrtvsakura.css. The medallion set on the player (.svtrig), the label of the player while
    the picture is awaited ([data-svload]), the player going away and coming back (.svaway, .svreturn),
    the layer of effects over the corner during the transformation (.svfx), the cabinet under the
    picture (.svback, --sv-w wide, its tube .svtube) and the layer laid on the tube over the picture
@@ -25,7 +25,7 @@
 [data-svload]{font-size:0!important}
 [data-svload]::after{content:"📺 Loading the video…";font-size:.78rem}
 
-/* The player while its television is out: gone with its look's animation ([data-svlook], scrtv.css;
+/* The player while its television is out: gone with its look's animation ([data-svlook], scrtv*.css;
    individual scale / translate / rotate, not transform, which the players use for their own poses),
    back after; these are the plain ones */
 .svaway{animation:sv-away .4s ease-in forwards;pointer-events:none!important}
@@ -46,6 +46,14 @@
 @keyframes sv-rise{from{opacity:0;transform:translate(-.4rem,3rem) scale(.2)}}
 .svback.svdrop{animation:sv-drop .45s ease-in both}
 @keyframes sv-drop{to{opacity:0;transform:translate(-.4rem,3rem) scale(.2)}}
+/* the antennas of the cabinets that have them (SV_ANTENNAS, scrvideo.js): two rods from a base, each
+   look colouring and bending them */
+.svback .svant{position:absolute;left:50%;top:2px;width:0;height:0}
+.svback .svant b{position:absolute;bottom:0;left:-1px;width:2.5px;height:38px;transform-origin:50% 100%}
+.svback .svant b:first-child{transform:rotate(-28deg)}
+.svback .svant b:last-child{transform:rotate(24deg)}
+.svback .svant b::after{content:"";position:absolute;top:-5px;left:-3px;width:8px;height:8px;border-radius:50%}
+.svback .svant::before{content:"";position:absolute;left:-9px;top:-5px;width:18px;height:8px;border-radius:9px 9px 2px 2px}
 /* the picture shown, between the cabinet and the front layer */
 .ytplayer.svscreen{bottom:auto;opacity:1;z-index:42}
 
@@ -98,7 +106,8 @@ body .svback.svfull>*{visibility:hidden}
 .svfront.svfull .svplate{left:1rem;top:1rem;transform:scale(1.7)}
 .svfront.svfull .svkeys{bottom:1.6rem;transform:translateX(-50%) scale(1.9)}
 
-/* Touch screens: a medallion and keys a finger can hit */
-@media(pointer:coarse){.svtrig{width:2rem;height:2rem}.svfront .svkey{width:1.55rem;height:1.4rem;font-size:.55rem}}
+/* Touch screens: a medallion a finger can hit; the keys keep their look's size on the small tube (it
+   is too narrow for a finger's keys) and grow to a finger's size in full screen */
+@media(pointer:coarse){.svtrig{width:2rem;height:2rem}.svfront.svfull .svkeys{transform:translateX(-50%) scale(2.2)}}
 /* Reduced motion */
-@media(prefers-reduced-motion:reduce){.svtrig,.svtrig.svwait::after,.svback.svrise,.svback.svdrop,.svfront.waiting .svnoise{animation:none}.svfront.lit .svplate,.svfront.lit .svkeys,.svfront .svturn,.svfront .svturn *{animation:none!important}.svfx{display:none}}
+@media(prefers-reduced-motion:reduce){.svtrig,.svtrig.svwait::after,.svback.svrise,.svback.svdrop,.svfront.waiting .svnoise{animation:none}.svfront.lit .svplate,.svfront.lit .svkeys{animation:none!important}.svfront .svturn,.svfx{display:none}}
