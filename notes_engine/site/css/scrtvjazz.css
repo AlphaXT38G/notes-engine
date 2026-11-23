@@ -1,0 +1,65 @@
+/* the jazz bar: the turntable's television (js/scrtvjazz.js), its look.
+   Its parts, in this order: the medallion set on the player (.svtrig), the player going away and
+   coming back ([data-svlook].svaway / .svreturn), the transformation's effects (.svfx: .in, .out), the
+   cabinet (.svback: in the player's corner; coming .svrise, going .svdrop) and its front over the
+   picture (.svfront: the tube's corners --sv-r, the plate, the keys, the turn-on effect .svturn, the
+   ornaments .svover). What every television shares is in scrvideo.css; the timings of the
+   transformation (which these animations must fit) in js/scrvidmorph.js. */
+
+/* the medallion: a brass knob on the turntable's plinth, the little television engraved */
+.svtrig.jtv{color:#f5d080}
+.svtrig.jtv .svknob{border-radius:50%;background:radial-gradient(circle,transparent 54%,rgba(60,30,0,.35) 57%,transparent 62%),conic-gradient(from 20deg,#f6e2a0,#a07a30,#f0d890,#7a5a20,#f6e2a0,#a07a30,#f0d890,#7a5a20,#f6e2a0);color:#3a200f;box-shadow:0 2px 4px rgba(0,0,0,.6),inset 0 0 0 1.5px #5a3a18}
+.svtrig.jtv .svglyph{filter:drop-shadow(0 .6px 0 rgba(255,240,200,.7))}
+/* a red velvet stage curtain closes over the turntable and opens on the television, a spotlight on it */
+[data-svlook=jtv].svaway{animation:jtv-hide .45s step-end forwards}
+@keyframes jtv-hide{to{opacity:0}}
+[data-svlook=jtv].svreturn{animation:none}
+.svfx.jtv .svcur{top:.4rem;bottom:0;width:51%;background:linear-gradient(transparent 88%,rgba(0,0,0,.35)),repeating-linear-gradient(90deg,#4a0810 0,#8e1424 7%,#c8303e 10%,#8e1424 13%,#4a0810 18%);box-shadow:inset 0 -.5rem 1rem rgba(0,0,0,.4),0 0 1.2rem rgba(0,0,0,.5);transform:scaleX(0)}
+.svfx.jtv .svcur::after{content:"";position:absolute;left:0;right:0;bottom:0;height:.55rem;background:repeating-linear-gradient(90deg,#f0d070 0 1.5px,transparent 1.5px 3.5px) 0 3px/100% 100% no-repeat,linear-gradient(#f6e2a0,#b08020) 0 0/100% 3px no-repeat}
+.svfx.jtv .svcur.l{left:0;transform-origin:0 0;border-radius:0 0 40% 0/0 0 12% 0}
+.svfx.jtv .svcur.r{right:0;transform-origin:100% 0;border-radius:0 0 0 40%/0 0 0 12%}
+.svfx.jtv.in .svcur,.svfx.jtv.out .svcur{animation:jtv-curtain 1.25s cubic-bezier(.45,0,.3,1) both}
+@keyframes jtv-curtain{0%{transform:scaleX(0) skewX(0)}34%{transform:scaleX(1.02) skewX(0)}56%{transform:scaleX(1.02)}100%{transform:scaleX(0) skewX(-4deg)}}
+.svfx.jtv .svrod{left:-.4rem;right:-.4rem;top:0;height:.45rem;border-radius:.3rem;background:linear-gradient(#fff3c0,#c9a050 50%,#7a5a20);box-shadow:0 2px 4px rgba(0,0,0,.5);opacity:0}
+.svfx.jtv.in .svrod,.svfx.jtv.out .svrod{animation:jtv-rod 1.25s both}
+@keyframes jtv-rod{0%,100%{opacity:0}12%,85%{opacity:1}}
+.svfx.jtv .svlight{left:5%;right:5%;top:0;bottom:0;background:radial-gradient(ellipse 60% 70% at 50% 100%,rgba(255,226,160,.4),transparent 70%),linear-gradient(rgba(255,230,170,.18),transparent);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);opacity:0}
+.svfx.jtv.in .svlight{animation:jtv-spot 1.6s .55s ease-out both}
+@keyframes jtv-spot{0%{opacity:0}35%{opacity:1}100%{opacity:0}}
+.svback.jtv{left:.9rem;bottom:1.7rem}
+.svback.jtv.svrise,.svback.jtv.svdrop{animation:none}
+/* the cabinet */
+.svback.jtv .svant b{background:linear-gradient(#e8e2d6,#8a8478)}
+.svback.jtv .svant b::after{background:radial-gradient(circle at 35% 35%,#fff,#a9a296)}
+.svback.jtv .svant::before{background:linear-gradient(#5a3a22,#2a160a)}
+.svback.jtv .svcab{position:relative;padding:9px 9px 26px;border-radius:12px;background:repeating-linear-gradient(95deg,rgba(0,0,0,.08) 0 2px,transparent 2px 7px),linear-gradient(135deg,#8a5530,#5a3218 55%,#3a200f);box-shadow:0 12px 28px rgba(0,0,0,.6),inset 0 0 0 1.5px #c9a050,inset 0 1px 0 rgba(255,220,170,.3)}
+.svback.jtv .svtube{border-radius:12px/16px;box-shadow:0 0 0 3px #1a0f08,0 0 0 4.5px #c9a050}
+.svback.jtv .svgrille{position:absolute;left:12px;bottom:7px;width:45%;height:12px;border-radius:2px;background:repeating-linear-gradient(90deg,#c9a050 0 1.5px,#2a160a 1.5px 4px);box-shadow:inset 0 0 0 1px #c9a050}
+.svback.jtv .svbadge{position:absolute;left:calc(45% + 22px);bottom:8px;font:italic 800 8px Georgia,serif;color:#e8c070;letter-spacing:.05em}
+.svback.jtv .svknobs{position:absolute;right:14px;bottom:5px;display:flex;gap:10px}
+.svback.jtv .svknobs b{width:14px;height:14px;border-radius:50%;background:conic-gradient(from 30deg,#f0d890,#a07a30,#f0d890,#a07a30,#f0d890);box-shadow:0 1px 2px rgba(0,0,0,.6)}
+.svback.jtv .svlegs{position:absolute;left:18px;right:18px;bottom:-12px;display:flex;justify-content:space-between}
+.svback.jtv .svlegs b{width:4px;height:14px;background:linear-gradient(#3a200f,#1a0f08);transform:rotate(12deg)}
+.svback.jtv .svlegs b:first-child{transform:rotate(-12deg)}
+/* the plate, an Art Deco marquee rimmed with bulbs; the keys, a piano's: ivory keys and ebony sharps */
+.svfront.jtv{--sv-r:12px 12px 12px 12px/16px 16px 16px 16px}
+.svfront.jtv .svplate{padding:5px 7px;border-radius:2px;background:radial-gradient(circle,#ffe9a8 0 1px,transparent 1.5px) 2px 1px/6px 4px repeat-x,radial-gradient(circle,#ffe9a8 0 1px,transparent 1.5px) 2px 100%/6px 4px repeat-x,linear-gradient(#2a160a,#140a04);color:#f5d080;box-shadow:0 0 0 1px #c9a050,0 2px 8px rgba(0,0,0,.6),0 0 10px rgba(245,176,65,.25)}
+.svfront.jtv .svplate b{font:italic 700 .4rem Georgia,serif;letter-spacing:.12em;text-transform:uppercase;color:#c9a050}
+.svfront.jtv .svnow{font:italic 700 .46rem Georgia,serif}
+.svfront.jtv .svctr{color:#ffd27a;text-shadow:0 0 3px #f5b041}
+.svfront.jtv .svkeys{gap:1px;padding:4px 6px 5px;border-radius:3px;background:linear-gradient(#4a2a14,#1a0f08);box-shadow:0 0 0 1.5px #c9a050,inset 0 2px 0 rgba(255,220,170,.2),0 4px 12px rgba(0,0,0,.6)}
+.svfront.jtv .svgap{width:5px;height:1.2rem;background:linear-gradient(#c9a050,#7a5a20);border-radius:1px}
+.svfront.jtv .svkey{width:.95rem;height:1.25rem;align-items:flex-end;padding-bottom:3px;border-radius:0 0 3px 3px;background:linear-gradient(#fffdf6,#efe6d2 78%,#d8ccb0);color:#3a200f;box-shadow:inset 0 -3px 0 #cbbf9f,0 1px 0 rgba(0,0,0,.5)}
+.svfront.jtv .svkey.restart::after,.svfront.jtv .svkey.rew::after,.svfront.jtv .svkey.next::after,.svfront.jtv .svkey.crt::after{content:"";position:absolute;right:-.3rem;top:0;z-index:2;width:.52rem;height:.66rem;border-radius:0 0 2px 2px;background:linear-gradient(90deg,#000,#2a2a2a 40%,#111);box-shadow:inset 0 -2px 0 #3a3a3a,0 1px 1px rgba(0,0,0,.6);pointer-events:none}
+.svfront.jtv .svkey:hover{background:linear-gradient(#fffef9,#f6eedd 78%,#e0d5ba)}
+.svfront.jtv .svkey:active{transform:translateY(1px);box-shadow:inset 0 -1px 0 #cbbf9f}
+.svfront.jtv.crt .svkey.crt{background:linear-gradient(#fff3d0,#f5d080 80%,#d8a840);box-shadow:inset 0 -1px 0 #b08020,0 0 6px rgba(245,176,65,.6)}
+.svfront.jtv .svmsg{background:#1a0f08;color:#f5b041;text-shadow:0 0 4px #f5b041}
+/* turned on: the tube warms up, an amber dot growing out of the dark, the picture sepia, then its colours */
+.svfront.jtv.lit .svturn{animation:jtv-on 1.8s both}
+@keyframes jtv-on{0%,15%{opacity:1;background:#000}55%{opacity:1;background:rgba(120,70,20,.55)}100%{opacity:0;background:rgba(120,70,20,.2)}}
+.svfront.jtv .svturn b{position:absolute;left:50%;top:50%;width:120%;padding-top:120%;border-radius:50%;background:radial-gradient(circle,#fff6d8,#f5b041 30%,rgba(245,176,65,0) 70%);transform:translate(-50%,-50%) scale(0)}
+.svfront.jtv.lit .svturn b{animation:jtv-dot 1.8s both}
+@keyframes jtv-dot{0%{transform:translate(-50%,-50%) scale(0)}15%{transform:translate(-50%,-50%) scale(.04)}60%{transform:translate(-50%,-50%) scale(1);opacity:.8}100%{transform:translate(-50%,-50%) scale(1.3);opacity:0}}
+/* Reduced motion */
+/* (nothing of its own moves: the curtain is in .svfx, put away by scrvideo.css) */

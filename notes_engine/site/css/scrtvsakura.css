@@ -1,0 +1,73 @@
+/* Sakura: the shamisen's television (js/scrtvsakura.js), its look.
+   Its parts, in this order: the medallion set on the player (.svtrig), the player going away and
+   coming back ([data-svlook].svaway / .svreturn), the transformation's effects (.svfx: .in, .out), the
+   cabinet (.svback: in the player's corner; coming .svrise, going .svdrop) and its front over the
+   picture (.svfront: the tube's corners --sv-r, the plate, the keys, the turn-on effect .svturn, the
+   ornaments .svover). What every television shares is in scrvideo.css; the timings of the
+   transformation (which these animations must fit) in js/scrvidmorph.js. */
+
+/* the medallion: a hanko seal, 映 (a picture), stamped on the shamisen's skin */
+.svtrig.stv{color:#c0392b}
+.svtrig.stv .svhanko{border-radius:3px;background:radial-gradient(circle at 30% 70%,rgba(255,255,255,.12),transparent 40%),linear-gradient(135deg,#d8402e,#a8261a);color:#fff3e8;font:700 .78rem/1 "Yu Mincho","Hiragino Mincho ProN","Noto Serif CJK JP",serif;box-shadow:inset 0 0 0 1.5px rgba(255,235,220,.85),inset 0 0 0 3px #b8301f,0 1px 3px rgba(0,0,0,.35);rotate:-6deg}
+.svtrig.stv::after{border-radius:4px}
+/* a gust of petals blows the shamisen away; the television unrolls out of it as a hanging scroll */
+[data-svlook=stv].svaway{animation:stv-away .55s ease-in forwards}
+@keyframes stv-away{to{opacity:0;translate:1.4rem -.8rem;rotate:7deg;filter:blur(3px)}}
+[data-svlook=stv].svreturn{animation:stv-return .7s cubic-bezier(.2,.8,.3,1.1) both}
+@keyframes stv-return{from{opacity:0;translate:-1rem .5rem;rotate:-5deg;filter:blur(3px)}}
+.svfx.stv i{left:var(--x);bottom:var(--y);width:var(--s);height:calc(var(--s) * .8);border-radius:70% 0 70% 0;background:linear-gradient(135deg,#fff0f4,#ffb7c9 50%,#f28aa8);opacity:0}
+.svfx.stv.in i,.svfx.stv.out i{animation:stv-gust 1.5s var(--t) cubic-bezier(.3,.5,.4,1) both}
+@keyframes stv-gust{0%{opacity:0;transform:translate(0,0) rotate(0)}15%{opacity:1}50%{transform:translate(calc(var(--dx) * .5),calc(var(--dy) * .3 - 1rem)) rotate(calc(var(--r) * .5))}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r))}}
+.svfx.stv .svbloom{left:0;bottom:0;width:9rem;height:9rem;border-radius:50%;background:radial-gradient(circle,rgba(255,200,215,.55),rgba(255,200,215,0) 65%);margin:0 0 -3rem -3rem;opacity:0}
+.svfx.stv.in .svbloom,.svfx.stv.out .svbloom{animation:stv-bloom 1.2s ease-out both}
+@keyframes stv-bloom{0%{opacity:0;transform:scale(.4)}40%{opacity:1}100%{opacity:0;transform:scale(1.4)}}
+.svback.stv{left:.9rem;bottom:1.1rem}
+.svback.stv.svrise{animation:stv-unroll .85s cubic-bezier(.35,.6,.3,1) both}
+@keyframes stv-unroll{from{clip-path:inset(-40px -40px 100% -40px)}to{clip-path:inset(-40px -40px -40px -40px)}}
+.svback.stv.svdrop{animation:stv-roll .5s cubic-bezier(.6,0,.8,.5) both}
+@keyframes stv-roll{from{clip-path:inset(-40px -40px -40px -40px)}to{clip-path:inset(-40px -40px 100% -40px)}}
+/* the scroll's wooden roller, running down as it unrolls (up as it rolls) */
+.svback.stv .svroller{position:absolute;left:-7px;right:-7px;top:100%;height:8px;margin-top:-4px;border-radius:4px;background:linear-gradient(#8a5a30,#4a2a14);box-shadow:0 2px 4px rgba(0,0,0,.4);opacity:0}
+.svback.stv .svroller::before,.svback.stv .svroller::after{content:"";position:absolute;top:-1px;width:6px;height:10px;border-radius:3px;background:linear-gradient(#e8c890,#a07a40)}
+.svback.stv .svroller::before{left:-3px}
+.svback.stv .svroller::after{right:-3px}
+.svback.stv.svrise .svroller{animation:stv-roller .85s cubic-bezier(.35,.6,.3,1) both}
+@keyframes stv-roller{0%{opacity:1;top:0}90%{opacity:1;top:100%}100%{opacity:0;top:100%}}
+.svback.stv.svdrop .svroller{animation:stv-roller-up .5s cubic-bezier(.6,0,.8,.5) both}
+@keyframes stv-roller-up{0%{opacity:1;top:100%}100%{opacity:1;top:0}}
+/* the cabinet */
+.svback.stv .svcab{position:relative;padding:9px 9px 13px;border-radius:6px;background:linear-gradient(135deg,#2a1c1e,#140c0e);box-shadow:0 12px 28px rgba(0,0,0,.45),inset 0 0 0 2px #c0392b,inset 0 0 0 3px #d8b060}
+.svback.stv .svcab::before,.svback.stv .svcab::after{content:"";position:absolute;bottom:2px;z-index:2;width:12px;height:12px;border:2px solid #d8b060;border-top:0}
+.svback.stv .svcab::before{left:2px;border-right:0}
+.svback.stv .svcab::after{right:2px;border-left:0}
+.svback.stv .svtube{border-radius:3px;box-shadow:0 0 0 2px #0a0506}
+/* over the picture: a branch of cherry blossom resting on the top, petals falling */
+.svfront.stv{--sv-r:3px}
+.svfront.stv .svbranch{position:absolute;left:-31px;top:-35px;z-index:6;width:120px;pointer-events:none}
+.svfront.stv .svpetal{position:absolute;top:-10px;z-index:6;width:6px;height:5px;border-radius:60% 0 60% 0;background:#ffb7c9;pointer-events:none;animation:stv-fall 4s linear infinite}
+@keyframes stv-fall{from{transform:none}to{transform:translate(40px,150px) rotate(400deg);opacity:0}}
+/* the plate, a strip of washi paper with a seal; the keys, cherry blossoms along a lacquered branch */
+.stv .svseal{display:block;width:11px;height:11px;border-radius:2px;background:#c0392b;color:#fff;font:700 7.5px/11px serif;text-align:center}
+.svfront.stv .svplate{padding:3px 7px 3px 3px;border-radius:1px;background:repeating-linear-gradient(80deg,rgba(160,130,90,.07) 0 1px,transparent 1px 4px),linear-gradient(#fdf7ea,#f3e6cc);color:#2a1c1e;font-family:"Yu Mincho","Hiragino Mincho ProN",Georgia,serif;box-shadow:inset 0 2px 0 #c0392b,0 2px 6px rgba(0,0,0,.45)}
+.svfront.stv .svctr{color:#c0392b}
+.svfront.stv .svkeys{gap:2px;padding:3px 9px;border-radius:999px;background:linear-gradient(transparent 46%,rgba(216,176,96,.75) 48%,rgba(216,176,96,.75) 52%,transparent 54%),linear-gradient(#2a1c1e,#0e0808);box-shadow:0 0 0 1px #d8b060,0 3px 10px rgba(0,0,0,.55)}
+.svfront.stv .svkey{width:1.08rem;height:1.08rem;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-12 -12 24 24'%3E%3Cg fill='%23ffc8d8' stroke='%23e8809e' stroke-width='.6'%3E%3Cpath d='M0-1C-4-3-5-9-1.4-11.4L0-9.8 1.4-11.4C5-9 4-3 0-1z'/%3E%3Cpath transform='rotate(72)' d='M0-1C-4-3-5-9-1.4-11.4L0-9.8 1.4-11.4C5-9 4-3 0-1z'/%3E%3Cpath transform='rotate(144)' d='M0-1C-4-3-5-9-1.4-11.4L0-9.8 1.4-11.4C5-9 4-3 0-1z'/%3E%3Cpath transform='rotate(216)' d='M0-1C-4-3-5-9-1.4-11.4L0-9.8 1.4-11.4C5-9 4-3 0-1z'/%3E%3Cpath transform='rotate(288)' d='M0-1C-4-3-5-9-1.4-11.4L0-9.8 1.4-11.4C5-9 4-3 0-1z'/%3E%3C/g%3E%3Ccircle r='3' fill='%23fff3f6'/%3E%3C/svg%3E") center/contain no-repeat;color:#6a1030;filter:drop-shadow(0 1px 1px rgba(0,0,0,.5));transition:transform .4s cubic-bezier(.3,1.5,.5,1),filter .2s}
+.svfront.stv .svkey span{font-size:.36rem}
+.svfront.stv .svkey:hover{transform:rotate(36deg) scale(1.1)}
+.svfront.stv .svkey:hover span{transform:rotate(-36deg)}
+.svfront.stv .svkey:active{transform:scale(.9)}
+.svfront.stv.crt .svkey.crt{filter:drop-shadow(0 0 4px #ff8ab0) saturate(2.2) brightness(.95)}
+.svfront.stv .svmsg{background:#2a1c1e;color:#ffd2dc;text-shadow:0 0 4px #ff9ab8}
+/* turned on: the two paper doors light up, then slide away on the picture */
+.svfront.stv .svturn{opacity:1;visibility:hidden}
+.svfront.stv.lit .svturn{animation:stv-show 1.9s both}
+@keyframes stv-show{0%,99%{visibility:visible}100%{visibility:hidden}}
+.svfront.stv .svturn b{position:absolute;top:0;bottom:0;width:50%;background:linear-gradient(90deg,#3a2418 0 2px,transparent 2px) 0 0/25% 100%,linear-gradient(#3a2418 0 2px,transparent 2px) 0 0/100% 33.4%,linear-gradient(#fbf3e4,#f0e2c8);box-shadow:inset 0 0 0 2px #3a2418}
+.svfront.stv .svturn .l{left:0}
+.svfront.stv .svturn .r{right:0}
+.svfront.stv.lit .svturn .l{animation:stv-l 1.8s both}
+.svfront.stv.lit .svturn .r{animation:stv-r 1.8s both}
+@keyframes stv-l{0%{transform:none;filter:none}35%{transform:none;filter:brightness(1.15)}100%{transform:translateX(-102%)}}
+@keyframes stv-r{0%{transform:none;filter:none}35%{transform:none;filter:brightness(1.15)}100%{transform:translateX(102%)}}
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){.svfront.stv .svpetal{animation:none}}

@@ -48,19 +48,26 @@ const videoPlayer = () => {
   const id = tapeVideoId(tapeNow());
   return id ? ytPlayer(id) : null;
 };
-const videoShowable = p => p.ready && p.music && !p.ad &&
-  (!tapePlaying || p.state === 3 || performance.now() - p.movedAt < YT_STILL_MS());
-// An audio file's video plays and pauses with the tape, muted, and goes back to its time when it
-// drifts away from it; the one followed before is paused
+// (playing: whether its music plays, the tape's by default; the screens' televisions pass their
+// player's, scrvidpic.js)
+const videoShowable = (p, playing = tapePlaying) => p.ready && p.music && !p.ad &&
+  (!playing || p.state === 3 || performance.now() - p.movedAt < YT_STILL_MS());
+// An audio file's video plays and pauses with its music, muted, and goes back to its time when it
+// drifts away from it; the one followed before (was) is paused. followVideo(owner, was, id, playing,
+// time) does it for the video id ("" for none) and returns it, the one followed now; the deck's
+// tape and the screens' televisions (scrvidpic.js) each follow theirs, as owners of their own
+const followVideo = (owner, was, id, playing, time) => {
+  if (was && was !== id) ytPause(was, owner);
+  if (!id) return id;
+  const p = ytPlayer(id);
+  if (!playing) { ytPause(id, owner); return id; }
+  if (p.owner !== owner || p.want !== "play") ytPlay(id, owner, false);
+  if (p.ready && p.music && Math.abs(p.time - time) > 1.5) ytSeek(id, owner, time);
+  return id;
+};
 const followTape = () => {
   const tape = tapeNow(), id = videoOn && !tape.id ? tapeVideoId(tape) : "";
-  if (videoFollowed && videoFollowed !== id) ytPause(videoFollowed, TAPE_VIDEO);
-  videoFollowed = id;
-  if (!id) return;
-  const p = ytPlayer(id);
-  if (!tapePlaying) { ytPause(id, TAPE_VIDEO); return; }
-  if (p.owner !== TAPE_VIDEO || p.want !== "play") ytPlay(id, TAPE_VIDEO, false);
-  if (p.ready && p.music && Math.abs(p.time - tapeTime) > 1.5) ytSeek(id, TAPE_VIDEO, tapeTime);
+  videoFollowed = followVideo(TAPE_VIDEO, videoFollowed, id, tapePlaying, tapeTime);
 };
 // The player shown, laid under the monitor's tube (none: the tube shows its snow). YouTube picks
 // the video's quality by the player's size: the player is laid out VIDEO_WIDTH px wide at least (full
@@ -69,6 +76,16 @@ const followTape = () => {
 // VIDEO_CROP px taller at each end and cut back, the video, fitted to its width, filling the tube
 // exactly and those bars falling outside.
 const VIDEO_WIDTH = 1920, VIDEO_CROP = 90;
+// The style that lays a YouTube player over a box of the window ({ left, top, width, height }, px),
+// its corners clipped round (radius: [rx, ry] in px on the box; none: square), as a CSS text; the
+// screens' televisions lay theirs with it too (svPut, scrvidpic.js)
+const frameStyle = (box, radius) => {
+  const width = Math.max(VIDEO_WIDTH, box.width), scale = box.width / width;
+  const round = radius ? ` round ${radius[0] / scale}px / ${radius[1] / scale}px` : "";
+  return `left:${box.left}px;top:${box.top - VIDEO_CROP * scale}px;width:${width}px;` +
+    `height:${box.height / scale + 2 * VIDEO_CROP}px;transform:scale(${scale});transform-origin:0 0;` +
+    `clip-path:inset(${VIDEO_CROP}px 0${round})`;
+};
 const putFrame = frame => {
   if (videoFrame && videoFrame !== frame) {
     videoFrame.classList.remove("onscreen");
@@ -78,10 +95,7 @@ const putFrame = frame => {
   tapeMonitor.classList.toggle("showing", !!frame);
   tapeMonitor.classList.toggle("waiting", videoLit && !frame);
   if (!frame) return;
-  const tube = tubeBox(), width = Math.max(VIDEO_WIDTH, tube.width), scale = tube.width / width;
-  frame.style.cssText = `left:${tube.left}px;top:${tube.top - VIDEO_CROP * scale}px;width:${width}px;` +
-    `height:${tube.height / scale + 2 * VIDEO_CROP}px;transform:scale(${scale});transform-origin:0 0;` +
-    `clip-path:inset(${VIDEO_CROP}px 0)`;
+  frame.style.cssText = frameStyle(tubeBox());
   frame.classList.add("onscreen");
 };
 tapeDeck.addEventListener("monitormove", () => { if (videoFrame) putFrame(videoFrame); });
