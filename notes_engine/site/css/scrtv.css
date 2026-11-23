@@ -64,6 +64,8 @@
 .svfront.xtv .svplate b{color:#c8102e;font-style:italic}
 .svfront.xtv .svctr{padding:1.5px 3px;border-radius:1px;background:#2a0710;color:#ffd25a;text-shadow:0 0 3px #e3a923}
 .svfront.xtv .svkeys{bottom:1.15rem;gap:2px;height:9px;padding:0 9px;align-items:flex-start;border-radius:999px;background:radial-gradient(circle at 30% 45%,#3a9a52 0 2px,transparent 2.5px) 0 0/5px 5px,radial-gradient(circle at 70% 60%,#1f6a35 0 2.2px,transparent 2.7px) 2px 1px/6px 6px,linear-gradient(#1f6a35,#0f3a1d);box-shadow:0 2px 4px rgba(0,0,0,.5)}
+/* in full screen the baubles, hanging below the garland and grown with it, need the room under it */
+.svfront.xtv.svfull .svkeys{bottom:3.9rem}
 .svfront.xtv .svkeys::before{content:"";position:absolute;left:5px;right:5px;top:2px;height:5px;background:radial-gradient(circle,#ffe27a 0 1.1px,transparent 1.7px) 0 0/10px 5px repeat-x,radial-gradient(circle,#ff6a7a 0 1.1px,transparent 1.7px) 5px 0/10px 5px repeat-x;animation:xtv-lights 1.4s steps(2) infinite}
 @keyframes xtv-lights{50%{opacity:.45}}
 .svfront.xtv .svgap{width:6px}
