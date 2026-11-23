@@ -57,3 +57,10 @@
 .svback.xtv .svant::before{background:linear-gradient(#e3b341,#8a6410)}
 .svback.xtv .svant b:first-child::after{background:radial-gradient(circle at 35% 35%,#fff 0 12%,#e0263f 30%,#8e0b1f)}
 .svback.xtv .svant b:last-child::after{left:-6px;top:-10px;width:14px;height:14px;border-radius:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-10 -10 20 20'%3E%3Cpath d='M0-9 2-3h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z' fill='%23f2c14e' stroke='%23a07617' stroke-width='.8'/%3E%3C/svg%3E") center/contain no-repeat}
+/* the plate, a gift tag; the keys, glass baubles hanging from a fir garland strung with lights */
+.svfront.xtv{--sv-r:14px 14px 14px 14px/18px 18px 18px 18px}
+.svfront.xtv .svplate{padding:3px 6px 3px 9px;border-radius:2px 6px 6px 2px;background:linear-gradient(#fffaf0,#f1e4c8);color:#5b3a10;box-shadow:0 2px 6px rgba(0,0,0,.45),inset 0 0 0 1px #e3b341}
+.svfront.xtv .svplate::before{content:"";position:absolute;left:3px;top:50%;width:3px;height:3px;margin-top:-1.5px;border-radius:50%;background:#c8102e}
+.svfront.xtv .svplate b{color:#c8102e;font-style:italic}
+.svfront.xtv .svctr{padding:1.5px 3px;border-radius:1px;background:#2a0710;color:#ffd25a;text-shadow:0 0 3px #e3a923}
+.svfront.xtv .svkeys{bottom:1.15rem;gap:2px;height:9px;padding:0 9px;align-items:flex-start;border-radius:999px;background:radial-gradient(circle at 30% 45%,#3a9a52 0 2px,transparent 2.5px) 0 0/5px 5px,radial-gradient(circle at 70% 60%,#1f6a35 0 2.2px,transparent 2.7px) 2px 1px/6px 6px,linear-gradient(#1f6a35,#0f3a1d);box-shadow:0 2px 4px rgba(0,0,0,.5)}
