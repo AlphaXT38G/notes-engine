@@ -68,3 +68,12 @@ svScreen({
   turn: "<b></b>",
   chrome: [1.2, 5.6],
 });
+
+// Halloween (hwmusic.js): a haunted television, purple-black with an orange glow, a cobweb in the
+// corners of its frame, a spider hanging from its top, crooked antennas with a bat on them, a green
+// halo around the picture. Its medallion is a little jack-o'-lantern whose face is a screen, by the
+// cocotte; the cocotte sinks into a cloud of coloured smoke, bats flying out, and the television
+// flickers out of it like a ghost; the tube comes on in green snow, a ghost leaping out of it; its
+// keys are tombstones on a mound; its plate a scorched parchment.
+const SV_WEB = side => `<svg class="svover svweb ${side}" viewBox="0 0 40 40" fill="none" stroke="rgba(235,225,255,.6)" stroke-width=".6" aria-hidden="true">` +
+  '<path d="M0 0L40 12M0 0L28 28M0 0L12 40M0 9Q7 7 9 0M0 17Q14 14 17 0M0 26Q21 21 26 0M0 35Q28 28 35 0"/></svg>';
