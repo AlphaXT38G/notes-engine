@@ -359,3 +359,14 @@ const svShown = () => SV_ALL.find(sv => sv.lit);
 // The window's size changing (full screen, a phone's bars, the window resized): laid out again once
 // per frame at most, when the browser has settled its new size
 let svFrameAsked = 0;
+const svRelay = () => {
+  if (svFrameAsked) return;
+  svFrameAsked = requestAnimationFrame(() => {
+    svFrameAsked = 0;
+    SV_ALL.forEach(sv => { sv.spotAt = ""; });
+    const sv = SV_ALL.find(s => s.out);
+    if (!sv) return;
+    svFit(sv);
+    if (sv.lit) svPlace(sv);
+  });
+};
