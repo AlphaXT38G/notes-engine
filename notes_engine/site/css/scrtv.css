@@ -42,3 +42,11 @@
 .svback.xtv .svcap::after{right:52px;height:6px}
 .svback.xtv .svholly{position:absolute;right:-12px;top:-14px;z-index:3;width:40px}
 .svback.xtv .svtube{border-radius:14px/18px;box-shadow:0 0 0 3px #3a0710,0 0 0 4.5px #e3b341}
+.svback.xtv .svknobs{position:absolute;left:50%;bottom:2px;display:flex;gap:30px;transform:translateX(-50%)}
+.svback.xtv .svknobs b{width:7px;height:7px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff3b0,#e3a923 45%,#8a5a08)}
+.svback.xtv .svfeet{position:absolute;left:22px;right:22px;bottom:-7px;display:flex;justify-content:space-between}
+.svback.xtv .svfeet b{width:14px;height:8px;border-radius:0 0 5px 5px;background:linear-gradient(#e3b341,#8a6410)}
+/* the antennas: golden rods, a red bauble on one, a star on the other (crooked ones for Halloween) */
+.svback .svant{position:absolute;left:50%;top:2px;width:0;height:0}
+.svback .svant b{position:absolute;bottom:0;left:-1px;width:2.5px;height:38px;transform-origin:50% 100%}
+.svback .svant b:first-child{transform:rotate(-28deg)}
