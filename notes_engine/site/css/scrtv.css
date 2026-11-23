@@ -71,3 +71,10 @@
 .svfront.xtv .svkey::before{content:"";position:absolute;left:50%;top:-3px;width:5px;height:3.5px;margin-left:-2.5px;border-radius:1px 1px 0 0;background:linear-gradient(90deg,#8a6410,#ffe9a8,#8a6410)}
 .svfront.xtv .svkey::after{content:"";position:absolute;left:50%;top:-7px;width:1px;height:4px;background:#e3b341}
 .svfront.xtv .svkey:nth-child(4n+2){--b1:#fff0a0;--b2:#d4a020;--b3:#6a4808;color:#5a3a08;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.svfront.xtv .svkey:nth-child(4n+3){--b1:#7ae09a;--b2:#1f8a45;--b3:#0a3a1a}
+.svfront.xtv .svkey:nth-child(4n){--b1:#dcecff;--b2:#5a8ad4;--b3:#1a2a5a}
+.svfront.xtv .svkey:hover{animation:xtv-swing .9s ease-in-out}
+@keyframes xtv-swing{25%{rotate:14deg}60%{rotate:-9deg}85%{rotate:4deg}}
+.svfront.xtv .svkey:active{transform:scale(.9)}
+.svfront.xtv.crt .svkey.crt{box-shadow:0 0 9px 2px #ffe27a,inset -2px -2px 4px rgba(0,0,0,.3)}
+.svfront.xtv .svmsg{background:#2a0710;color:#ffd25a;text-shadow:0 0 4px #e3a923}
