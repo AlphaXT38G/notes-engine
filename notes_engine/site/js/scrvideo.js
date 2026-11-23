@@ -370,3 +370,10 @@ const svRelay = () => {
     if (sv.lit) svPlace(sv);
   });
 };
+["fullscreenchange", "webkitfullscreenchange"].forEach(name => document.addEventListener(name, () => {
+  const sv = svShown();
+  if (!sv) return;
+  if (!fullscreenNow()) svFull(sv, false);
+  else svPlace(sv);
+  svRelay();
+}));
