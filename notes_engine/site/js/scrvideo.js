@@ -261,3 +261,25 @@ const svOpen = sv => {
 // medallion with them) going away and coming back with the look's animations ([data-svlook]), and
 // the layer of effects laid over the whole corner, the player and the television together
 const svLater = (sv, ms, fn) => sv.timers.push(setTimeout(fn, ms));
+const svStop = sv => { sv.timers.forEach(clearTimeout); sv.timers = []; };
+const svParts = sv => sv.parts().concat(sv.trig).filter(Boolean);
+const svAway = (sv, away) => svParts(sv).forEach(el => {
+  el.classList.remove("svaway", "svreturn", "svgone");
+  el.setAttribute("data-svlook", sv.look);
+  if (svStill()) { el.classList.toggle("svgone", away); return; }
+  void el.offsetWidth;
+  el.classList.add(away ? "svaway" : "svreturn");
+});
+const svEffects = (sv, way) => {
+  if (svStill() || !sv.effects) return;
+  const boxes = svParts(sv).concat(sv.back).filter(el => el.isConnected).map(el => el.getBoundingClientRect()).filter(b => b.width);
+  if (!boxes.length) return;
+  const r = svRem(), left = Math.min.apply(null, boxes.map(b => b.left)) - r, top = Math.min.apply(null, boxes.map(b => b.top)) - 2 * r;
+  const right = Math.max.apply(null, boxes.map(b => b.right)) + r, bottom = Math.max.apply(null, boxes.map(b => b.bottom)) + r;
+  Object.assign(sv.fx.style, { left: `${left}px`, top: `${top}px`, width: `${right - left}px`, height: `${bottom - top}px` });
+  sv.fx.classList.remove("in", "out");
+  document.body.append(sv.fx);
+  void sv.fx.offsetWidth;
+  sv.fx.classList.add(way);
+  svLater(sv, SV_OUT.end + 300, () => sv.fx.remove());
+};
