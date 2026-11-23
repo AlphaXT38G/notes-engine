@@ -198,3 +198,13 @@ const svPut = (sv, frame) => {
     `transform:scale(${k});transform-origin:0 0;clip-path:inset(${VIDEO_CROP}px 0 round ${round})`;
   frame.classList.add("svscreen");
 };
+// The medallion, set on its spot of the player (moved only when the player has moved)
+const svSpot = sv => {
+  const at = sv.spot();
+  if (!at) return;
+  const key = `${Math.round(at[0])},${Math.round(at[1])}`;
+  if (key === sv.spotAt) return;
+  sv.spotAt = key;
+  sv.trig.style.left = `${at[0]}px`;
+  sv.trig.style.top = `${at[1]}px`;
+};
