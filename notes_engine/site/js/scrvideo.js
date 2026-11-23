@@ -149,3 +149,13 @@ const svFollow = sv => {
   if (p.owner !== SV_FOLLOW || p.want !== "play") ytPlay(id, SV_FOLLOW, false);
   if (p.ready && p.music && Math.abs(p.time - svTime(sv)) > 1.5) ytSeek(id, SV_FOLLOW, svTime(sv));
 };
+
+// Its size: the free margin left of the notes (as fitMonitor, tapemonitor.js), no taller than the
+// window (chrome: the cabinet's width and height besides the tube, in rem)
+const svFit = sv => {
+  const r = svRem(), notes = document.querySelector(".wrap"), back = sv.back.getBoundingClientRect();
+  const room = notes.getBoundingClientRect().left + parseFloat(getComputedStyle(notes).paddingLeft) - back.left - 1.2 * r;
+  const bottom = parseFloat(getComputedStyle(sv.back).bottom) || 0;
+  const tall = (innerHeight - bottom - 1.5 * r - sv.chrome[1] * r) * 16 / 9 + sv.chrome[0] * r;
+  sv.back.style.setProperty("--sv-w", `${Math.max(12 * r, Math.min(room, tall, 40 * r))}px`);
+};
