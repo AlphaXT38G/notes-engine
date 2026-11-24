@@ -100,6 +100,43 @@ class BuildTest(unittest.TestCase):
             self.assertIn('data-music="https://alphaxt38g.github.io/notes-musics/"', page)
             self.assertIn("demo/course.pdf", page)
             self.assertTrue((root / "dist" / "demo" / "course.pdf").is_file())
+            # the demo subject has a quiz/ folder: a Quiz button, and quiz-engine's files
+            self.assertIn('href="#quiz/demo"', page)
+            for f in ("quiz.js", "quiz.css", "demo/data.json"):
+                self.assertTrue((root / "dist" / "quiz" / f).is_file(), f)
+
+
+class QuizTest(unittest.TestCase):
+    """The quizzes (notes_engine/quiz.py), built by quiz-engine: next to the engine or installed."""
+
+    def setUp(self):
+        from notes_engine import quiz
+        self.quiz = quiz
+        if quiz.engine() is None:
+            self.skipTest("quiz-engine is neither next to the engine nor installed")
+
+    def build(self, files):
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        root = Path(d.name)
+        (root / "subjects.json").write_text(json.dumps([{"id": "a", "name": "A", "exam": ""}, {"id": "b", "name": "B", "exam": ""}]))
+        for rel, data in files.items():
+            (root / rel).parent.mkdir(parents=True, exist_ok=True)
+            (root / rel).write_text(json.dumps(data), encoding="utf-8")
+        config.load(root)
+        return root, self.quiz.build_quizzes()
+
+    def test_subjects_with_a_quiz_folder_are_built(self):
+        q = {"questions": [{"type": "tf", "question": "q", "answer": True}]}
+        root, built = self.build({"a/quiz/01.json": q})
+        self.assertEqual(built, {"a": 1})
+        self.assertTrue((root / "dist" / "quiz" / "a" / "data.json").is_file())
+
+    def test_a_broken_quiz_is_left_out(self):
+        good = {"questions": [{"type": "tf", "question": "q", "answer": True}]}
+        bad = {"questions": [{"type": "tf", "question": "q", "answer": "yes"}]}
+        _, built = self.build({"a/quiz/01.json": good, "b/quiz/01.json": bad})
+        self.assertEqual(built, {"a": 1})
 
 
 if __name__ == "__main__":
