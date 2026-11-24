@@ -10,6 +10,7 @@
 <form class="searchrow" role="search" action="#"><input id="search" type="search" placeholder="Search a course, a week, a word…" aria-label="Search documents" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="search">
 <div class="view" role="group" aria-label="Display"><button type="button" data-view="names" aria-pressed="true">Names</button><button type="button" data-view="previews" aria-pressed="false">Previews</button></div></form></header>
 <main class="grid"><div class="col">{{cards_left}}</div><div class="col">{{cards_right}}</div></main>
+<div id="quizview" hidden data-v="{{quiz_v}}"></div>
 <p id="empty" hidden>No document matches this search.</p>
 <footer>Generated {{generated}} by notes-engine</footer>
 </div>{{js}}</body></html>
