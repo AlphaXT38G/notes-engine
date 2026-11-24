@@ -223,7 +223,7 @@ def build_index():
         "cards_left": "".join(cards[0::2]),
         "cards_right": "".join(cards[1::2]),
         "generated": f"{datetime.now():%Y-%m-%d %H:%M}",
-        "quiz_v": f"{datetime.now():%Y%m%d%H%M}",  # quizview.js asks for quiz.js?v=...: a new build, a new file
+        "quiz_v": f"{datetime.now():%Y%m%d%H%M%S}",  # quizview.js asks for quiz.js?v=...: a new build, a new file
         "title": html.escape(config.P.settings["title"]),
         "short": html.escape(config.P.settings["short"]),
         "music": html.escape(config.P.music),     # read by screens.js: where the music files are
