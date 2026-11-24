@@ -421,12 +421,13 @@ The search field finds subjects and documents by name (`ui.js`) and by what the 
 | `scrtvhw.js` | Halloween (`hwmusic.js`): a haunted television, cobwebs in the frame's corners, a spider hanging from its top, a bat on its antennas; a little jack-o'-lantern with a screen for a face by the cocotte; the cocotte sinking into coloured smoke, bats flying out, the television flickering out of it like a ghost; green snow and a ghost leaping out; tombstones on a mound, a scorched parchment. Its look: `scrtvhw.css` |
 | `scrtvsakura.js` | sakura (`skplayer.js`): black lacquer and vermilion, a branch of cherry blossom, falling petals; a hanko seal, 映, on the shamisen's skin; a gust of petals blowing the shamisen away, the television unrolling as a hanging scroll; shoji doors sliding open; cherry blossoms along a lacquered branch, a strip of washi. Its look: `scrtvsakura.css`. The epic finale has no television (its songs have no video): a new one is a pair of files like these, added to `manifest.json` |
 | `ytall.js` | every YouTube video of the site (the tapes of `TAPE_BANDS`: sakura, Halloween, Christmas mix...) made ahead through its ads, muted, one every 1.5 s, at the first sign of life of the visitor (pointer, tap, key, scroll), those of the screen on show first, so that a long ad is long over when any music is asked for (`ytWarmSite()`) |
+| `musichide.js` | phones only: the button in the bottom right corner that tucks the music player of the screen away (`html.mhide`: the players, their sleeves and shelf, their televisions and the YouTube picture fade out, the music plays on; remembered, `mhide`). Its list of what it hides is in `musichide.css`: a new player or television goes there too |
 | `start.js` | **last**: first `applyScreen()`, then the every-second clock check |
 
 ### CSS files, in cascade order
 
 `base.css` (layout, cards, search, previews) → `quiz.css` (the Quiz button, the page while a quiz is open) → `quizscreens.css` (the quiz dressed for each screen) → `flames.css` → `surprise.css` → `jazz.css` → `closing.css` →
-`metal.css` → `epic.css` → `bard.css` → `christmas.css` → `snowman.css` → `sansfight.css` → `halloween.css` → `hwlife.css` → `hwcreatures.css` → `hwmusic.css` → `sakura.css` → `calm.css` → `tapes.css` → `taperack.css` → `taperows.css` → `taperackfx.css` (the station rack: its chassis and screen, its rows, its opening and closing) → `tapevideo.css` → `tapemonitor.css` → `tapemonitorfx.css` (the VIDEO pill and the waiting deck, the video monitor, its growing and its tube coming on) → `scrvideo.css` → `scrtvxmas.css` → `scrtvjazz.css` → `scrtvhw.css` → `scrtvsakura.css` (the screens' televisions: what they share, then each look) → `screens.css` (effects canvas, view transitions) → `secrets.css` (the secrets' tab, parchment and note) → `konami.css`.
+`metal.css` → `epic.css` → `bard.css` → `christmas.css` → `snowman.css` → `sansfight.css` → `halloween.css` → `hwlife.css` → `hwcreatures.css` → `hwmusic.css` → `sakura.css` → `calm.css` → `tapes.css` → `taperack.css` → `taperows.css` → `taperackfx.css` (the station rack: its chassis and screen, its rows, its opening and closing) → `tapevideo.css` → `tapemonitor.css` → `tapemonitorfx.css` (the VIDEO pill and the waiting deck, the video monitor, its growing and its tube coming on) → `scrvideo.css` → `scrtvxmas.css` → `scrtvjazz.css` → `scrtvhw.css` → `scrtvsakura.css` (the screens' televisions: what they share, then each look) → `screens.css` (effects canvas, view transitions) → `musichide.css` (the phones' button hiding the music players) → `secrets.css` (the secrets' tab, parchment and note) → `konami.css`.
 The Konami file is last on purpose: during its animation `body.rift .wrap` must win over every
 theme's `.wrap` rule.
 
@@ -586,7 +587,9 @@ Android WebViews). One syntax they do not know makes the browser reject a whole 
   WebGL): test them before use, as the code already does.
 - **Touch**: controls are at least 44 px high on touch screens (`pointer:coarse` in `base.css`),
   with no tap delay. Nothing may cover the header controls; fixed widgets go in the corners, and
-  phones get room under the last card for them (`screens.css`).
+  phones get room under the last card for them (`screens.css`), and a button to hide them
+  (`musichide.js`). A quiz open on a phone drops the subtitle and the Names / Previews switch
+  (`quiz.css`).
 - **Check a phone-sized window** (375 px wide) after a page change: the search, the theme and
   the Names / Previews switch must work on every screen (`?screen=...`).
 

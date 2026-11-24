@@ -1,0 +1,28 @@
+/* ── musichide.css: the button that tucks the music players away on phones (js/musichide.js) ──
+   Phones only: on a wide window the players sit in the margin and leave the notes alone. The
+   button is in the bottom right corner (the players are in the bottom left one), over the
+   screens' scenery (z 45: above the televisions, 41 – 44). html.mhide fades out every player,
+   its sleeves and shelf, its television and the YouTube picture; they stay in the page and the
+   music plays on. A new player or television is added to the list below. */
+#mhide{display:none}
+@media(max-width:640px){
+  #mhide{display:flex;align-items:center;justify-content:center;gap:0;position:fixed;right:.75rem;bottom:calc(.75rem + env(safe-area-inset-bottom,0px));z-index:45;
+    width:2.9rem;height:2.9rem;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--fg);
+    box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .15s}
+  #mhide:active{transform:scale(.92)}
+  #mhide svg{width:1.15rem;height:1.15rem;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  #mhide .mhchev{width:.8rem;height:.8rem;margin-left:-.1rem;transition:transform .25s}
+  /* Hidden: the chevron points up, where they come back from; the accent says the music is tucked away */
+  html.mhide #mhide{color:var(--acc);border-color:var(--acc)}
+  html.mhide #mhide .mhchev{transform:rotate(180deg)}
+
+  #tapedeck,#vinyl,#jsleeves,#amp,#jar,#xmusic,#xsleeve,#bard,#hwmusic,#hwshelf,.skshamisen,.skflowers,
+  .svback,.svfront,.svfx,.svtrig{transition:opacity .3s,visibility 0s}
+  html.mhide #tapedeck,html.mhide #vinyl,html.mhide #jsleeves,html.mhide #amp,html.mhide #jar,html.mhide #xmusic,
+  html.mhide #xsleeve,html.mhide #bard,html.mhide #hwmusic,html.mhide #hwshelf,html.mhide .skshamisen,html.mhide .skflowers,
+  html.mhide .svback,html.mhide .svfront,html.mhide .svfx,html.mhide .svtrig,html.mhide .ytplayer.onscreen{
+    opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s,visibility 0s .3s}
+  /* No player in the corner: the room left under the last card for it is not needed (screens.css) */
+  html.mhide body .wrap{padding-bottom:4.5rem}
+}
+@media(prefers-reduced-motion:reduce){#mhide,#mhide .mhchev{transition:none}}
