@@ -30,6 +30,7 @@ notes_engine/         the Python behind the CLI
   previews.py           first-page thumbnails of the PDFs (poppler)
   search.py             the text of the PDFs, page by page, for the search: dist/search.json (poppler)
   page.py               dist/index.html: cards from dist/, assembled with site/
+  quiz.py               the quizzes: each subject's quiz/ folder, built by quiz-engine into dist/quiz/
   log.py                coloured console output
 notes_engine/site/    the index page (HTML, CSS, JS inlined into one dist/index.html, images)
   template.html         the HTML skeleton, with {{placeholders}}
@@ -60,6 +61,7 @@ The notes repository provides, at its root:
 subjects.json         subjects: id, display name, exam rules, optional "weeks", "week_pdfs" and "color"
 site.json             optional settings of the site (merged over the defaults of config.py)
 <subject>/            course.tex, cheatsheet.tex, week/NN.tex (chapters), extra PDFs...
+<subject>/quiz/       optional: the course's quiz, one JSON file per chapter (see "The quizzes")
 dist/                 build output (git-ignored): PDFs, previews, index.html, search.json
 ```
 
@@ -254,6 +256,40 @@ In the Previews view, a document alone in its list (the course notes, the only d
 section: `li.solo`, set by `page.py`) or with extracts found inside it (`li.found`) takes a whole
 row, its thumbnail beside its name, pages, size and date.
 
+### The quizzes
+
+How quizzes work (the question types, choosing weeks / chapters / kinds of exercise, the run
+question by question, the score, the sounds) is **quiz-engine**'s, a repository of its own
+(`../quiz-engine`, read its AGENTS.md); the questions are the notes repository's
+(`<subject>/quiz/*.json`). The engine builds them and shows them:
+
+- **The build** (`notes_engine/quiz.py`, called by `build_index()`, so `--index-only` builds them
+  too): every subject with a `quiz/` folder goes through quiz-engine (`build_subject()`), which
+  validates it and writes `dist/quiz/<subject>/data.json` (and its images); `write_runtime()`
+  writes `dist/quiz/quiz.js` and `quiz.css`. A quiz with a mistake is reported (the file and the
+  question) and left out, the rest of the site is built as usual. quiz-engine is taken from a
+  checkout next to the engine (`../quiz-engine`, to work on both at once), or else from the
+  installed package, pinned to a tag in `pyproject.toml` (the CI installs it with the engine).
+  A new tag of quiz-engine means a new tag of the engine.
+- **The button** (`quiz_link()` in `page.py`): on the card of a subject with a quiz, right after
+  the course notes, a plain link to `#quiz/<subject>` with its number of questions.
+- **The view** (`site/js/quizview.js`, `site/css/quiz.css`): the hash says what is shown.
+  `#quiz/<subject>` puts `body.quizzing` (the cards and `#empty` hidden; the header, its search
+  and theme stay) and opens the quiz in `#quizview` with `QuizEngine.open()`; no hash, the cards
+  again, scrolled back to where they were. So the browser's back button, a reload and a link to a
+  quiz all work. `quiz.css` and `quiz.js` are loaded on the first open only (`?v=` the build's
+  date, `data-v` of `#quizview`): a visit without a quiz costs nothing. The quiz's back arrow
+  goes back in the history (or drops the hash when the page was opened on a quiz); typing in the
+  search shows the cards.
+- **It stays inside the screen**: it is part of the page, not a page of its own, so the screen,
+  its scene and its music go on around it, and the quiz takes the screen's colour tokens
+  (`--bg --fg --card --line --mut --acc --acc-bg --new --new-bg`): a screen that sets them all
+  (as it must) dresses the quiz too. quiz-engine adds nothing to the page's scope but
+  `window.QuizEngine`, and builds only `div`s and classes, so the page's element rules
+  (`section`, `header`) and the screens' never reach inside it.
+
+Try one with `?screen=...#quiz/<subject>` (e.g. `?screen=halloween#quiz/swent`).
+
 ### The search
 
 The search field finds subjects and documents by name (`ui.js`) and by what the documents say
@@ -292,6 +328,7 @@ The search field finds subjects and documents by name (`ui.js`) and by what the 
 | `ui.js` | light/dark toggle (`root` = `<html>`), Names / Previews switch, search by name (`runSearch()`, with the `searchInside` hook of `search.js`), `onCode()` (the easter egg words, typed on the page or in the search field then Enter); `secretFound()`, a no-op until `secrets.js` |
 | `secrets.js` | the secrets found: `SECRETS` (every easter egg, in groups: the screens, the codes typed, the shortcuts in the scenes, the snowman's games...), `secretFound(id)` (called where each one happens; remembered in localStorage, `secrets`, on this browser only, with a "New secret found" note at the top right), the red tab in the top right corner of every screen that pulls out a parchment with the count and unrolls the list of the secrets found; a screen counts when it comes by the clock, a code or a shortcut, not by `?screen=` |
 | `search.js` | search inside the documents (see "The search" above): `search.json` fetched on the first use of the field, `searchFind()` (the `searchInside` hook of `ui.js`), the extracts under each document found, each a link to its page, and the button for the other pages |
+| `quizview.js` | the quiz view (see "The quizzes" above): `#quiz/<subject>` hides the cards (`body.quizzing`) and opens quiz-engine's quiz in `#quizview`, its files loaded on the first open; the back arrow, the browser's back button and a search bring the cards back |
 | `flames.js` | 🔥 flame mode, `setFire`, `crowded()` (anti pile-up helper), the 20-click easter egg |
 | `surprise.js` | random surprise banner |
 | `blackhole.js` | `createBlackHole()`: the Konami black hole, ray-traced in WebGL (light bent by gravity, disk with Doppler beaming, lensed stars), on two canvases so the page falls between its sky and its disk |
@@ -374,7 +411,7 @@ The search field finds subjects and documents by name (`ui.js`) and by what the 
 
 ### CSS files, in cascade order
 
-`base.css` (layout, cards, search, previews) → `flames.css` → `surprise.css` → `jazz.css` → `closing.css` →
+`base.css` (layout, cards, search, previews) → `quiz.css` (the Quiz button, the page while a quiz is open) → `flames.css` → `surprise.css` → `jazz.css` → `closing.css` →
 `metal.css` → `epic.css` → `bard.css` → `christmas.css` → `snowman.css` → `sansfight.css` → `halloween.css` → `hwlife.css` → `hwcreatures.css` → `hwmusic.css` → `sakura.css` → `calm.css` → `tapes.css` → `taperack.css` → `taperows.css` → `taperackfx.css` (the station rack: its chassis and screen, its rows, its opening and closing) → `tapevideo.css` → `tapemonitor.css` → `tapemonitorfx.css` (the VIDEO pill and the waiting deck, the video monitor, its growing and its tube coming on) → `screens.css` (effects canvas, view transitions) → `secrets.css` (the secrets' tab, parchment and note) → `konami.css`.
 The Konami file is last on purpose: during its animation `body.rift .wrap` must win over every
 theme's `.wrap` rule.
