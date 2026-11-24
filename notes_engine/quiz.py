@@ -5,8 +5,9 @@
 
 How quizzes work (the question types, the selection, the run, the score) is quiz-engine's
 business; the engine only builds them and shows them (the Quiz button of page.py, the view of
-site/js/quizview.js). quiz-engine comes from a checkout next to the engine (../quiz-engine, to
-work on both at once), or else from the installed package (pyproject.toml pins its tag).
+site/js/quizview.js). quiz-engine is read like the engine itself: on a computer, the checkout
+next to the engine (../quiz-engine); on GitHub, the publish workflow fetches it beside the
+engine and installs it (.github/workflows/pages.yml, its main by default).
 A quiz with a mistake is reported and left out; the rest of the site is built as usual.
 """
 

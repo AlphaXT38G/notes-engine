@@ -14,6 +14,9 @@
 #       uses: <owner>/notes-engine/.github/workflows/pages.yml@v0.1.0
 #       with: {engine-ref: v0.1.0}
 #
+# quiz-engine (the quizzes) is fetched beside the engine, from its main unless `quiz-ref` says
+# otherwise: the notes repository has nothing to add for it.
+#
 # Pin the same tag twice (the workflow's, and engine-ref): the workflow and the engine it installs.
 name: Publish notes
 
@@ -28,6 +31,14 @@ on:
         description: Repository of the engine
         type: string
         default: ""   # empty: notes-engine, next to the notes repository's owner
+      quiz-ref:
+        description: Tag (or branch) of quiz-engine, which builds the quizzes
+        type: string
+        default: main
+      quiz-repo:
+        description: Repository of quiz-engine
+        type: string
+        default: ""   # empty: quiz-engine, next to the notes repository's owner
 
 jobs:
   build:
@@ -41,6 +52,14 @@ jobs:
           repository: ${{ inputs.engine-repo || format('{0}/notes-engine', github.repository_owner) }}
           ref: ${{ inputs.engine-ref }}
           path: .notes-engine
+      # The quizzes' engine, read the same way. Without it (not reachable), the site is published
+      # without its quizzes (notes_engine/quiz.py says so), never not at all.
+      - uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: ${{ inputs.quiz-repo || format('{0}/quiz-engine', github.repository_owner) }}
+          ref: ${{ inputs.quiz-ref }}
+          path: .quiz-engine
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -53,6 +72,7 @@ jobs:
             texlive-fonts-recommended texlive-fonts-extra \
             texlive-science texlive-lang-french poppler-utils
       - run: pip install ./.notes-engine
+      - run: if [ -f .quiz-engine/pyproject.toml ]; then pip install ./.quiz-engine; fi
       # Publish whatever compiled; failed documents are reported but do not block the deploy.
       - name: Build PDFs and index
         run: notes-engine

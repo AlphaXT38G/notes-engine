@@ -267,10 +267,11 @@ question by question, the score, the sounds) is **quiz-engine**'s, a repository 
   too): every subject with a `quiz/` folder goes through quiz-engine (`build_subject()`), which
   validates it and writes `dist/quiz/<subject>/data.json` (and its images); `write_runtime()`
   writes `dist/quiz/quiz.js` and `quiz.css`. A quiz with a mistake is reported (the file and the
-  question) and left out, the rest of the site is built as usual. quiz-engine is taken from a
-  checkout next to the engine (`../quiz-engine`, to work on both at once), or else from the
-  installed package, pinned to a tag in `pyproject.toml` (the CI installs it with the engine).
-  A new tag of quiz-engine means a new tag of the engine.
+  question) and left out, the rest of the site is built as usual. quiz-engine is read the way a
+  notes repository reads the engine: locally, the checkout next to the engine
+  (`../quiz-engine`); on GitHub, `pages.yml` fetches it beside the engine (`quiz-ref`, `main` by
+  default) and installs it. No tag, nothing to add in the notes repository. If it cannot be
+  fetched, the site is published without its quizzes.
 - **The button** (`quiz_link()` in `page.py`): on the card of a subject with a quiz, right after
   the course notes, a plain link to `#quiz/<subject>` with its number of questions.
 - **The view** (`site/js/quizview.js`, `site/css/quiz.css`): the hash says what is shown.

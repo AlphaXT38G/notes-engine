@@ -8,9 +8,9 @@ version = "0.1.0"
 description = "Compile LaTeX course notes to PDF and publish them behind a searchable, playful index page."
 readme = "README.md"
 requires-python = ">=3.9"
-# quiz-engine: the quizzes (notes_engine/quiz.py); otherwise the standard library only;
-# latexmk, poppler and node are optional tools
-dependencies = ["quiz-engine @ git+https://github.com/AlphaXT38G/quiz-engine@v0.1.0"]
+# the standard library only; latexmk, poppler and node are optional tools. quiz-engine (the
+# quizzes) is read from next to the engine, or installed beside it by .github/workflows/pages.yml
+dependencies = []
 
 [project.scripts]
 notes-engine = "notes_engine.cli:main"
