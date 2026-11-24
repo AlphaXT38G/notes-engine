@@ -15,5 +15,16 @@
 /* A quiz open: it takes the cards' place; the header (search, theme) stays */
 body.quizzing main.grid,body.quizzing #empty{display:none}
 #quizview{position:relative;z-index:1;min-height:60vh;color:var(--mut)}
+/* Phones: the question must fit the screen, so the header shrinks to its title, the search and
+   the theme; the subtitle and the Names / Previews switch (cards only) give their room to the quiz.
+   header h1: one class more than the screens' own phone titles (body.halloween h1) */
+@media(max-width:640px){
+  body.quizzing header{margin-bottom:.9rem}
+  body.quizzing .searchrow{margin-top:.6rem}
+  body.quizzing header h1{font-size:1.5rem}
+  body.quizzing .sub,body.quizzing .searchrow .view{display:none}
+  /* quiz-engine's Confirm bar, stuck to the bottom: room on its right for the music button (musichide.css) */
+  body.quizzing .qz{--qz-dock-gap:3.4rem}
+}
 
 @media(prefers-reduced-motion:reduce){.links .quiz a:hover>span::before{animation:none}}
