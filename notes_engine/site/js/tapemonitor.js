@@ -39,9 +39,14 @@ paintMonitor();
 // rem, in the tube's bottom left corner). Whatever lies on the tube is told by a monitormove event.
 const MONITOR_MIN = 15, MONITOR_BEZEL = .8;
 const monitorRem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
+// The free margin on the left of the notes, from x = left (px) to a gap before the cards; the
+// screens' televisions take it too (svFit, scrvidpic.js)
+const notesMargin = left => {
+  const notes = document.querySelector(".wrap");
+  return notes.getBoundingClientRect().left + parseFloat(getComputedStyle(notes).paddingLeft) - left - 1.2 * monitorRem();
+};
 const fitMonitor = () => {
-  const notes = document.querySelector(".wrap"), left = tapeDeck.getBoundingClientRect().left;
-  const room = notes.getBoundingClientRect().left + parseFloat(getComputedStyle(notes).paddingLeft) - left - 1.2 * monitorRem();
+  const left = tapeDeck.getBoundingClientRect().left, room = notesMargin(left);
   const tall = (innerHeight - 2 * left - MONITOR_BEZEL * monitorRem()) * 16 / 9 + .8 * monitorRem();
   tapeDeck.style.setProperty("--mon-w", `${Math.max(MONITOR_MIN * monitorRem(), Math.min(room, tall))}px`);
 };
@@ -126,7 +131,8 @@ tapeMonitor.addEventListener("animationend", e => {
   if (e.animationName === "mon-push") monitorShrunk();
 });
 
-// The CRT key: an old tube's look on the video, or not; remembered
+// The CRT key: an old tube's look on the video, or not; remembered (the screens' televisions follow
+// it: svCrt, scrvideo.js)
 const setCrt = on => {
   tapeDeck.classList.toggle("crt", on);
   if (on) secretFound("crt");
@@ -139,17 +145,22 @@ TAPE_ACTIONS.crt = () => setCrt(!tapeDeck.classList.contains("crt"));
 // it can (the prefixed API for older Safari); leaving it (Escape, the browser's own way) or the key
 // brings the monitor back
 const fullscreenNow = () => document.fullscreenElement || document.webkitFullscreenElement;
-const setFull = on => {
-  if (on === tapeDeck.classList.contains("full")) return;
-  tapeDeck.classList.toggle("full", on);
+// The browser's own full screen, asked or left, and no page scroll bar beside the picture
+// (html.tapefull); the screens' televisions use it too (svFull, scrvidfull.js)
+const pageFullscreen = on => {
   const root = document.documentElement;
-  root.classList.toggle("tapefull", on);  // no page scroll bar beside the picture
+  root.classList.toggle("tapefull", on);
   if (on && !fullscreenNow()) {
     const ask = root.requestFullscreen || root.webkitRequestFullscreen;
     const asked = ask && ask.call(root);
     if (asked && asked.catch) asked.catch(() => {});
   }
   if (!on && fullscreenNow()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+};
+const setFull = on => {
+  if (on === tapeDeck.classList.contains("full")) return;
+  tapeDeck.classList.toggle("full", on);
+  pageFullscreen(on);
   placeOnTube();
 };
 ["fullscreenchange", "webkitfullscreenchange"].forEach(name => document.addEventListener(name, () => {
@@ -167,28 +178,32 @@ document.addEventListener("keydown", e => {
   restMonitor(false);
 });
 // The plate and the keys go away while the pointer rests or is elsewhere, and come back as it moves
-// over the picture, a finger touches it, or the keyboard comes in (.rest; the focus keeps them). The
-// pointer goes with them (cursor: none, tapemonitor.css). Once they are gone, a hand barely moving
-// the mouse (less than MONITOR_STIR px from where it was) does not bring them back.
-const MONITOR_STIR = 12;
-let monitorRest = null, monitorStirX = 0, monitorStirY = 0;
-const restMonitor = rest => {
-  clearTimeout(monitorRest);
-  tapeMonitor.classList.toggle("rest", rest);
-  if (!rest) monitorRest = setTimeout(() => tapeMonitor.classList.add("rest"), 2500);
+// over the picture, a finger touches it, or the keyboard comes in (.rest on el; the focus keeps
+// them). The pointer goes with them (cursor: none, in CSS). Once they are gone, a hand barely moving
+// the mouse (less than MONITOR_STIR px from where it was) does not bring them back. A key clicked
+// with the mouse lets go of the focus, or it would keep the keys (and the pointer) on the picture for
+// good; a key pressed from the keyboard keeps it (e.detail: 0). pointerRest(el) gives el this
+// behaviour and returns its rest(on) (the screens' televisions too, scrvideo.js).
+const MONITOR_STIR = 12, MONITOR_REST_MS = 2500;
+const pointerRest = el => {
+  let timer = null, x = 0, y = 0;
+  const rest = on => {
+    clearTimeout(timer);
+    el.classList.toggle("rest", on);
+    if (!on) timer = setTimeout(() => el.classList.add("rest"), MONITOR_REST_MS);
+  };
+  el.addEventListener("mousemove", e => {
+    if (el.classList.contains("rest") && Math.hypot(e.clientX - x, e.clientY - y) < MONITOR_STIR) return;
+    x = e.clientX;
+    y = e.clientY;
+    rest(false);
+  });
+  ["touchstart", "focusin"].forEach(name => el.addEventListener(name, () => rest(false)));
+  el.addEventListener("mouseleave", () => rest(true));
+  el.addEventListener("click", e => {
+    const key = e.target.closest("button");
+    if (key && e.detail > 0) key.blur();
+  });
+  return rest;
 };
-tapeMonitor.addEventListener("mousemove", e => {
-  const rested = tapeMonitor.classList.contains("rest");
-  if (rested && Math.hypot(e.clientX - monitorStirX, e.clientY - monitorStirY) < MONITOR_STIR) return;
-  monitorStirX = e.clientX;
-  monitorStirY = e.clientY;
-  restMonitor(false);
-});
-["touchstart", "focusin"].forEach(name => tapeMonitor.addEventListener(name, () => restMonitor(false)));
-tapeMonitor.addEventListener("mouseleave", () => restMonitor(true));
-// A key clicked with the mouse lets go of the focus, or it would keep the keys (and the pointer) on
-// the picture for good; a key pressed from the keyboard keeps it (e.detail: 0)
-tapeMonitor.addEventListener("click", e => {
-  const key = e.target.closest("button");
-  if (key && e.detail > 0) key.blur();
-});
+const restMonitor = pointerRest(tapeMonitor);

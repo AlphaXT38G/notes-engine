@@ -26,6 +26,11 @@
     "css/tapevideo.css",
     "css/tapemonitor.css",
     "css/tapemonitorfx.css",
+    "css/scrvideo.css",
+    "css/scrtvxmas.css",
+    "css/scrtvjazz.css",
+    "css/scrtvhw.css",
+    "css/scrtvsakura.css",
     "css/screens.css",
     "css/secrets.css",
     "css/konami.css"
@@ -112,6 +117,14 @@
     "js/taperack.js",
     "js/tapemonitor.js",
     "js/tapevideo.js",
+    "js/scrvideo.js",
+    "js/scrvidpic.js",
+    "js/scrvidmorph.js",
+    "js/scrvidfull.js",
+    "js/scrtvxmas.js",
+    "js/scrtvjazz.js",
+    "js/scrtvhw.js",
+    "js/scrtvsakura.js",
     "js/ytall.js",
     "js/start.js"
   ]

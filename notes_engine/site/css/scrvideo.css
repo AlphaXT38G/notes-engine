@@ -1,0 +1,113 @@
+/* Watching a video on a screen's music player (js/scrvideo.js): what every television shares, the
+   looks being in scrtvxmas.css, scrtvjazz.css, scrtvhw.css and scrtvsakura.css. The medallion set on the player (.svtrig), the label of the player while
+   the picture is awaited ([data-svload]), the player going away and coming back (.svaway, .svreturn),
+   the layer of effects over the corner during the transformation (.svfx), the cabinet under the
+   picture (.svback, --sv-w wide, its tube .svtube) and the layer laid on the tube over the picture
+   (.svfront: snow, CRT look, the turn-on effect .svturn, the plate, the keys). The YouTube player
+   shown lies between the two (.ytplayer.svscreen, placed by scrvideo.js). */
+
+/* The medallion: centred on its spot of the player (left / top set by scrvideo.js), coming with a
+   bounce; while the picture is awaited a ring turns around it */
+.svtrig{position:fixed;z-index:41;display:block;width:1.35rem;height:1.35rem;margin:0;padding:0;border:0;background:none;cursor:pointer;transform:translate(-50%,-50%);animation:sv-in .55s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes sv-in{from{opacity:0;transform:translate(-50%,-50%) scale(.2)}}
+.svtrig>i{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-style:normal;transition:transform .25s cubic-bezier(.3,1.6,.5,1),filter .25s}
+.svtrig:hover>i,.svtrig:focus-visible>i{transform:scale(1.12);filter:brightness(1.1)}
+.svtrig:focus-visible{outline:none}
+.svtrig .svglyph{width:62%;height:62%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.svtrig .svglyph .play{fill:currentColor;stroke:none}
+.svtrig::after{content:"";position:absolute;left:-4px;top:-4px;right:-4px;bottom:-4px;border:2px dashed currentColor;border-radius:50%;opacity:0;pointer-events:none}
+.svtrig.svwait::after{opacity:.9;animation:sv-turn 1.6s linear infinite}
+@keyframes sv-turn{to{transform:rotate(360deg)}}
+/* a player with no label: a bubble beside the medallion says what it waits for */
+.svtrig .svbubble{position:absolute;left:100%;top:50%;margin-left:.6rem;padding:.25rem .55rem;border-radius:999px;background:rgba(30,14,20,.85);color:#fff;font:600 .7rem/1.2 system-ui,sans-serif;white-space:nowrap;transform:translateY(-50%);opacity:0;pointer-events:none;transition:opacity .3s}
+.svtrig.nolabel.svwait .svbubble{opacity:1}
+/* the player's label while the picture is awaited */
+[data-svload]{font-size:0!important}
+[data-svload]::after{content:"📺 Loading the video…";font-size:.78rem}
+
+/* The player while its television is out: gone with its look's animation ([data-svlook], scrtv*.css;
+   individual scale / translate / rotate, not transform, which the players use for their own poses),
+   back after; these are the plain ones */
+.svaway{animation:sv-away .4s ease-in forwards;pointer-events:none!important}
+@keyframes sv-away{to{opacity:0;scale:.3;translate:-.5rem 1.5rem}}
+.svreturn{animation:sv-return .5s cubic-bezier(.2,.8,.3,1.2) both}
+@keyframes sv-return{from{opacity:0;scale:.3;translate:-.5rem 1.5rem}}
+.svgone{visibility:hidden!important}
+/* the layer of the transformation's effects, laid over the corner by scrvideo.js (.in, .out) */
+.svfx{position:fixed;z-index:44;pointer-events:none}
+.svfx>*{position:absolute}
+
+/* The cabinet: over the page and the players, under the picture; laid out unseen while measured
+   (.svpre), coming (.svrise) and going (.svdrop) with its look's animations */
+.svback{position:fixed;z-index:41;width:var(--sv-w,15rem);transform-origin:0 100%;pointer-events:none}
+.svback.svpre{visibility:hidden}
+.svback .svtube{position:relative;padding-top:56.25%;background:#050505}
+.svback.svrise{animation:sv-rise .7s cubic-bezier(.2,.8,.3,1.15) both}
+@keyframes sv-rise{from{opacity:0;transform:translate(-.4rem,3rem) scale(.2)}}
+.svback.svdrop{animation:sv-drop .45s ease-in both}
+@keyframes sv-drop{to{opacity:0;transform:translate(-.4rem,3rem) scale(.2)}}
+/* the antennas of the cabinets that have them (SV_ANTENNAS, scrvideo.js): two rods from a base, each
+   look colouring and bending them */
+.svback .svant{position:absolute;left:50%;top:2px;width:0;height:0}
+.svback .svant b{position:absolute;bottom:0;left:-1px;width:2.5px;height:38px;transform-origin:50% 100%}
+.svback .svant b:first-child{transform:rotate(-28deg)}
+.svback .svant b:last-child{transform:rotate(24deg)}
+.svback .svant b::after{content:"";position:absolute;top:-5px;left:-3px;width:8px;height:8px;border-radius:50%}
+.svback .svant::before{content:"";position:absolute;left:-9px;top:-5px;width:18px;height:8px;border-radius:9px 9px 2px 2px}
+/* the picture shown, between the cabinet and the front layer */
+.ytplayer.svscreen{bottom:auto;opacity:1;z-index:42}
+
+/* The front layer, laid on the tube by scrvideo.js (its corners the tube's: --sv-r) */
+.svfront{--sv-noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.6 -.45'/%3E%3C/filter%3E%3Crect width='120' height='80' filter='url(%23n)'/%3E%3C/svg%3E");
+  position:fixed;z-index:43;border-radius:var(--sv-r,4px)}
+.svfront .svnoise,.svfront .svcrt,.svfront .svglare,.svfront .svturn{position:absolute;left:0;top:0;right:0;bottom:0;border-radius:inherit;pointer-events:none}
+/* no picture yet (an ad, the next video getting ready): snow and NO SIGNAL; paused, PAUSE on black */
+.svfront .svnoise{z-index:1;opacity:0;background:var(--sv-noise) 0 0/90px 60px,#101014}
+.svfront.waiting .svnoise{opacity:1;animation:sv-snow .16s steps(1) infinite}
+@keyframes sv-snow{50%{background-position:30px 17px,0 0}}
+.svfront .svmsg{position:absolute;left:50%;top:50%;z-index:2;padding:.2rem .4rem;border-radius:2px;background:#140907;color:#ff4a2a;font:700 .65rem/1 ui-monospace,Consolas,monospace;letter-spacing:.12em;text-shadow:0 0 4px rgba(255,74,42,.75);transform:translate(-50%,-50%);white-space:nowrap;opacity:0;pointer-events:none}
+.svfront.waiting .svmsg{opacity:1}
+.svfront .svmsg::after{content:"NO SIGNAL"}
+.svfront.paused .svmsg::after{content:"❚❚ PAUSE"}
+.svfront.paused.waiting .svnoise{background:#050505;animation:none}
+/* the CRT look (the deck's, shared and remembered: tape-crt) */
+.svfront .svcrt,.svfront .svglare{z-index:3;opacity:0}
+.svfront .svcrt{background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(255,0,0,.06) 0 1px,rgba(0,255,0,.05) 1px 2px,rgba(0,80,255,.06) 2px 3px),radial-gradient(120% 120% at 50% 50%,transparent 55%,rgba(0,0,0,.65));box-shadow:inset 0 0 30px rgba(0,0,0,.7)}
+.svfront .svglare{background:linear-gradient(160deg,rgba(255,255,255,.14),transparent 35%)}
+.svfront.crt .svcrt,.svfront.crt .svglare{opacity:1}
+/* the turn-on effect (the look's), over the picture, once */
+.svfront .svturn{z-index:4;overflow:hidden;opacity:0}
+/* The plate (top left) and the keys (bottom), over the picture; they come once the tube is on and go
+   away while the pointer rests (.rest; the keyboard's focus keeps them), the pointer with them */
+.svfront .svplate{position:absolute;left:.45rem;top:.45rem;z-index:5;display:flex;align-items:center;gap:.25rem;max-width:calc(100% - .9rem);margin:0;padding:.18rem .35rem;overflow:hidden;white-space:nowrap;font:700 .42rem/1 system-ui,sans-serif;letter-spacing:.04em;transform-origin:0 0}
+.svfront .svnow{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.svfront .svctr{flex:none;font:700 .42rem/1 ui-monospace,Consolas,monospace}
+.svfront .svkeys{position:absolute;left:50%;bottom:.45rem;z-index:5;display:flex;align-items:center;gap:3px;transform:translateX(-50%);transform-origin:50% 100%}
+.svfront .svgap{flex:none;width:4px}
+.svfront .svkey{position:relative;display:flex;align-items:center;justify-content:center;width:1rem;height:.9rem;padding:0;border:0;cursor:pointer;font:800 .42rem/1 system-ui,sans-serif;transition:transform .15s,filter .15s}
+.svfront .svkey span{position:relative;z-index:1;display:flex;align-items:center;justify-content:center}
+.svfront .svkey svg{width:.75rem;height:.5rem}
+.svfront .svkey svg path{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.svfront .svkey svg .head{fill:currentColor;stroke:none}
+.svfront .svkey:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.svfront .svplate,.svfront .svkeys{transition:opacity .4s}
+.svfront.lit .svplate,.svfront.lit .svkeys{animation:sv-fade .4s 1.6s both}
+@keyframes sv-fade{from{opacity:0}}
+.svfront:not(.lit) .svplate,.svfront:not(.lit) .svkeys,.svfront.rest:not(:focus-within) .svplate,.svfront.rest:not(:focus-within) .svkeys{opacity:0}
+.svfront.rest:not(:focus-within){cursor:none}
+
+/* Full screen: the picture fills the window, black around it, the plate and the keys larger; the
+   look's ornaments put away */
+body .svback.svfull{left:0;top:0;right:0;bottom:0;width:auto;background:#000;animation:none}
+body .svback.svfull>*{visibility:hidden}
+.svfront.svfull{border-radius:0}
+.svfront.svfull.crt{border-radius:28px/36px}
+.svfront.svfull .svover{display:none}
+.svfront.svfull .svplate{left:1rem;top:1rem;transform:scale(1.7)}
+.svfront.svfull .svkeys{bottom:1.6rem;transform:translateX(-50%) scale(1.9)}
+
+/* Touch screens: a medallion a finger can hit; the keys keep their look's size on the small tube (it
+   is too narrow for a finger's keys) and grow to a finger's size in full screen */
+@media(pointer:coarse){.svtrig{width:2rem;height:2rem}.svfront.svfull .svkeys{transform:translateX(-50%) scale(2.2)}}
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){.svtrig,.svtrig.svwait::after,.svback.svrise,.svback.svdrop,.svfront.waiting .svnoise{animation:none}.svfront.lit .svplate,.svfront.lit .svkeys{animation:none!important}.svfront .svturn,.svfx{display:none}}
