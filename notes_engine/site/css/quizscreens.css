@@ -1,0 +1,69 @@
+/* ── quizscreens.css: the quiz dressed for each screen ──
+   quiz-engine knows nothing of the screens; it gives the quiz the screen's colour tokens, and two
+   hooks for more: the launch zone's tokens (--qz-hero-bg, --qz-hero-fg, --qz-go-fg) and its empty
+   layer .qz-hero-deco (under its content, no clicks), here decorated with its ::before / ::after.
+   One block per screen, under its body class; the day keeps quiz-engine's own look (the accent).
+   Only transform and opacity animate; each animation stops with reduced motion (the end). */
+
+/* Christmas: red and white, a snow cap, a candy-cane rim around Start, snowflakes */
+body.christmas .qz-hero{--qz-hero-bg:linear-gradient(135deg,#d0283c,#8e1424);--qz-hero-fg:#fff;--qz-go-fg:#b3122e;padding-top:1.9rem}
+body.christmas .qz-hero-deco::before{content:"";position:absolute;top:0;left:0;right:0;height:16px;
+  background:radial-gradient(circle at 11px 2px,#fff 9px,transparent 10px) 0 0/22px 16px repeat-x,linear-gradient(#fff,#fff) 0 0/100% 5px no-repeat}
+body.christmas .qz-hero-deco::after{content:"❄  ✦  ❄";position:absolute;right:11rem;top:50%;font-size:2.6rem;letter-spacing:.4rem;color:#fff;opacity:.16;
+  transform:translateY(-50%);animation:qzs-drift 6s ease-in-out infinite alternate}
+body.christmas .qz-go{border:4px solid transparent;
+  background:linear-gradient(#fff,#fff) padding-box,repeating-linear-gradient(45deg,#d0283c 0 7px,#fff 7px 14px) border-box}
+body.christmas .qz-progress-fill{background:repeating-linear-gradient(45deg,#d0283c 0 8px,#fff 8px 16px)}
+
+/* Halloween: a purple night, a glowing pumpkin-orange Start, a web in the corner, a bat */
+body.halloween .qz-hero{--qz-hero-bg:linear-gradient(135deg,#3b1752,#170a20 55%,#5c2306);--qz-hero-fg:#ff9d2e;--qz-go-fg:#1a0c04}
+body.halloween .qz-go{box-shadow:0 0 0 1px rgba(255,157,46,.5),0 0 26px rgba(255,140,31,.55)}
+body.halloween .qz-hero-deco::before{content:"🕸";position:absolute;top:-.9rem;right:-.6rem;font-size:5.5rem;opacity:.28;filter:grayscale(1) brightness(2)}
+body.halloween .qz-hero-deco::after{content:"🦇";position:absolute;left:45%;top:.5rem;font-size:1.4rem;opacity:.7;animation:qzs-flap 3.2s ease-in-out infinite}
+body.halloween .qz-progress-fill{background:linear-gradient(90deg,#ff6a00,#ffb347)}
+
+/* The jazz bar: dark wood, gold, an Art Deco double frame and a sunburst, a serif count */
+body.night .qz-hero{--qz-hero-bg:linear-gradient(135deg,#3a2414,#140b07);--qz-hero-fg:#f0c66e;--qz-go-fg:#2a170c}
+body.night .qz-hero-deco{background:repeating-conic-gradient(from 0deg at 100% 100%,rgba(240,198,110,.07) 0 5deg,transparent 5deg 10deg)}
+body.night .qz-hero-deco::before,body.night .qz-hero-deco::after{content:"";position:absolute;border:1px solid rgba(240,198,110,.45);border-radius:14px}
+body.night .qz-hero-deco::before{top:7px;right:7px;bottom:7px;left:7px}
+body.night .qz-hero-deco::after{top:12px;right:12px;bottom:12px;left:12px;opacity:.5}
+body.night .qz-hero-n{font-family:Georgia,"Times New Roman",serif;font-style:italic}
+body.night .qz-go{background:linear-gradient(180deg,#f7d98f,#d9a441)}
+body.night .qz-progress-fill{background:linear-gradient(90deg,#b8862f,#f7d98f)}
+
+/* The metal show: black steel, fire rising from below, a red-hot Start */
+body.metal .qz-hero{--qz-hero-bg:linear-gradient(180deg,#140404,#000);--qz-hero-fg:#ff4a1c;--qz-go-fg:#000;text-transform:uppercase}
+body.metal .qz-hero-deco::before{content:"";position:absolute;left:0;right:0;bottom:-30%;height:90%;
+  background:radial-gradient(60% 70% at 50% 100%,rgba(255,90,20,.55),rgba(255,30,0,.15) 55%,transparent 75%);animation:qzs-flicker 1.6s ease-in-out infinite alternate}
+body.metal .qz-go{box-shadow:0 0 22px rgba(255,60,20,.7)}
+
+/* The epic finale: an arcane blue, a rune circle turning slowly behind the count */
+body.epic .qz-hero{--qz-hero-bg:radial-gradient(120% 140% at 20% 0%,#1d2f6b,#070a1c 70%);--qz-hero-fg:#9fd6ff;--qz-go-fg:#070a1c}
+body.epic .qz-hero-deco::before{content:"";position:absolute;width:11rem;height:11rem;left:-2.5rem;top:50%;margin-top:-5.5rem;border-radius:50%;
+  border:2px dashed rgba(159,214,255,.35);box-shadow:inset 0 0 0 10px rgba(159,214,255,.06);animation:qzs-turn 24s linear infinite}
+body.epic .qz-go{box-shadow:0 0 24px rgba(120,190,255,.6)}
+
+/* The calm night: deep blue, the moon, a few stars */
+body.calm .qz-hero{--qz-hero-bg:linear-gradient(160deg,#16284d,#070d1f);--qz-hero-fg:#e3ebff;--qz-go-fg:#0b1530}
+body.calm .qz-hero-deco{background:radial-gradient(1.5px 1.5px at 22% 30%,#fff,transparent),radial-gradient(1px 1px at 38% 72%,#fff,transparent),
+  radial-gradient(1.5px 1.5px at 61% 22%,#fff,transparent),radial-gradient(1px 1px at 52% 58%,#fff,transparent)}
+body.calm .qz-hero-deco::before{content:"";position:absolute;top:-1.2rem;right:9.5rem;width:4rem;height:4rem;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#fffbe8,#e9dfb8);box-shadow:0 0 30px rgba(255,248,220,.45);opacity:.9}
+
+/* Sakura: pink paper, a plum Start, petals drifting down */
+body.sakura .qz-hero{--qz-hero-bg:linear-gradient(135deg,#ffe0ea,#f5a3bf);--qz-hero-fg:#7d1d45;--qz-go-fg:#fff}
+body.sakura .qz-hero-deco{background:radial-gradient(6px 4px at 78% 25%,rgba(255,255,255,.8),transparent),radial-gradient(5px 3px at 64% 70%,rgba(255,255,255,.7),transparent),
+  radial-gradient(6px 4px at 30% 82%,rgba(255,255,255,.6),transparent)}
+body.sakura .qz-hero-deco::after{content:"🌸";position:absolute;right:12rem;top:-1.5rem;font-size:1.3rem;animation:qzs-fall 7s linear infinite}
+body.sakura .qz-progress-fill{background:linear-gradient(90deg,#e86b95,#ffc2d6)}
+
+@keyframes qzs-drift{to{transform:translateY(-35%) rotate(8deg)}}
+@keyframes qzs-flap{0%,100%{transform:translate(0,0) scaleX(1)}25%{transform:translate(1.5rem,-.3rem) scaleX(.7)}50%{transform:translate(3rem,.2rem) scaleX(1)}75%{transform:translate(1.5rem,.4rem) scaleX(.7)}}
+@keyframes qzs-flicker{from{opacity:.7;transform:scaleY(.94)}to{opacity:1;transform:scaleY(1.06)}}
+@keyframes qzs-turn{to{transform:rotate(360deg)}}
+@keyframes qzs-fall{0%{transform:translate(0,0) rotate(0);opacity:0}10%{opacity:1}100%{transform:translate(-4rem,9rem) rotate(240deg);opacity:0}}
+
+/* Phones: the zone is stacked (launch.css); the decorations keep to the corners */
+@media(max-width:560px){body.christmas .qz-hero-deco::after,body.calm .qz-hero-deco::before,body.sakura .qz-hero-deco::after{right:1rem}}
+@media(prefers-reduced-motion:reduce){.qz-hero-deco::before,.qz-hero-deco::after{animation:none!important}}

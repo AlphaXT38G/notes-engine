@@ -16,6 +16,7 @@ from .config import SITE
 from .latex import course_weeks
 from .log import err, ok
 from .previews import preview
+from .quiz import build_quizzes
 from .search import pages, write_search
 
 def site_file(rel):
@@ -147,6 +148,15 @@ def fold(subject, pdfs, root, when, shots, texts, noun, grouped=True, extra=""):
         f'<ul class="links">{"".join(items)}</ul></details></li>'
     )
 
+def quiz_link(subject, n):
+    """The Quiz button of a subject that has a quiz (quiz.py): a link to #quiz/<id>, which
+    site/js/quizview.js opens as a view in the page, in place of the cards."""
+    sid, name = html.escape(subject["id"]), html.escape(subject["name"])
+    return (
+        f'<li class="quiz"><a class="quizlink" href="#quiz/{sid}" data-quiz="{sid}" data-title="{name}">'
+        f'<span>Quiz</span><small>{n} question{"s" if n > 1 else ""}</small></a></li>'
+    )
+
 def progress(weeks, subject):
     """Bar showing the latest weekly note against the length of the semester.
 
@@ -171,6 +181,7 @@ def build_index():
     """Write dist/index.html from whatever PDFs are in dist/ (subjects without any are hidden)."""
     cards, search = [], {}
     palette = config.P.settings["palette"]
+    quizzes = build_quizzes()  # {subject id: questions}: those get a Quiz button
     for i, s in enumerate(config.P.subjects):
         root = config.P.dist / s["id"]
         pdfs = list(root.rglob("*.pdf")) if root.is_dir() else []
@@ -195,6 +206,7 @@ def build_index():
         weeks = [p for p in rest if config.P.weekly(p)]
         others = [p for p in rest if p not in weeks]
         links = "".join(link(s["id"], p, root, when[p], shots[p], texts[p], solo=True) for p in main)
+        links += quiz_link(s, quizzes[s["id"]]) if s["id"] in quizzes else ""  # right after the course notes
         links += fold(s["id"], weeks, root, when, shots, texts, "weekly note", grouped=False, extra=progress(weeks, s))
         links += fold(s["id"], others, root, when, shots, texts, "more document")
         exam = f'<p class="exam">Exam: {html.escape(s["exam"])}</p>' if s.get("exam") else ""
@@ -211,6 +223,7 @@ def build_index():
         "cards_left": "".join(cards[0::2]),
         "cards_right": "".join(cards[1::2]),
         "generated": f"{datetime.now():%Y-%m-%d %H:%M}",
+        "quiz_v": f"{datetime.now():%Y%m%d%H%M%S}",  # quizview.js asks for quiz.js?v=...: a new build, a new file
         "title": html.escape(config.P.settings["title"]),
         "short": html.escape(config.P.settings["short"]),
         "music": html.escape(config.P.music),     # read by screens.js: where the music files are

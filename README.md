@@ -13,7 +13,12 @@ It knows nothing about any particular notes: everything specific lives in the no
 subjects.json     [{"id": "algo", "name": "Algorithms", "exam": ""}, ...]
 site.json         optional: title, subtitle, short, repo, kinds, ... (defaults: notes_engine/config.py)
 algo/course.tex   \usepackage{course}  (the engine's style, no path needed)
+algo/quiz/*.json  optional: a quiz, one file per chapter; a Quiz button appears on the card
 ```
+
+The quizzes are written and checked with [quiz-engine](https://github.com/AlphaXT38G/quiz-engine)
+(its README shows the format: single and multiple choice, true / false, more to come). The quiz
+opens in the page, in place of the cards, in the colours of the screen on show.
 
 ```bash
 pip install git+https://github.com/AlphaXT38G/notes-engine@v0.1.0   # pin a tag

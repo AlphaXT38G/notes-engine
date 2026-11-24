@@ -1,0 +1,25 @@
+{
+  "title": "Caches",
+  "questions": [
+    {
+      "type": "scq",
+      "question": "What does a **cache hit** mean?",
+      "options": ["The data is found in the cache", "The data must be fetched from memory", "The cache is full"],
+      "answer": 0,
+      "explanation": "A hit: the data is already in the cache, no trip to main memory."
+    },
+    {
+      "type": "tf",
+      "question": "A cache hit is faster than a cache miss.",
+      "answer": true,
+      "explanation": "A miss has to go down to a slower level of the hierarchy."
+    },
+    {
+      "type": "mcq",
+      "question": "Which of these are kinds of cache misses (the *three C's*)?",
+      "options": ["Compulsory", "Capacity", "Conflict", "Coherent"],
+      "answer": [0, 1, 2],
+      "explanation": "Compulsory, capacity and conflict. *Coherence* is another topic."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+/* ── quiz.css: the Quiz button on a card, and the page while a quiz is open (quizview.js) ──
+   The quiz's own look is quiz-engine's (dist/quiz/quiz.css, loaded with the quiz). */
+
+/* The button: a line of the card, right after the course notes, an accent pill */
+.links .quiz a{align-items:center}
+.links .quiz a>span{display:inline-flex;align-items:center;gap:.45rem}
+.links .quiz a>span::before{content:"";width:.55rem;height:.55rem;border-radius:50%;background:var(--acc);
+  box-shadow:0 0 0 .2rem var(--acc-bg)}
+.links .quiz a:hover>span::before{animation:quiz-ping 1s ease-out infinite}
+@keyframes quiz-ping{50%{transform:scale(1.35);opacity:.6}}
+/* Previews view: a whole row, like the course notes */
+[data-view=previews] .links>.quiz{grid-column:1/-1}
+[data-view=previews] .links>.quiz a{padding:.5rem .75rem;border:1px solid var(--line);border-radius:.5rem}
+
+/* A quiz open: it takes the cards' place; the header (search, theme) stays */
+body.quizzing main.grid,body.quizzing #empty{display:none}
+#quizview{position:relative;z-index:1;min-height:60vh;color:var(--mut)}
+
+@media(prefers-reduced-motion:reduce){.links .quiz a:hover>span::before{animation:none}}
