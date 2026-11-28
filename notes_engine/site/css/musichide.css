@@ -16,10 +16,10 @@
   html.mhide #mhide{color:var(--acc);border-color:var(--acc)}
   html.mhide #mhide .mhchev{transform:rotate(180deg)}
 
-  #tapedeck,#vinyl,#jsleeves,#amp,#jar,#xmusic,#xsleeve,#bard,#hwmusic,#hwshelf,.skshamisen,.skflowers,
+  #tapedeck,#vinyl,#jsleeves,#amp,#jar,#xmusic,#xsleeves,#bard,#hwmusic,#hwshelf,.skshamisen,.skflowers,
   .svback,.svfront,.svfx,.svtrig{transition:opacity .3s,visibility 0s}
   html.mhide #tapedeck,html.mhide #vinyl,html.mhide #jsleeves,html.mhide #amp,html.mhide #jar,html.mhide #xmusic,
-  html.mhide #xsleeve,html.mhide #bard,html.mhide #hwmusic,html.mhide #hwshelf,html.mhide .skshamisen,html.mhide .skflowers,
+  html.mhide #xsleeves,html.mhide #bard,html.mhide #hwmusic,html.mhide #hwshelf,html.mhide .skshamisen,html.mhide .skflowers,
   html.mhide .svback,html.mhide .svfront,html.mhide .svfx,html.mhide .svtrig,html.mhide .ytplayer.onscreen{
     opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s,visibility 0s .3s}
   /* No player in the corner: the room left under the last card for it is not needed (screens.css) */
