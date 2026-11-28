@@ -19,11 +19,11 @@ let smHushed = false;
 const smHush = on => {
   if (on && carolsPlaying && !smHushed) {
     smHushed = true;
-    if (carolsRock) carolsRock.pause(); else if (carolsRadio) ytPause(XMAS_YT, CAROLS_YT);
+    if (carols) carols.pause();
   } else if (!on && smHushed) {
     smHushed = false;
     if (!carolsPlaying) return;  // stopped meanwhile
-    if (carolsRock) carolsRock.play().catch(() => {}); else if (carolsRadio) ytPlay(XMAS_YT, CAROLS_YT, !carolsMuted);
+    if (carols) carols.play().catch(() => {});
   }
 };
 const smMegaStop = () => {  // the song, its fight and the glow end, the count starts again

@@ -31,11 +31,8 @@ const TAPE_BANDS = [
     { file: "epic/two-steps-from-hell-mix.mp3", icon: "🔥", short: "Epic", name: "Epic finale", color: "#2a62d4" },
     { file: "epic/dragonborn.mp3", icon: "🐉", short: "Dragon", name: "Dragonborn", color: "#8a5a1c" },
   ] },
-  // the Christmas turntable's two records (xmusic.js, loaded before: XMAS_YT)
-  { name: "Christmas", short: "XMAS", tapes: [
-    { file: "christmas/jingle-bell-rock.mp3", icon: "🔔", short: "Rock", name: "Jingle Bell Rock", color: "#c8102e" },
-    { id: XMAS_YT, icon: "🎄", short: "Xmas", name: "Lofi Girl - Christmas 2025", color: "#1f7a3e" },
-  ] },
+  // the Christmas turntable's records (xmusic.js, loaded before)
+  { name: "Christmas", short: "XMAS", tapes: XMAS_TRACKS },
   // the Halloween screens' tracks (hwmusic.js), the label in their tape colour
   { name: "Halloween", short: "SPOOKY", tapes: HW_TRACKS.map(t => Object.assign({}, t, { color: t.tape })) },
   // the sakura screens' tracks (skplayer.js), the label in their flower's colour

@@ -3,19 +3,18 @@
 // (a red bauble, a star). Its medallion is a glass bauble set on the turntable's corner; the turntable
 // is whisked away into a whirl of snowflakes and the television comes out of it with a golden
 // shimmer; its tube comes on as an old one, a white line then a flash; its keys are baubles hanging
-// from a fir garland; its plate a gift tag. Of the two records only the Lofi mix has a video.
+// from a fir garland; its plate a gift tag. Of the records only the Lofi mix has a video.
 // The fields: svScreen, scrvideo.js.
-const SV_XMAS_TRACKS = { rock: { file: "christmas/jingle-bell-rock.mp3", name: "Jingle Bell Rock" }, radio: { id: XMAS_YT, name: "Lofi Christmas" } };
 svScreen({
   look: "xtv",
   el: xmasDeck,
-  track: () => SV_XMAS_TRACKS[carolsRecord],
-  media: () => (carolsRecord === "radio" ? (carolsRadio ? { yt: XMAS_YT } : null) : carolsRock),
+  track: () => XMAS_TRACKS[carolsAt],
+  media: () => (!carols ? null : XMAS_TRACKS[carolsAt].id ? { yt: XMAS_TRACKS[carolsAt].id } : carols),
   playing: () => carolsPlaying,
   play: () => carolsPlay(),
   pause: () => carolsPause(),
-  next: () => xmasSleeve.click(),
-  parts: () => [xmasDeck, xmasSleeve],
+  next: () => xmasSleeves[carolsNextAt()].click(),
+  parts: () => [xmasDeck, xmasCrate],
   spot: () => svOn(xmasDeck, ".deck", 1, 0, 3, -2),  // on the lid's top right corner
   label: ".label",
   trigger: `<i class="svball">${SV_GLYPH}</i>`,

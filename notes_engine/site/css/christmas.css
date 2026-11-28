@@ -212,15 +212,15 @@ body[data-phase=christmas-night] #xsnowman .k4{stop-color:#566b90}
 @keyframes spark{from{opacity:.2}to{opacity:1}}
 
 /* Christmas turntable (bottom left): red lacquer and gold plinth with snow on the lid, a record
-   with a red label and a white star, a candy-cane tonearm, holly on the corner. The YouTube
-   player of the mix is kept invisible. The mix's record has a green label. */
+   with a label in its track's colour (--disc, xmusic.js) and a white star, a candy-cane tonearm,
+   holly on the corner. The YouTube player of the mix is kept invisible. */
 #xmusic{position:fixed;left:1.1rem;bottom:1.1rem;z-index:40;display:flex;align-items:center;gap:.6rem;padding:0;color:var(--fg);font:600 .78rem system-ui,sans-serif;background:none;border:0;cursor:pointer}
 #xmusic .deck{position:relative;width:4.8rem;height:3.8rem;border-radius:.45rem;background:linear-gradient(135deg,#d42a40,#9b0d22 60%,#6e0716);box-shadow:0 6px 18px rgba(0,0,0,.35),inset 0 0 0 2px #e3b341,inset 0 1px 0 rgba(255,255,255,.3)}
 #xmusic .lid{position:absolute;left:-2px;right:-2px;top:-5px;height:9px;border-radius:5px 5px 3px 3px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)}
 #xmusic .lid::before,#xmusic .lid::after{content:"";position:absolute;top:6px;width:7px;height:7px;border-radius:0 0 4px 4px;background:#fff}
 #xmusic .lid::before{left:12px}
 #xmusic .lid::after{right:18px;height:5px}
-#xmusic .disc{position:absolute;left:.3rem;top:.35rem;width:3.2rem;height:3.2rem;border-radius:50%;background:radial-gradient(circle,#fff 0 4%,#c8102e 5% 19%,#e3b341 20% 22%,#111 23%,#1f1f1f 32%,#0d0d0d 33%,#1f1f1f 45%,#0d0d0d 46%,#1f1f1f 58%,#0d0d0d 59%,#161616 70%);box-shadow:0 0 0 2px #1a1a1a,0 2px 6px rgba(0,0,0,.6)}
+#xmusic .disc{position:absolute;left:.3rem;top:.35rem;width:3.2rem;height:3.2rem;border-radius:50%;background:radial-gradient(circle,#fff 0 4%,var(--disc,#ff4d63) 5% 19%,#e3b341 20% 22%,#111 23%,#1f1f1f 32%,#0d0d0d 33%,#1f1f1f 45%,#0d0d0d 46%,#1f1f1f 58%,#0d0d0d 59%,#161616 70%);box-shadow:0 0 0 2px #1a1a1a,0 2px 6px rgba(0,0,0,.6)}
 #xmusic .disc::after{content:"";position:absolute;inset:38%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-10 -10 20 20'%3E%3Cpath d='M0-9 2-3h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z' fill='%23fff'/%3E%3C/svg%3E") center/contain no-repeat}
 #xmusic.playing .disc{animation:spin 1.8s linear infinite}
 #xmusic .arm{position:absolute;right:.42rem;top:.4rem;width:4px;height:2.4rem;margin-left:-2px;border-radius:2px;background:repeating-linear-gradient(-35deg,#fff 0 4px,#d6203a 4px 8px);transform-origin:50% 0;transform:rotate(-4deg);transition:transform .9s cubic-bezier(.4,0,.2,1)}
@@ -228,22 +228,32 @@ body[data-phase=christmas-night] #xsnowman .k4{stop-color:#566b90}
 #xmusic.playing .arm{transform:rotate(25deg)}
 #xmusic .holly{position:absolute;right:-.7rem;bottom:-.45rem;width:1.9rem}
 #xmusic .label{padding:.3rem .65rem;border-radius:999px;color:#fff;background:linear-gradient(#1f7a3e,#145a2c);border:1px solid #e3b341;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-#xmusic.radio .disc{background:radial-gradient(circle,#fff 0 4%,#2ea55a 5% 19%,#e3b341 20% 22%,#111 23%,#1f1f1f 32%,#0d0d0d 33%,#1f1f1f 45%,#0d0d0d 46%,#1f1f1f 58%,#0d0d0d 59%,#161616 70%)}
 #xmusic.swap .disc{animation:xmas-drop .55s cubic-bezier(.2,.8,.3,1.2)}
 @keyframes xmas-drop{from{opacity:0;transform:translateY(-1.4rem) scale(.7)}}
-/* The other record, in its sleeve, leaning behind the turntable (its top sticks out above the
-   lid): the cover says what it would put on, the black record peeks out of its top. Hovered, the
-   record slides out a little more; clicked, the sleeve dips while the records swap. */
-#xsleeve{position:fixed;left:1.6rem;bottom:4.3rem;z-index:39;width:3.3rem;height:3.3rem;padding:0;background:none;border:0;cursor:pointer;transform:rotate(-9deg);transform-origin:50% 100%;transition:transform .3s cubic-bezier(.3,.7,.4,1.3)}
-#xsleeve:hover,#xsleeve:focus-visible{transform:rotate(-13deg) translateY(-.3rem)}
-#xsleeve .rec{position:absolute;top:-1rem;left:.15rem;width:3rem;height:3rem;border-radius:50%;background:radial-gradient(circle,#e3b341 0 8%,#111 9%,#222 30%,#0d0d0d 31%,#222 50%,#0d0d0d 51%,#161616 70%);box-shadow:0 2px 6px rgba(0,0,0,.4);transition:transform .3s}
-#xsleeve:hover .rec,#xsleeve:focus-visible .rec{transform:translateY(-.45rem) rotate(40deg)}
-#xsleeve .cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:.3rem;border-radius:.25rem;color:#fff;font:700 .58rem/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 4px 12px rgba(0,0,0,.35),inset 0 0 0 2px #e3b341}
-#xsleeve .cover i{font-style:normal;font-size:1.05rem;line-height:1.2}
-#xsleeve.rock .cover{background:linear-gradient(135deg,#d42a40,#8e0b1f)}
-#xsleeve.radio .cover{background:linear-gradient(135deg,#2a8c4a,#11502a)}
-#xsleeve.swap{animation:xmas-dip .55s ease-out}
-@keyframes xmas-dip{40%{transform:rotate(-9deg) translateY(1.2rem);opacity:.4}}
+/* The other records, in their sleeves, fanned out behind the turntable like the jazz bar's (their
+   tops stick out above the lid; --x --y --r and the z-index set by xmusic.js): the next one in
+   front, on the left. Each cover in its track's colour (--rec), a gold rim, a few snowflakes, the
+   track's emblem in a glass bauble, its short name; the record peeks out of the top with its label
+   colour (--disc). Hovered, a sleeve rises and its record slides out; the one on the turntable
+   (.on) is hidden; the ones out of sight (.away) wait faded just past the fan, and the candy-cane
+   key (.xmore) at its end scrolls them forward. */
+#xsleeves{position:fixed;left:1.1rem;bottom:4.4rem;z-index:39;width:19rem;height:3.9rem;pointer-events:none}
+.xsleeve{position:absolute;left:0;bottom:0;width:3.6rem;height:3.6rem;padding:0;background:none;border:0;cursor:pointer;pointer-events:auto;transform:translate(var(--x,0),var(--y,0)) rotate(var(--r,0));transform-origin:20% 100%;transition:transform .45s cubic-bezier(.3,.7,.4,1.15),opacity .3s}
+.xsleeve:hover,.xsleeve:focus-visible{z-index:20 !important;transform:translate(var(--x,0),calc(var(--y,0) - .5rem)) rotate(var(--r,0))}
+.xsleeve.on{opacity:0;pointer-events:none;transform:translate(.6rem,1.8rem) rotate(0) scale(.8)}
+.xsleeve.away{opacity:0;pointer-events:none;transform:translate(var(--x,0),.6rem) rotate(var(--r,0)) scale(.85);transition:transform .45s cubic-bezier(.3,.7,.4,1.15),opacity .2s}
+.xsleeve .rec{position:absolute;top:-.95rem;left:.2rem;width:3.2rem;height:3.2rem;border-radius:50%;background:radial-gradient(circle,#fff 0 3%,var(--disc,#ff4d63) 4% 16%,#e3b341 17% 18.5%,#111 19.5%,#232323 27%,#0d0d0d 28%,#232323 38%,#0d0d0d 39%,#232323 50%,#0d0d0d 51%,#1b1b1b 62%,#0d0d0d 63%,#161616 70%);box-shadow:0 2px 6px rgba(0,0,0,.5);transition:transform .3s}
+.xsleeve:hover .rec,.xsleeve:focus-visible .rec{transform:translateY(-.6rem) rotate(40deg)}
+.xsleeve .cover{position:absolute;inset:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.12rem;border-radius:.22rem;color:#fff;text-align:center;background:radial-gradient(ellipse at 50% 30%,rgba(255,255,255,.22),transparent 60%),linear-gradient(150deg,var(--rec,#a8102a),#1a0508 135%);box-shadow:-3px 4px 12px rgba(0,0,0,.45),inset 0 0 0 2px #e3b341,inset 0 0 0 3.5px rgba(0,0,0,.18)}
+.xsleeve .bauble{position:relative;display:flex;align-items:center;justify-content:center;width:1.35rem;height:1.35rem;border-radius:50%;font-style:normal;font-size:.78rem;line-height:1;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.55),rgba(255,255,255,.08) 45%,rgba(0,0,0,.25) 80%),var(--rec,#a8102a);box-shadow:0 0 0 1.5px #e3b341,0 2px 5px rgba(0,0,0,.45)}
+.xsleeve .bauble::before{content:"";position:absolute;left:50%;top:-.22rem;width:.36rem;height:.22rem;margin-left:-.18rem;border-radius:.06rem .06rem 0 0;background:linear-gradient(#f6d77a,#b8891f)}
+.xsleeve .title{position:relative;max-width:3.2rem;overflow:hidden;font:800 .56rem/1 system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;text-shadow:0 1px 0 rgba(0,0,0,.5)}
+.xsleeve .flakes{position:absolute;inset:0;pointer-events:none;opacity:.55;background:radial-gradient(circle at 16% 20%,#fff 0 .05rem,transparent .07rem),radial-gradient(circle at 84% 16%,#fff 0 .06rem,transparent .08rem),radial-gradient(circle at 12% 78%,#fff 0 .05rem,transparent .07rem),radial-gradient(circle at 88% 72%,#fff 0 .05rem,transparent .07rem),radial-gradient(circle at 70% 90%,#fff 0 .04rem,transparent .06rem)}
+.xmore{position:absolute;left:0;bottom:.3rem;display:flex;align-items:center;justify-content:center;width:1.7rem;height:1.7rem;padding:0;border:1px solid #e3b341;border-radius:50%;color:#fff;font:800 1.15rem/1 system-ui,sans-serif;z-index:30;cursor:pointer;pointer-events:auto;background:repeating-linear-gradient(-45deg,#d6203a 0 .3rem,#fff .3rem .6rem);box-shadow:0 2px 8px rgba(0,0,0,.35);transform:translateX(var(--x,0));transition:transform .45s cubic-bezier(.3,.7,.4,1.15)}
+.xmore span{display:flex;align-items:center;justify-content:center;width:1.15rem;height:1.15rem;padding-bottom:.12rem;border-radius:50%;background:#17643a;box-shadow:0 0 0 1px #e3b341}
+.xmore:hover,.xmore:focus-visible{transform:translateX(calc(var(--x,0) + .15rem)) scale(1.08)}
+.xmore[hidden]{display:none}
+@media(pointer:coarse){.xmore{width:44px;height:44px;bottom:0}.xmore span{width:30px;height:30px}}
 /* Entering Christmas: the page fades into a snowy white, the new one appears through it */
 [data-vt=christmas]::view-transition-old(root){animation:vt-snow-out 1.4s ease-in both}
 [data-vt=christmas]::view-transition-new(root){animation:vt-snow-in 1.6s ease-out both}
@@ -251,4 +261,4 @@ body[data-phase=christmas-night] #xsnowman .k4{stop-color:#566b90}
 @keyframes vt-snow-in{from{opacity:0;filter:brightness(1.8) blur(6px)}}
 
 /* Reduced motion */
-@media(prefers-reduced-motion:reduce){#xscene .flicker{animation:none}#xsnowman .face,#xsnowman .eyes,#xsnowman .wave{animation:none}#sleigh{display:none}#xmusic.playing .disc,#xmusic.swap .disc,#xsleeve.swap{animation:none}#xsleeve,#xsleeve .rec{transition:none}#xjar .fly,#xjar .glow{animation:none}}
+@media(prefers-reduced-motion:reduce){#xscene .flicker{animation:none}#xsnowman .face,#xsnowman .eyes,#xsnowman .wave{animation:none}#sleigh{display:none}#xmusic.playing .disc,#xmusic.swap .disc{animation:none}.xsleeve,.xsleeve .rec,.xmore{transition:none}#xjar .fly,#xjar .glow{animation:none}}
